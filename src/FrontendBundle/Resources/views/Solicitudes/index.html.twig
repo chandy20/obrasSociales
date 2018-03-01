@@ -1,0 +1,90 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <div class="top-content">
+    <div class="container" style="width: 97% !important">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2 text">
+                <h1> * <strong> Solicitudes </strong> AOS </h1>
+                <div class="description">
+                    <p>
+                        Retorno a la Pagina Principal de Obras Sociales. 
+                        ingresa en <a href="http://obrassocialespolicia.org/obras/"><strong>Obras Sociales</strong></a>, Bienvenido Al Portal Obras Sociales!
+                    </p>
+                </div>
+            </div>
+        </div>
+      
+        <div class="row">
+            <div class="f1 col-md-20 form-box">
+                <h3><font color="#054e96"> SOLICITUDES </font></h3>
+                
+                <div align="float:center"><img src="\web\bundles\frontend\images\logo@2x.png" height="200" width="200"></div>
+                <p><font color="#054e96">Asociación Obras Sociales en Beneficio de la Policia Nacional</p>
+                <hr style="border-color:grey;">
+    
+    
+    <table class= "table">
+    <div class = "w3-ul">
+
+    
+        <thead>
+           
+            <tr>
+                <th>id</th>
+                           
+                <th>Solicitante</th>
+               
+                <th>Identificacion Funcionario</th>
+             
+                <th>Direccion funcionario</th>
+              
+                <th>Solicitudtelefonosfuncionario</th>
+           
+                <th>Solicitudnombrefuncionario</th>
+             
+                
+
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+
+        
+                <td><a href="{{ path('solicitudes_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+             
+                <td>{{ entity.solicitudnombresolicita }}</td>
+                
+                <td>{{ entity.solicitudcedulafuncionario }}</td>
+               
+                <td>{{ entity.solicituddireccionfuncionario }}</td>
+               
+                <td>{{ entity.solicitudtelefonosfuncionario }}</td>
+          
+                <td>{{ entity.solicitudnombrefuncionario }}</td>
+
+                <td>
+
+               
+
+                </td>
+            </tr>
+        {% endfor
+         %}
+
+        </tbody>
+    </table>
+    </div>
+
+       
+
+    <script>
+    $(document).ready(function() {
+        // configure the bootstrap datepicker
+        $('.js-datepicker').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+    });
+</script>
+    {% endblock %}

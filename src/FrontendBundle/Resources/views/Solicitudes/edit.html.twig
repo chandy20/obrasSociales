@@ -1,0 +1,201 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+<div class="top-content">
+    <div class="container" style="width: 90% !important">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2 text">
+                <h1>Edición  a <strong> de Solicitudes </strong> AOS </h1>
+                <div class="description">
+                    <p>
+                        Retorno a la Pagina Principal de Obras Sociales. 
+                        ingresa en <a href="http://obrassocialespolicia.org/obras/"><strong>Obras Sociales</strong></a>, Bienvenido Al Portal Obras Sociales!
+                    </p>
+                </div>
+            </div>
+        </div>
+         </div>
+                    
+                  {{ form(edit_form) }}
+            </div>
+      {{ form_start(edit_form) }}
+        <div class="row">
+            <div class="f1 col-md-20 form-box">
+                <h3><font color="#054e96"> Formulario de Solicitudes</font></h3>
+                
+                <div align="float:center"><img src="..\bundles\frontend\images\logo.png" height="150" width="180"></div>
+                <p><font color="#054e96">Asociación Obras Sociales en Beneficio de la Policia Nacional</p>
+                <hr style="border-color:grey;">
+               
+               
+                <div class="col-md-12">
+               
+                        <div class="col-md-6" >
+                            {{ form_label(edit_form.solicitudfecha) }}
+                            {{ form_errors(edit_form.solicitudfecha) }}
+                            {{ form_widget(edit_form.solicitudfecha) }}
+                        </div>
+                        <div class="col-md-6"> 
+                            {{ form_label(edit_form.idseccional) }}
+                            {{ form_errors(edit_form.idseccional) }}
+                            {{ form_widget(edit_form.idseccional) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(edit_form.idtiposolicitud) }}
+                            {{ form_errors(edit_form.idtiposolicitud) }}
+                            {{ form_widget(edit_form.idtiposolicitud) }}
+                        </div>
+                        
+                        <div class="col-md-6">
+                            {{ form_label(edit_form.solicitudcedulasolicita) }}
+                            {{ form_errors(edit_form.solicitudcedulasolicita) }}
+                            {{ form_widget(edit_form.solicitudcedulasolicita) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(edit_form.idparentesco) }}
+                            {{ form_errors(edit_form.idparentesco) }}
+                            {{ form_widget(edit_form.idparentesco) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(edit_form.solicitudnombresolicita) }}
+                            {{ form_errors(edit_form.solicitudnombresolicita) }}
+                            {{ form_widget(edit_form.solicitudnombresolicita) }}
+                        </div>
+                </div>
+               <div class="col-md-12">
+                        <hr style="border-color:white;">
+                        <hr style="border-color:white;">
+                        <hr style="border-color:white;">
+                        <h4>INFORMACION FUNCIONARIO POLICIAL</h4>
+                        <hr style="border-color:white"></div>
+
+                <div class="col-md-12">
+                        <div class="col-md-6" >
+                            {{ form_label(edit_form.solicitudcedulafuncionario) }}
+                            {{ form_errors(edit_form.solicitudcedulafuncionario) }}
+                            {{ form_widget(edit_form.solicitudcedulafuncionario) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(edit_form.idgrado) }}
+                            {{ form_errors(edit_form.idgrado) }}
+                            {{ form_widget(edit_form.idgrado) }}
+                        </div>
+                        <div class="col-md-12">
+                            {{ form_label(edit_form.solicitudnombrefuncionario) }}
+                            {{ form_errors(edit_form.solicitudnombrefuncionario) }}
+                            {{ form_widget(edit_form.solicitudnombrefuncionario) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(edit_form.solicituddireccionfuncionario) }}
+                            {{ form_errors(edit_form.solicituddireccionfuncionario) }}
+                            {{ form_widget(edit_form.solicituddireccionfuncionario) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(edit_form.solicitudtelefonosfuncionario) }}
+                            {{ form_errors(edit_form.solicitudtelefonosfuncionario) }}
+                            {{ form_widget(edit_form.solicitudtelefonosfuncionario) }}
+                        </div>    
+                </div>
+
+                <div class="col-md-12">   
+                        <div class="col-md-12">  
+                        <hr style="border-color:white;">
+                        <hr style="border-color:white;">
+                        <hr style="border-color:white;">         
+                        <h4>DESCRIPCION DE LA SOLICITUD</h4></div>
+
+                        <div class="col-md-6">
+                            {{ form_label(edit_form.idprogramas) }}
+                            {{ form_errors(edit_form.idprogramas) }}
+                            {{ form_widget(edit_form.idprogramas) }}
+                        </div>
+                        
+                        <div class="col-md-6">
+                            {{ form_label(edit_form.solicituddescripcion) }}
+                            {{ form_errors(edit_form.solicituddescripcion) }}
+                            {{ form_widget(edit_form.solicituddescripcion) }}
+                        </div>
+
+                        <div class="col-md-12">
+                         <div class="prueba1">
+                         <hr style="border-color:white;">
+                         <hr style="border-color:white;">
+                        <h4>INFORMACION FAMILIAR Y PERSONAL</h4></div></div>
+                
+                        <div class="col-md-6 prueba1">
+                            {{ form_label(edit_form.idestadocivil) }}
+                            {{ form_errors(edit_form.idestadocivil) }}
+                            {{ form_widget(edit_form.idestadocivil) }}
+                        </div>
+                        <div class="col-md-6 prueba1">
+                            {{ form_label(edit_form.idingreso) }}
+                            {{ form_errors(edit_form.idingreso) }}
+                            {{ form_widget(edit_form.idingreso) }}
+                        </div>
+                        <div class="col-md-6 prueba1">
+                            {{ form_label(edit_form.idpersonacargo) }}
+                            {{ form_errors(edit_form.idpersonacargo) }}
+                            {{ form_widget(edit_form.idpersonacargo) }}
+                        </div>
+                        <div class="col-md-6 prueba1">
+                            {{ form_label(edit_form.idsituacionvivienda) }}
+                            {{ form_errors(edit_form.idsituacionvivienda) }}
+                            {{ form_widget(edit_form.idsituacionvivienda) }}
+                        </div>
+                        <div class="col-md-6 prueba1">
+                            {{ form_label(edit_form.idmotivodeuda) }}
+                            {{ form_errors(edit_form.idmotivodeuda) }}
+                            {{ form_widget(edit_form.idmotivodeuda) }}
+                        </div>
+                        <div class="col-md-6 prueba1">
+                            {{ form_label(edit_form.cantidadesbeneficio) }}
+                            {{ form_errors(edit_form.cantidadesbeneficio) }}
+                            {{ form_widget(edit_form.cantidadesbeneficio) }}
+                        </div>
+                        <div class="col-md-6 prueba1">
+                            {{ form_label(edit_form.idconceptovisita) }}
+                            {{ form_errors(edit_form.idconceptovisita) }}
+                            {{ form_widget(edit_form.idconceptovisita) }}
+                        </div>
+                        <div class="col-md-6 prueba1">
+                            {{ form_label(edit_form.idafiliadodibie) }}
+                            {{ form_errors(edit_form.idafiliadodibie) }}
+                            {{ form_widget(edit_form.idafiliadodibie) }}
+                        </div>
+
+                        <div class="col-md-12">
+                        <div class="prueba">
+                        <hr style="border-color:white;">
+                        <hr style="border-color:white;">
+                        <h4>INFORMACION INSTITUCIONAL</h4></div></div>
+             
+                        <div class="col-md-6 prueba">
+                            {{ form_label(edit_form.idpoblacionbeneficia) }}
+                            {{ form_errors(edit_form.idpoblacionbeneficia) }}
+                            {{ form_widget(edit_form.idpoblacionbeneficia) }}
+                        </div>
+                        <div class="col-md-6 prueba">
+                            {{ form_label(edit_form.idviabilidadplaneacion) }}
+                            {{ form_errors(edit_form.idviabilidadplaneacion) }}
+                            {{ form_widget(edit_form.idviabilidadplaneacion) }}
+                        </div>
+                        <div class="col-md-6 prueba">
+                            {{ form_label(edit_form.idzonaubicacion) }}
+                            {{ form_errors(edit_form.idzonaubicacion) }}
+                            {{ form_widget(edit_form.idzonaubicacion) }}
+                        </div>
+                        <div class="col-md-6 prueba">
+                            {{ form_label(edit_form.idcantidadesbeneficioinst) }}
+                            {{ form_errors(edit_form.idcantidadesbeneficioinst) }}
+                            {{ form_widget(edit_form.idcantidadesbeneficioinst) }}
+                            <hr style="border-color:white;">
+                        </div>
+               
+        </div>
+        {{ form_end(edit_form) }}
+    </div>
+    <ul class="record_actions">
+       
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+ 
+    <div class="top-content">
+    <div class="container" style="width: 90% !important">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2 text">
+                <h1><strong> Solicitudes </strong> Obras Sociales </h1>
+                <div class="description">
+                   
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="f1 col-md-20 form-box">
+                     
+                
+                <p><font color="#054e96">Asociación Obras Sociales en Beneficio de la Policia Nacional</p>
+
+
+                <div align="float:center"><img src="\web\bundles\frontend\images\logo@2x.png" height="260" width="300"></div>
+                
+    <table class="record_properties">
+        <tbody>
+            <h1>Registro Completado Exitosamente!</h1>
+        </tbody>
+    </table>
+        <ul class="record_actions">
+        <p>
+                        Retorno a la Pagina Principal de Obras Sociales. 
+                        ingresa en <a href="http://obrassocialespolicia.org/obras/"><strong><u>Obras Sociales</strong></a></ul>
+                    </p>
+                    
+
+            
+        <li>
+            <a href="{{ path('solicitudes_new') }}"><strong><u> Crear Nueva Solicitud! </a></strong></u>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+
+<div class="top-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2 text">
+                <h1>Bienvenido a <strong>Formulario de Solicitudes </strong> AOS </h1>
+                <div class="description">
+              </div>
+            </div>
+        </div>   
+
+        <div class="row">
+            <div class="f1 col-md-12 form-box">
+                <h3>Formulario de Solicitudes</h3>
+                <p>Asociación Obras Sociales</p>
+                <div class="f1-steps">
+                 <div align="float:center"><img src="\web\bundles\frontend\images\slider.jpg" height="500" width="2150"></div>
+                    
+                       <div class="f1-step active">
+                        
+                    </div>
+
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('solicitudes_new') }}">Ingrese al Formulario de Solicitudes</a>
+        </li>
+
+    </ul>
+</div>
+
+{% endblock %}

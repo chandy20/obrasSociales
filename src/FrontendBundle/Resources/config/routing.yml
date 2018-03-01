@@ -1,0 +1,31 @@
+frontend_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: FrontendBundle:Default:index }
+
+solicitudes:
+    path:     /solicitudes
+    defaults: { _controller: FrontendBundle:Solicitudes:index }
+
+solicitudes_show:
+    path:     /solicitudes/{id}/show
+    defaults: { _controller: FrontendBundle:Solicitudes:show }
+
+solicitudes_edit:
+    path:     /solicitudes/{id}/edit
+    defaults: { _controller: FrontendBundle:Solicitudes:edit }
+
+solicitudes_delete:
+    path:     /solicitudes/{id}/delete
+    defaults: { _controller: FrontendBundle:Solicitudes:delete }
+
+solicitudes_new:
+    path:     /solicitudes/new
+    defaults: { _controller: FrontendBundle:Solicitudes:new }
+    
+solicitudes_create:
+    path:     /solicitudes/create
+    defaults: { _controller: FrontendBundle:Solicitudes:create }
+
+solicitudes_update:
+    path:     /solicitudes/create
+    defaults: { _controller: FrontendBundle:solicitudes:update }

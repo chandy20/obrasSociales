@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Solicitudes AOS!{% endblock %}</title>
+        {% block stylesheets %}
+       
+        <link rel="stylesheet" href="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/css/form-elements.css">
+        <link rel="stylesheet" href="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/css/style.css">
+       
+       
+
+
+
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        {% block body %}
+        
+        {% endblock %}
+        {% block javascripts %}
+        <script src="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/js/jquery-1.11.1.min.js"></script>
+        <script src="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/js/bootstrap.min.js"></script>
+        <script src="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/js/jquery.backstretch.min.js"></script>
+        <script src="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/js/retina-1.1.0.min.js"></script>
+        <script src="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/js/scripts.js"></script>
+        <script src="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/js/funcionesComunes.js"></script>
+
+        {% endblock %}
+    </body>
+</html>
