@@ -9,14 +9,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\Solicitudes;
 use FrontendBundle\Form\SolicitudesType;
+use AppBundle\Entity\ProgramaSolicitud;
 
 /**
  * Solicitudes controller.
  *
  * @Route("/solicitudes")
  */
-class SolicitudesController extends Controller
-{
+class SolicitudesController extends Controller {
 
     /**
      * Lists all Solicitudes entities.
@@ -25,8 +25,7 @@ class SolicitudesController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('AppBundle:Solicitudes')->findAll();
@@ -35,6 +34,7 @@ class SolicitudesController extends Controller
             'entities' => $entities
         );
     }
+
     /**
      * Creates a new Solicitudes entity.
      *
@@ -42,8 +42,8 @@ class SolicitudesController extends Controller
      * @Method("POST")
      * @Template("FrontendBundle:Solicitudes:new.html.twig")
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
         $entity = new Solicitudes();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -51,79 +51,80 @@ class SolicitudesController extends Controller
         $concepto = '';
         $no = 'NO APROBADO';
         $si = 'APROBADO';
-        $analisis = 'ANALISIS JUNTA'; 
-
+        $analisis = 'ANALISIS JUNTA';
+        $enviado = $request->request->all();
         if ($form->isValid()) {
-            
-            if($entity->getIdingreso() != null){
+            foreach ($enviado['programas'] as $prog) {
+                $programa = $em->getRepository('AppBundle:Programas')->findOneById($prog);
+                $programaSolicitud = new ProgramaSolicitud($programa, $entity);
+                $em->persist($programaSolicitud);
+                $entity->addPrograma($programaSolicitud);
+            }
+            if ($entity->getIdingreso() != null) {
                 $puntaje += $entity->getIdingreso()->getIngresopuntaje();
             }
-            if($entity->getIdpoblacionbeneficia() != null){
+            if ($entity->getIdpoblacionbeneficia() != null) {
                 $puntaje += $entity->getIdpoblacionbeneficia()->getPoblacionBeneficiaPuntaje();
             }
-            if($entity->getIdzonaubicacion() != null){
+            if ($entity->getIdzonaubicacion() != null) {
                 $puntaje += $entity->getIdzonaubicacion()->getZonasUbicacionPuntaje();
             }
-            if($entity->getIdviabilidadplaneacion() != null){
+            if ($entity->getIdviabilidadplaneacion() != null) {
                 $puntaje += $entity->getIdviabilidadplaneacion()->getViabilidadPlaneacionPuntaje();
             }
-            if($entity->getIdcantidadesbeneficioinst() != null){
+            if ($entity->getIdcantidadesbeneficioinst() != null) {
                 $puntaje += $entity->getIdcantidadesbeneficioinst()->getCantidadesBeneficioInstPuntaje();
             }
-            if($entity->getIdafiliadodibie() != null){
+            if ($entity->getIdafiliadodibie() != null) {
                 $puntaje += $entity->getIdafiliadodibie()->getAfiliadoDibiePorcentaje();
             }
-            if($entity->getIdsituacionvivienda() != null){
+            if ($entity->getIdsituacionvivienda() != null) {
                 $puntaje += $entity->getIdsituacionvivienda()->getSituacionesViviendaPuntaje();
             }
-            if($entity->getIdpersonacargo() != null){
+            if ($entity->getIdpersonacargo() != null) {
                 $puntaje += $entity->getIdpersonacargo()->getPersonasCargoPuntaje();
             }
-            if($entity->getIdmotivodeuda() != null){
+            if ($entity->getIdmotivodeuda() != null) {
                 $puntaje += $entity->getIdmotivodeuda()->getMotivoDeudaPuntaje();
             }
-            if($entity->getIdconceptovisita() != null){
+            if ($entity->getIdconceptovisita() != null) {
                 $puntaje += $entity->getIdconceptovisita()->getConceptosVisitaPuntaje();
             }
-             $file = $entity->getCurriculum();
+            $file = $entity->getCurriculum();
 
             // Generate a unique name for the file before saving it
-            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
             $entity->setArchivo($fileName);
             // Move the file to the directory where brochures are stored
             $file->move(
-                $this->getParameter('uploads_directory'),
-                $fileName
+                    $this->getParameter('uploads_directory'), $fileName
             );
-            //dump($this->getParameter('uploads_directory'));die;
             $em = $this->getDoctrine()->getManager();
             $entity->setTotalPuntaje($puntaje);
             $entity->setconcepto($concepto);
             $entity->setsolicitudconceptopre($concepto);
 
 
-            if ($puntaje >= 60){
+            if ($puntaje >= 60) {
                 $entity->setsolicitudconceptopre($si);
-                
-            }else if ($puntaje <= 40  ){
+            } else if ($puntaje <= 40) {
                 $entity->setsolicitudconceptopre($no);
-
-            }else if ($puntaje <= 59 and $puntaje >= 45 ){
+            } else if ($puntaje <= 59 and $puntaje >= 45) {
                 $entity->setsolicitudconceptopre($analisis);
             }
 
 
-            $em->persist($entity);  
+            $em->persist($entity);
             $em->flush();
 
-            
+
 
             return $this->redirect($this->generateUrl('solicitudes_show', array('id' => $entity->getId())));
-        }   
+        }
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -134,11 +135,11 @@ class SolicitudesController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Solicitudes $entity)
-    {
+    private function createCreateForm(Solicitudes $entity) {
         $form = $this->createForm(new SolicitudesType(), $entity, array(
             'action' => $this->generateUrl('solicitudes_create'),
             'method' => 'POST',
+            'em' => $em = $this->getDoctrine()->getManager(),
         ));
 
         $form->add('submit', 'submit', array('label' => 'Enviar'));
@@ -154,22 +155,13 @@ class SolicitudesController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
-    {
+    public function newAction() {
         $entity = new Solicitudes();
-        $form   = $this->createCreateForm($entity);
-        
-        /*$file = $Solicitudes->getCurriculum();
-        $fileName = md5(uniqid()).'.'.$file->guessExtension();
-
-        $cvDir = $this->container->getparameter('kernel.root_dir').'/../web/uploads/cv';
-            $file->move($cvDir, $fileName);
-
-        $usuario->setCurriculum($fileName);*/
+        $form = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -180,8 +172,7 @@ class SolicitudesController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
-    {
+    public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('AppBundle:Solicitudes')->find($id);
@@ -193,7 +184,7 @@ class SolicitudesController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -205,8 +196,7 @@ class SolicitudesController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
-    {
+    public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('AppBundle:Solicitudes')->find($id);
@@ -219,21 +209,20 @@ class SolicitudesController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $createEditForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $createEditForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-    * Creates a form to edit a Solicitudes entity.
-    *
-    * @param Solicitudes $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(Solicitudes $entity)
-    {
+     * Creates a form to edit a Solicitudes entity.
+     *
+     * @param Solicitudes $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditForm(Solicitudes $entity) {
         $form = $this->createForm(new SolicitudesType(), $entity, array(
             'action' => $this->generateUrl('solicitudes_update', array('id' => $entity->getId())),
             'method' => 'PUT',
@@ -243,6 +232,7 @@ class SolicitudesController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Solicitudes entity.
      *
@@ -250,8 +240,7 @@ class SolicitudesController extends Controller
      * @Method("PUT")
      * @Template("FrontendBundle:Solicitudes:edit.html.twig")
      */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('AppBundle:Solicitudes')->find($id);
@@ -271,19 +260,19 @@ class SolicitudesController extends Controller
         }
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * Deletes a Solicitudes entity.
      *
      * @Route("/{id}", name="solicitudes_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, $id)
-    {
+    public function deleteAction(Request $request, $id) {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -309,13 +298,13 @@ class SolicitudesController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
-    {
+    private function createDeleteForm($id) {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('solicitudes_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Eliminar Registro'))
-            ->getForm()
+                        ->setAction($this->generateUrl('solicitudes_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        ->add('submit', 'submit', array('label' => 'Eliminar Registro'))
+                        ->getForm()
         ;
     }
+
 }

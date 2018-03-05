@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="programas", indexes={@ORM\Index(name="fk_Programas_Areas_idx", columns={"idArea"})})
  * @ORM\Entity
  */
-class Programas
-{
+class Programas {
+
     /**
      * @var integer
      *
@@ -38,18 +38,21 @@ class Programas
      */
     private $idarea;
 
-public function __toString(){
-    return (string) $this->getProgramanombre();
-}
+    /**
+     * @ORM\OneToMany(targetEntity="ProgramaSolicitud", mappedBy="programa" , cascade={"persist"})
+     */
+    private $solicitudes;
 
+    public function __toString() {
+        return (string) $this->getProgramanombre();
+    }
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -60,8 +63,7 @@ public function __toString(){
      *
      * @return Programas
      */
-    public function setProgramanombre($programanombre)
-    {
+    public function setProgramanombre($programanombre) {
         $this->programanombre = $programanombre;
 
         return $this;
@@ -72,8 +74,7 @@ public function __toString(){
      *
      * @return string
      */
-    public function getProgramanombre()
-    {
+    public function getProgramanombre() {
         return $this->programanombre;
     }
 
@@ -84,8 +85,7 @@ public function __toString(){
      *
      * @return Programas
      */
-    public function setIdarea(\AppBundle\Entity\Areas $idarea = null)
-    {
+    public function setIdarea(\AppBundle\Entity\Areas $idarea = null) {
         $this->idarea = $idarea;
 
         return $this;
@@ -96,8 +96,49 @@ public function __toString(){
      *
      * @return \AppBundle\Entity\Areas
      */
-    public function getIdarea()
-    {
+    public function getIdarea() {
         return $this->idarea;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->solicitudes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add solicitude
+     *
+     * @param \AppBundle\Entity\ProgramaSolicitud $solicitude
+     *
+     * @return Programas
+     */
+    public function addSolicitude(\AppBundle\Entity\ProgramaSolicitud $solicitude)
+    {
+        $this->solicitudes[] = $solicitude;
+
+        return $this;
+    }
+
+    /**
+     * Remove solicitude
+     *
+     * @param \AppBundle\Entity\ProgramaSolicitud $solicitude
+     */
+    public function removeSolicitude(\AppBundle\Entity\ProgramaSolicitud $solicitude)
+    {
+        $this->solicitudes->removeElement($solicitude);
+    }
+
+    /**
+     * Get solicitudes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSolicitudes()
+    {
+        return $this->solicitudes;
     }
 }

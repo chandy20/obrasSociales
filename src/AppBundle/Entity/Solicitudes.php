@@ -8,11 +8,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Solicitudes
  *
- * @ORM\Table(name="solicitudes", indexes={@ORM\Index(name="IDX_216D11013BA3729", columns={"cantidadesbeneficio_id"}), @ORM\Index(name="IDX_216D110BAA72B5A", columns={"idcantidadesbeneficioinst"}), @ORM\Index(name="IDX_216D1109E157E4C", columns={"idestadocivil"}), @ORM\Index(name="IDX_216D110AE4B0437", columns={"idGrado"}), @ORM\Index(name="IDX_216D110139F7671", columns={"idingreso"}), @ORM\Index(name="IDX_216D110B4FB73C", columns={"idmotivodeuda"}), @ORM\Index(name="IDX_216D11053B72D2C", columns={"idparentesco"}), @ORM\Index(name="IDX_216D110EF075161", columns={"idpersonacargo"}), @ORM\Index(name="IDX_216D11079D71D30", columns={"idpoblacionbeneficia"}), @ORM\Index(name="IDX_216D1101BA6EA57", columns={"idprogramas"}), @ORM\Index(name="IDX_216D11070C5A4CE", columns={"idseccional"}), @ORM\Index(name="IDX_216D110E9FCC173", columns={"idsituacionvivienda"}), @ORM\Index(name="IDX_216D110174D74B2", columns={"idtiposolicitud"}), @ORM\Index(name="IDX_216D11069A00F34", columns={"idviabilidadplaneacion"}), @ORM\Index(name="IDX_216D110AA18F2E4", columns={"idzonaubicacion"}), @ORM\Index(name="fk_Solicitudes_Seccionales1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_Parentescos1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_Grados1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_Programas1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_TiposSolicitud1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_EstadosCiviles1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_Ingresos1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_PersonasCargo1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_SituacionesVivienda1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_MotivosDeuda1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_CantidadesBeneficio1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_ConceptosVisita1_idx", columns={"idConceptoVisita"}), @ORM\Index(name="fk_Solicitudes_CantidadesBeneficioInst1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_ViabilidadPlaneacion1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_ZonasUbicacion1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_PoblacionBeneficia1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_AfiliadoDibie1_idx", columns={"idAfiliadoDibie"})})
+ * @ORM\Table(name="solicitudes", indexes={@ORM\Index(name="IDX_216D11013BA3729", columns={"cantidadesbeneficio_id"}), @ORM\Index(name="IDX_216D110BAA72B5A", columns={"idcantidadesbeneficioinst"}), @ORM\Index(name="IDX_216D1109E157E4C", columns={"idestadocivil"}), @ORM\Index(name="IDX_216D110AE4B0437", columns={"idGrado"}), @ORM\Index(name="IDX_216D110139F7671", columns={"idingreso"}), @ORM\Index(name="IDX_216D110B4FB73C", columns={"idmotivodeuda"}), @ORM\Index(name="IDX_216D11053B72D2C", columns={"idparentesco"}), @ORM\Index(name="IDX_216D110EF075161", columns={"idpersonacargo"}), @ORM\Index(name="IDX_216D11079D71D30", columns={"idpoblacionbeneficia"}), @ORM\Index(name="IDX_216D11070C5A4CE", columns={"idseccional"}), @ORM\Index(name="IDX_216D110E9FCC173", columns={"idsituacionvivienda"}), @ORM\Index(name="IDX_216D110174D74B2", columns={"idtiposolicitud"}), @ORM\Index(name="IDX_216D11069A00F34", columns={"idviabilidadplaneacion"}), @ORM\Index(name="IDX_216D110AA18F2E4", columns={"idzonaubicacion"}), @ORM\Index(name="fk_Solicitudes_Seccionales1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_Parentescos1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_Grados1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_Programas1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_TiposSolicitud1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_EstadosCiviles1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_Ingresos1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_PersonasCargo1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_SituacionesVivienda1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_MotivosDeuda1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_CantidadesBeneficio1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_ConceptosVisita1_idx", columns={"idConceptoVisita"}), @ORM\Index(name="fk_Solicitudes_CantidadesBeneficioInst1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_ViabilidadPlaneacion1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_ZonasUbicacion1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_PoblacionBeneficia1_idx", columns={"id"}), @ORM\Index(name="fk_Solicitudes_AfiliadoDibie1_idx", columns={"idAfiliadoDibie"})})
  * @ORM\Entity
  */
-class Solicitudes
-{
+class Solicitudes {
+
     /**
      * @var integer
      *
@@ -115,7 +115,7 @@ class Solicitudes
      */
     private $idtiposolicitud;
 
-     /**
+    /**
      * @var int
      *
      * @ORM\Column(name="totalPuntaje", type="integer", nullable=true)
@@ -128,16 +128,6 @@ class Solicitudes
      * @ORM\Column(name="concepto", type="string", nullable=true )
      */
     private $concepto;
-
-    /**
-     * @var \Programas
-     *
-     * @ORM\ManyToOne(targetEntity="Programas")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idprogramas", referencedColumnName="id", nullable=true)
-     * })
-     */
-    private $idprogramas;
 
     /**
      * @var \Conceptosvisita
@@ -278,6 +268,11 @@ class Solicitudes
      * })
      */
     private $unidad;
+    
+     /**
+     * @ORM\OneToMany(targetEntity="ProgramaSolicitud", mappedBy="solicitud" , cascade={"persist"})
+     */
+    private $programas;
 
     /**
      * @Assert\File(
@@ -294,13 +289,12 @@ class Solicitudes
      */
     private $curriculum;
 
-     /**
+    /**
      * @var string
      *
      * @ORM\Column(name="archivo", type="string", length=3000, nullable=true)
      */
     private $archivo;
-
 
     /**
      * @var string
@@ -350,15 +344,12 @@ class Solicitudes
      */
     private $Acta;
 
-    
- 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -369,8 +360,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setSolicitudfecha($solicitudfecha)
-    {
+    public function setSolicitudfecha($solicitudfecha) {
         $this->solicitudfecha = $solicitudfecha;
 
         return $this;
@@ -381,8 +371,7 @@ class Solicitudes
      *
      * @return \DateTime
      */
-    public function getSolicitudfecha()
-    {
+    public function getSolicitudfecha() {
         return $this->solicitudfecha;
     }
 
@@ -393,8 +382,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setSolicitudcedulasolicita($solicitudcedulasolicita)
-    {
+    public function setSolicitudcedulasolicita($solicitudcedulasolicita) {
         $this->solicitudcedulasolicita = $solicitudcedulasolicita;
 
         return $this;
@@ -405,8 +393,7 @@ class Solicitudes
      *
      * @return string
      */
-    public function getSolicitudcedulasolicita()
-    {
+    public function getSolicitudcedulasolicita() {
         return $this->solicitudcedulasolicita;
     }
 
@@ -417,8 +404,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setSolicitudnombresolicita($solicitudnombresolicita)
-    {
+    public function setSolicitudnombresolicita($solicitudnombresolicita) {
         $this->solicitudnombresolicita = $solicitudnombresolicita;
 
         return $this;
@@ -429,8 +415,7 @@ class Solicitudes
      *
      * @return string
      */
-    public function getSolicitudnombresolicita()
-    {
+    public function getSolicitudnombresolicita() {
         return $this->solicitudnombresolicita;
     }
 
@@ -441,8 +426,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setSolicitudcedulafuncionario($solicitudcedulafuncionario)
-    {
+    public function setSolicitudcedulafuncionario($solicitudcedulafuncionario) {
         $this->solicitudcedulafuncionario = $solicitudcedulafuncionario;
 
         return $this;
@@ -453,8 +437,7 @@ class Solicitudes
      *
      * @return string
      */
-    public function getSolicitudcedulafuncionario()
-    {
+    public function getSolicitudcedulafuncionario() {
         return $this->solicitudcedulafuncionario;
     }
 
@@ -465,8 +448,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setSolicituddireccionfuncionario($solicituddireccionfuncionario)
-    {
+    public function setSolicituddireccionfuncionario($solicituddireccionfuncionario) {
         $this->solicituddireccionfuncionario = $solicituddireccionfuncionario;
 
         return $this;
@@ -477,8 +459,7 @@ class Solicitudes
      *
      * @return string
      */
-    public function getSolicituddireccionfuncionario()
-    {
+    public function getSolicituddireccionfuncionario() {
         return $this->solicituddireccionfuncionario;
     }
 
@@ -489,8 +470,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setSolicitudtelefonosfuncionario($solicitudtelefonosfuncionario)
-    {
+    public function setSolicitudtelefonosfuncionario($solicitudtelefonosfuncionario) {
         $this->solicitudtelefonosfuncionario = $solicitudtelefonosfuncionario;
 
         return $this;
@@ -501,8 +481,7 @@ class Solicitudes
      *
      * @return string
      */
-    public function getSolicitudtelefonosfuncionario()
-    {
+    public function getSolicitudtelefonosfuncionario() {
         return $this->solicitudtelefonosfuncionario;
     }
 
@@ -513,8 +492,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setSolicitudnombrefuncionario($solicitudnombrefuncionario)
-    {
+    public function setSolicitudnombrefuncionario($solicitudnombrefuncionario) {
         $this->solicitudnombrefuncionario = $solicitudnombrefuncionario;
 
         return $this;
@@ -525,8 +503,7 @@ class Solicitudes
      *
      * @return string
      */
-    public function getSolicitudnombrefuncionario()
-    {
+    public function getSolicitudnombrefuncionario() {
         return $this->solicitudnombrefuncionario;
     }
 
@@ -537,8 +514,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setSolicituddescripcion($solicituddescripcion)
-    {
+    public function setSolicituddescripcion($solicituddescripcion) {
         $this->solicituddescripcion = $solicituddescripcion;
 
         return $this;
@@ -549,8 +525,7 @@ class Solicitudes
      *
      * @return string
      */
-    public function getSolicituddescripcion()
-    {
+    public function getSolicituddescripcion() {
         return $this->solicituddescripcion;
     }
 
@@ -561,8 +536,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setSolicitudconceptopre($solicitudconceptopre)
-    {
+    public function setSolicitudconceptopre($solicitudconceptopre) {
         $this->solicitudconceptopre = $solicitudconceptopre;
 
         return $this;
@@ -573,8 +547,7 @@ class Solicitudes
      *
      * @return string
      */
-    public function getSolicitudconceptopre()
-    {
+    public function getSolicitudconceptopre() {
         return $this->solicitudconceptopre;
     }
 
@@ -585,8 +558,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setIdingreso(\AppBundle\Entity\Ingresos $idingreso = null)
-    {
+    public function setIdingreso(\AppBundle\Entity\Ingresos $idingreso = null) {
         $this->idingreso = $idingreso;
 
         return $this;
@@ -597,8 +569,7 @@ class Solicitudes
      *
      * @return \AppBundle\Entity\Ingresos
      */
-    public function getIdingreso()
-    {
+    public function getIdingreso() {
         return $this->idingreso;
     }
 
@@ -609,8 +580,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setCantidadesbeneficio(\AppBundle\Entity\Cantidadesbeneficio $cantidadesbeneficio = null)
-    {
+    public function setCantidadesbeneficio(\AppBundle\Entity\Cantidadesbeneficio $cantidadesbeneficio = null) {
         $this->cantidadesbeneficio = $cantidadesbeneficio;
 
         return $this;
@@ -621,8 +591,7 @@ class Solicitudes
      *
      * @return \AppBundle\Entity\Cantidadesbeneficio
      */
-    public function getCantidadesbeneficio()
-    {
+    public function getCantidadesbeneficio() {
         return $this->cantidadesbeneficio;
     }
 
@@ -633,8 +602,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setIdtiposolicitud(\AppBundle\Entity\Tipossolicitud $idtiposolicitud = null)
-    {
+    public function setIdtiposolicitud(\AppBundle\Entity\Tipossolicitud $idtiposolicitud = null) {
         $this->idtiposolicitud = $idtiposolicitud;
 
         return $this;
@@ -645,33 +613,8 @@ class Solicitudes
      *
      * @return \AppBundle\Entity\Tipossolicitud
      */
-    public function getIdtiposolicitud()
-    {
+    public function getIdtiposolicitud() {
         return $this->idtiposolicitud;
-    }
-
-    /**
-     * Set idprogramas
-     *
-     * @param \AppBundle\Entity\Programas $idprogramas
-     *
-     * @return Solicitudes
-     */
-    public function setIdprogramas(\AppBundle\Entity\Programas $idprogramas = null)
-    {
-        $this->idprogramas = $idprogramas;
-
-        return $this;
-    }
-
-    /**
-     * Get idprogramas
-     *
-     * @return \AppBundle\Entity\Programas
-     */
-    public function getIdprogramas()
-    {
-        return $this->idprogramas;
     }
 
     /**
@@ -681,8 +624,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setIdconceptovisita(\AppBundle\Entity\Conceptosvisita $idconceptovisita = null)
-    {
+    public function setIdconceptovisita(\AppBundle\Entity\Conceptosvisita $idconceptovisita = null) {
         $this->idconceptovisita = $idconceptovisita;
 
         return $this;
@@ -693,8 +635,7 @@ class Solicitudes
      *
      * @return \AppBundle\Entity\Conceptosvisita
      */
-    public function getIdconceptovisita()
-    {
+    public function getIdconceptovisita() {
         return $this->idconceptovisita;
     }
 
@@ -705,8 +646,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setIdparentesco(\AppBundle\Entity\Parentescos $idparentesco = null)
-    {
+    public function setIdparentesco(\AppBundle\Entity\Parentescos $idparentesco = null) {
         $this->idparentesco = $idparentesco;
 
         return $this;
@@ -717,8 +657,7 @@ class Solicitudes
      *
      * @return \AppBundle\Entity\Parentescos
      */
-    public function getIdparentesco()
-    {
+    public function getIdparentesco() {
         return $this->idparentesco;
     }
 
@@ -729,8 +668,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setIdviabilidadplaneacion(\AppBundle\Entity\Viabilidadplaneacion $idviabilidadplaneacion = null)
-    {
+    public function setIdviabilidadplaneacion(\AppBundle\Entity\Viabilidadplaneacion $idviabilidadplaneacion = null) {
         $this->idviabilidadplaneacion = $idviabilidadplaneacion;
 
         return $this;
@@ -741,8 +679,7 @@ class Solicitudes
      *
      * @return \AppBundle\Entity\Viabilidadplaneacion
      */
-    public function getIdviabilidadplaneacion()
-    {
+    public function getIdviabilidadplaneacion() {
         return $this->idviabilidadplaneacion;
     }
 
@@ -753,8 +690,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setIdseccional(\AppBundle\Entity\Seccionales $idseccional = null)
-    {
+    public function setIdseccional(\AppBundle\Entity\Seccionales $idseccional = null) {
         $this->idseccional = $idseccional;
 
         return $this;
@@ -765,8 +701,7 @@ class Solicitudes
      *
      * @return \AppBundle\Entity\Seccionales
      */
-    public function getIdseccional()
-    {
+    public function getIdseccional() {
         return $this->idseccional;
     }
 
@@ -777,8 +712,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setIdafiliadodibie(\AppBundle\Entity\Afiliadodibie $idafiliadodibie = null)
-    {
+    public function setIdafiliadodibie(\AppBundle\Entity\Afiliadodibie $idafiliadodibie = null) {
         $this->idafiliadodibie = $idafiliadodibie;
 
         return $this;
@@ -789,8 +723,7 @@ class Solicitudes
      *
      * @return \AppBundle\Entity\Afiliadodibie
      */
-    public function getIdafiliadodibie()
-    {
+    public function getIdafiliadodibie() {
         return $this->idafiliadodibie;
     }
 
@@ -801,8 +734,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setIdpoblacionbeneficia(\AppBundle\Entity\Poblacionbeneficia $idpoblacionbeneficia = null)
-    {
+    public function setIdpoblacionbeneficia(\AppBundle\Entity\Poblacionbeneficia $idpoblacionbeneficia = null) {
         $this->idpoblacionbeneficia = $idpoblacionbeneficia;
 
         return $this;
@@ -813,8 +745,7 @@ class Solicitudes
      *
      * @return \AppBundle\Entity\Poblacionbeneficia
      */
-    public function getIdpoblacionbeneficia()
-    {
+    public function getIdpoblacionbeneficia() {
         return $this->idpoblacionbeneficia;
     }
 
@@ -825,8 +756,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setIdestadocivil(\AppBundle\Entity\Estadosciviles $idestadocivil = null)
-    {
+    public function setIdestadocivil(\AppBundle\Entity\Estadosciviles $idestadocivil = null) {
         $this->idestadocivil = $idestadocivil;
 
         return $this;
@@ -837,8 +767,7 @@ class Solicitudes
      *
      * @return \AppBundle\Entity\Estadosciviles
      */
-    public function getIdestadocivil()
-    {
+    public function getIdestadocivil() {
         return $this->idestadocivil;
     }
 
@@ -849,8 +778,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setIdzonaubicacion(\AppBundle\Entity\Zonasubicacion $idzonaubicacion = null)
-    {
+    public function setIdzonaubicacion(\AppBundle\Entity\Zonasubicacion $idzonaubicacion = null) {
         $this->idzonaubicacion = $idzonaubicacion;
 
         return $this;
@@ -861,8 +789,7 @@ class Solicitudes
      *
      * @return \AppBundle\Entity\Zonasubicacion
      */
-    public function getIdzonaubicacion()
-    {
+    public function getIdzonaubicacion() {
         return $this->idzonaubicacion;
     }
 
@@ -873,8 +800,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setIdgrado(\AppBundle\Entity\Grados $idgrado = null)
-    {
+    public function setIdgrado(\AppBundle\Entity\Grados $idgrado = null) {
         $this->idgrado = $idgrado;
 
         return $this;
@@ -885,8 +811,7 @@ class Solicitudes
      *
      * @return \AppBundle\Entity\Grados
      */
-    public function getIdgrado()
-    {
+    public function getIdgrado() {
         return $this->idgrado;
     }
 
@@ -897,8 +822,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setIdmotivodeuda(\AppBundle\Entity\Motivosdeuda $idmotivodeuda = null)
-    {
+    public function setIdmotivodeuda(\AppBundle\Entity\Motivosdeuda $idmotivodeuda = null) {
         $this->idmotivodeuda = $idmotivodeuda;
 
         return $this;
@@ -909,8 +833,7 @@ class Solicitudes
      *
      * @return \AppBundle\Entity\Motivosdeuda
      */
-    public function getIdmotivodeuda()
-    {
+    public function getIdmotivodeuda() {
         return $this->idmotivodeuda;
     }
 
@@ -921,8 +844,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setIdcantidadesbeneficioinst(\AppBundle\Entity\Cantidadesbeneficioinst $idcantidadesbeneficioinst = null)
-    {
+    public function setIdcantidadesbeneficioinst(\AppBundle\Entity\Cantidadesbeneficioinst $idcantidadesbeneficioinst = null) {
         $this->idcantidadesbeneficioinst = $idcantidadesbeneficioinst;
 
         return $this;
@@ -933,8 +855,7 @@ class Solicitudes
      *
      * @return \AppBundle\Entity\Cantidadesbeneficioinst
      */
-    public function getIdcantidadesbeneficioinst()
-    {
+    public function getIdcantidadesbeneficioinst() {
         return $this->idcantidadesbeneficioinst;
     }
 
@@ -945,8 +866,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setIdsituacionvivienda(\AppBundle\Entity\Situacionesvivienda $idsituacionvivienda = null)
-    {
+    public function setIdsituacionvivienda(\AppBundle\Entity\Situacionesvivienda $idsituacionvivienda = null) {
         $this->idsituacionvivienda = $idsituacionvivienda;
 
         return $this;
@@ -957,8 +877,7 @@ class Solicitudes
      *
      * @return \AppBundle\Entity\Situacionesvivienda
      */
-    public function getIdsituacionvivienda()
-    {
+    public function getIdsituacionvivienda() {
         return $this->idsituacionvivienda;
     }
 
@@ -969,8 +888,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setIdpersonacargo(\AppBundle\Entity\Personascargo $idpersonacargo = null)
-    {
+    public function setIdpersonacargo(\AppBundle\Entity\Personascargo $idpersonacargo = null) {
         $this->idpersonacargo = $idpersonacargo;
 
         return $this;
@@ -981,23 +899,19 @@ class Solicitudes
      *
      * @return \AppBundle\Entity\Personascargo
      */
-    public function getIdpersonacargo()
-    {
+    public function getIdpersonacargo() {
         return $this->idpersonacargo;
     }
-    
-    public function getCurriculum()
-    {
+
+    public function getCurriculum() {
         return $this->curriculum;
     }
 
-    public function setCurriculum($curriculum)
-    {
+    public function setCurriculum($curriculum) {
         $this->curriculum = $curriculum;
 
         return $this;
     }
-    
 
     /**
      * Set unidad
@@ -1006,8 +920,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setUnidad(\AppBundle\Entity\Unidad $unidad = null)
-    {
+    public function setUnidad(\AppBundle\Entity\Unidad $unidad = null) {
         $this->unidad = $unidad;
 
         return $this;
@@ -1018,8 +931,7 @@ class Solicitudes
      *
      * @return \AppBundle\Entity\Unidad
      */
-    public function getUnidad()
-    {
+    public function getUnidad() {
         return $this->unidad;
     }
 
@@ -1030,8 +942,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setTotalPuntaje($totalPuntaje)
-    {
+    public function setTotalPuntaje($totalPuntaje) {
         $this->totalPuntaje = $totalPuntaje;
 
         return $this;
@@ -1042,8 +953,7 @@ class Solicitudes
      *
      * @return integer
      */
-    public function getTotalPuntaje()
-    {
+    public function getTotalPuntaje() {
         return $this->totalPuntaje;
     }
 
@@ -1054,8 +964,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setArchivo($archivo)
-    {
+    public function setArchivo($archivo) {
         $this->archivo = $archivo;
 
         return $this;
@@ -1066,8 +975,7 @@ class Solicitudes
      *
      * @return string
      */
-    public function getArchivo()
-    {
+    public function getArchivo() {
         return $this->archivo;
     }
 
@@ -1078,8 +986,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setConcepto($concepto)
-    {
+    public function setConcepto($concepto) {
         $this->concepto = $concepto;
 
         return $this;
@@ -1090,8 +997,7 @@ class Solicitudes
      *
      * @return integer
      */
-    public function getConcepto()
-    {
+    public function getConcepto() {
         return $this->concepto;
     }
 
@@ -1102,8 +1008,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setValorBeneficio($valorBeneficio)
-    {
+    public function setValorBeneficio($valorBeneficio) {
         $this->ValorBeneficio = $valorBeneficio;
 
         return $this;
@@ -1114,8 +1019,7 @@ class Solicitudes
      *
      * @return string
      */
-    public function getValorBeneficio()
-    {
+    public function getValorBeneficio() {
         return $this->ValorBeneficio;
     }
 
@@ -1126,8 +1030,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setTiempoBeneficio($tiempoBeneficio)
-    {
+    public function setTiempoBeneficio($tiempoBeneficio) {
         $this->TiempoBeneficio = $tiempoBeneficio;
 
         return $this;
@@ -1138,8 +1041,7 @@ class Solicitudes
      *
      * @return string
      */
-    public function getTiempoBeneficio()
-    {
+    public function getTiempoBeneficio() {
         return $this->TiempoBeneficio;
     }
 
@@ -1150,8 +1052,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setValortotalBeneficio($valortotalBeneficio)
-    {
+    public function setValortotalBeneficio($valortotalBeneficio) {
         $this->ValortotalBeneficio = $valortotalBeneficio;
 
         return $this;
@@ -1162,8 +1063,7 @@ class Solicitudes
      *
      * @return string
      */
-    public function getValortotalBeneficio()
-    {
+    public function getValortotalBeneficio() {
         return $this->ValortotalBeneficio;
     }
 
@@ -1174,8 +1074,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setOtorga(\AppBundle\Entity\otorga $otorga = null)
-    {
+    public function setOtorga(\AppBundle\Entity\otorga $otorga = null) {
         $this->otorga = $otorga;
 
         return $this;
@@ -1186,8 +1085,7 @@ class Solicitudes
      *
      * @return \AppBundle\Entity\otorga
      */
-    public function getOtorga()
-    {
+    public function getOtorga() {
         return $this->otorga;
     }
 
@@ -1198,8 +1096,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setAntiguedad(\AppBundle\Entity\antiguedad $antiguedad = null)
-    {
+    public function setAntiguedad(\AppBundle\Entity\antiguedad $antiguedad = null) {
         $this->antiguedad = $antiguedad;
 
         return $this;
@@ -1210,8 +1107,7 @@ class Solicitudes
      *
      * @return \AppBundle\Entity\antiguedad
      */
-    public function getAntiguedad()
-    {
+    public function getAntiguedad() {
         return $this->antiguedad;
     }
 
@@ -1222,8 +1118,7 @@ class Solicitudes
      *
      * @return Solicitudes
      */
-    public function setActa($acta)
-    {
+    public function setActa($acta) {
         $this->Acta = $acta;
 
         return $this;
@@ -1234,8 +1129,49 @@ class Solicitudes
      *
      * @return string
      */
-    public function getActa()
-    {
+    public function getActa() {
         return $this->Acta;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->programas = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add programa
+     *
+     * @param \AppBundle\Entity\ProgramaSolicitud $programa
+     *
+     * @return Solicitudes
+     */
+    public function addPrograma(\AppBundle\Entity\ProgramaSolicitud $programa)
+    {
+        $this->programas[] = $programa;
+
+        return $this;
+    }
+
+    /**
+     * Remove programa
+     *
+     * @param \AppBundle\Entity\ProgramaSolicitud $programa
+     */
+    public function removePrograma(\AppBundle\Entity\ProgramaSolicitud $programa)
+    {
+        $this->programas->removeElement($programa);
+    }
+
+    /**
+     * Get programas
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProgramas()
+    {
+        return $this->programas;
     }
 }
