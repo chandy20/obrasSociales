@@ -39,6 +39,20 @@ class Solicitudes {
     /**
      * @var string
      *
+     * @ORM\Column(name="documentoBeneficiarioFinal", type="string", length=45, nullable=false)
+     */
+    private $documentoBeneficiarioFinal;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombreBeneficiarioFinal", type="string", length=45, nullable=false)
+     */
+    private $nombreBeneficiarioFinal;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="SolicitudNombreSolicita", type="string", length=300, nullable=false)
      */
     private $solicitudnombresolicita;
@@ -268,8 +282,8 @@ class Solicitudes {
      * })
      */
     private $unidad;
-    
-     /**
+
+    /**
      * @ORM\OneToMany(targetEntity="ProgramaSolicitud", mappedBy="solicitud" , cascade={"persist"})
      */
     private $programas;
@@ -288,6 +302,22 @@ class Solicitudes {
      * )
      */
     private $curriculum;
+    
+    
+    /**
+     * @Assert\File(
+     *      maxSize="5242880",
+     *      mimeTypes = {
+     *          "image/png",
+     *          "image/jpeg",
+     *          "image/jpg",
+     *          "image/gif",
+     *          "application/pdf",
+     *          "application/x-pdf"
+     *      }
+     * )
+     */
+    private $fotoFile;
 
     /**
      * @var string
@@ -295,6 +325,13 @@ class Solicitudes {
      * @ORM\Column(name="archivo", type="string", length=3000, nullable=true)
      */
     private $archivo;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="foto", type="string", length=3000, nullable=true)
+     */
+    private $foto;
 
     /**
      * @var string
@@ -912,6 +949,15 @@ class Solicitudes {
 
         return $this;
     }
+    public function getFotoFile() {
+        return $this->fotoFile;
+    }
+
+    public function setFotoFile($fotoFile) {
+        $this->fotoFile = $fotoFile;
+
+        return $this;
+    }
 
     /**
      * Set unidad
@@ -1136,8 +1182,7 @@ class Solicitudes {
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->programas = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -1148,8 +1193,7 @@ class Solicitudes {
      *
      * @return Solicitudes
      */
-    public function addPrograma(\AppBundle\Entity\ProgramaSolicitud $programa)
-    {
+    public function addPrograma(\AppBundle\Entity\ProgramaSolicitud $programa) {
         $this->programas[] = $programa;
 
         return $this;
@@ -1160,8 +1204,7 @@ class Solicitudes {
      *
      * @param \AppBundle\Entity\ProgramaSolicitud $programa
      */
-    public function removePrograma(\AppBundle\Entity\ProgramaSolicitud $programa)
-    {
+    public function removePrograma(\AppBundle\Entity\ProgramaSolicitud $programa) {
         $this->programas->removeElement($programa);
     }
 
@@ -1170,8 +1213,80 @@ class Solicitudes {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getProgramas()
-    {
+    public function getProgramas() {
         return $this->programas;
+    }
+
+
+    /**
+     * Set documentoBeneficiarioFinal
+     *
+     * @param string $documentoBeneficiarioFinal
+     *
+     * @return Solicitudes
+     */
+    public function setDocumentoBeneficiarioFinal($documentoBeneficiarioFinal)
+    {
+        $this->documentoBeneficiarioFinal = $documentoBeneficiarioFinal;
+
+        return $this;
+    }
+
+    /**
+     * Get documentoBeneficiarioFinal
+     *
+     * @return string
+     */
+    public function getDocumentoBeneficiarioFinal()
+    {
+        return $this->documentoBeneficiarioFinal;
+    }
+
+    /**
+     * Set nombreBeneficiarioFinal
+     *
+     * @param string $nombreBeneficiarioFinal
+     *
+     * @return Solicitudes
+     */
+    public function setNombreBeneficiarioFinal($nombreBeneficiarioFinal)
+    {
+        $this->nombreBeneficiarioFinal = $nombreBeneficiarioFinal;
+
+        return $this;
+    }
+
+    /**
+     * Get nombreBeneficiarioFinal
+     *
+     * @return string
+     */
+    public function getNombreBeneficiarioFinal()
+    {
+        return $this->nombreBeneficiarioFinal;
+    }
+
+    /**
+     * Set foto
+     *
+     * @param string $foto
+     *
+     * @return Solicitudes
+     */
+    public function setFoto($foto)
+    {
+        $this->foto = $foto;
+
+        return $this;
+    }
+
+    /**
+     * Get foto
+     *
+     * @return string
+     */
+    public function getFoto()
+    {
+        return $this->foto;
     }
 }

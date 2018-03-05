@@ -54,7 +54,7 @@ class SolicitudesController extends Controller {
         $analisis = 'ANALISIS JUNTA';
         $enviado = $request->request->all();
         if ($form->isValid()) {
-            foreach ($enviado['programas'] as $prog) {
+            foreach ($enviado['frontendbundle_solicitudes']['programas'] as $prog) {
                 $programa = $em->getRepository('AppBundle:Programas')->findOneById($prog);
                 $programaSolicitud = new ProgramaSolicitud($programa, $entity);
                 $em->persist($programaSolicitud);
@@ -93,12 +93,23 @@ class SolicitudesController extends Controller {
             $file = $entity->getCurriculum();
 
             // Generate a unique name for the file before saving it
-            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
-            $entity->setArchivo($fileName);
-            // Move the file to the directory where brochures are stored
-            $file->move(
-                    $this->getParameter('uploads_directory'), $fileName
-            );
+            if ($file) {
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                $entity->setArchivo($fileName);
+                // Move the file to the directory where brochures are stored
+                $file->move(
+                        $this->getParameter('uploads_directory'), $fileName
+                );
+            }
+            $foto = $entity->getFotoFile();
+            if ($foto) {
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                $entity->setFoto($fileName);
+                // Move the file to the directory where brochures are stored
+                $file->move(
+                        $this->getParameter('uploads_directory'), $fileName
+                );
+            }
             $em = $this->getDoctrine()->getManager();
             $entity->setTotalPuntaje($puntaje);
             $entity->setconcepto($concepto);
