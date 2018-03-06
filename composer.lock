@@ -8,20 +8,19 @@
     "packages": [
         {
             "name": "cocur/slugify",
-            "version": "v3.1",
+            "version": "v3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cocur/slugify.git",
-                "reference": "b2ccf7b735f4f3df3979aef2e1ebf8e19ca772f7"
+                "reference": "122998753e980d0223eea0bb957102a457a13bc1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cocur/slugify/zipball/b2ccf7b735f4f3df3979aef2e1ebf8e19ca772f7",
-                "reference": "b2ccf7b735f4f3df3979aef2e1ebf8e19ca772f7",
+                "url": "https://api.github.com/repos/cocur/slugify/zipball/122998753e980d0223eea0bb957102a457a13bc1",
+                "reference": "122998753e980d0223eea0bb957102a457a13bc1",
                 "shasum": ""
             },
             "require": {
-                "ext-mbstring": "*",
                 "php": ">=5.5.9"
             },
             "require-dev": {
@@ -69,7 +68,7 @@
                 "slug",
                 "slugify"
             ],
-            "time": "2018-01-22T09:00:48+00:00"
+            "time": "2017-08-11T20:28:15+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -3405,16 +3404,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.35",
+            "version": "v2.8.36",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "7339c93c82f539305c0eaa52e53c5092d188a82b"
+                "reference": "4fdb16d12e1fa746da67d3250a3f3668538e813d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/7339c93c82f539305c0eaa52e53c5092d188a82b",
-                "reference": "7339c93c82f539305c0eaa52e53c5092d188a82b",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/4fdb16d12e1fa746da67d3250a3f3668538e813d",
+                "reference": "4fdb16d12e1fa746da67d3250a3f3668538e813d",
                 "shasum": ""
             },
             "require": {
@@ -3540,7 +3539,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2018-03-01T16:45:46+00:00"
+            "time": "2018-03-05T19:06:36+00:00"
         },
         {
             "name": "twig/extensions",
@@ -3773,7 +3772,7 @@
     "packages-dev": [
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v2.8.35",
+            "version": "v2.8.36",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",

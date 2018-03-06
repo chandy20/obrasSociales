@@ -34,7 +34,7 @@ class SolicitudesType extends AbstractType {
                 ->add('idseccional', null, ['constraints' => $constraint, "placeholder" => "Seleccione", "label" => "Seccional", 'attr' => array('class' => 'form-control')])
                 ->add('idtiposolicitud', null, ['constraints' => $constraint, "placeholder" => "Seleccione", "label" => "Tipo de Solicitud", 'attr' => array('class' => 'form-control', 'onchange' => 'mostrarFormulario()')])
                 ->add('solicitudcedulasolicita', null, ['constraints' => $constraint, "label" => "Cedula del Solicitante", 'attr' => array('class' => 'form-control ', 'placeholder' => "Documento de identidad")])
-                ->add('emailolicitante', null, ['constraints' => $constraintEmail, "label" => "Correo Electrónico", 'attr' => array('class' => 'form-control ', 'placeholder' => "Correo electrónico")])
+                ->add('emailSolicitante', null, ['constraints' => $constraintEmail, "label" => "Correo Electrónico", 'attr' => array('class' => 'form-control ', 'placeholder' => "Correo electrónico")])
                 ->add('documentoBeneficiarioFinal', null, ['constraints' => $constraint, "label" => "Documento del beneficiario final", 'attr' => array('class' => 'form-control ', 'placeholder' => "Documento de identidad")])
                 ->add('nombreBeneficiarioFinal', null, ['constraints' => $constraint, "label" => "Nombre  del beneficiario final", 'attr' => array('class' => 'form-control ', 'placeholder' => "Nombre beneficiario")])
                 ->add('solicitudnombresolicita', null, ['constraints' => $constraint, "label" => "Nombres y Apellidos del Solicitante", 'attr' => array('class' => 'form-control', 'placeholder' => "Digita Nombres y Apellidos del Solicitante")])

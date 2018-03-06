@@ -35,6 +35,13 @@ class Solicitudes {
      * @ORM\Column(name="SolicitudCedulaSolicita", type="string", length=45, nullable=false)
      */
     private $solicitudcedulasolicita;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="emailSolicitante", type="string", length=45, nullable=false)
+     */
+    private $emailSolicitante;
 
     /**
      * @var string
@@ -1288,5 +1295,29 @@ class Solicitudes {
     public function getFoto()
     {
         return $this->foto;
+    }
+
+    /**
+     * Set emailSolicitante
+     *
+     * @param string $emailSolicitante
+     *
+     * @return Solicitudes
+     */
+    public function setEmailSolicitante($emailSolicitante)
+    {
+        $this->emailSolicitante = $emailSolicitante;
+
+        return $this;
+    }
+
+    /**
+     * Get emailSolicitante
+     *
+     * @return string
+     */
+    public function getEmailSolicitante()
+    {
+        return $this->emailSolicitante;
     }
 }
