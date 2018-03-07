@@ -17,6 +17,7 @@ class ProgramasAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('programanombre', null, ["label" => "Programa"])
+            ->add('valorMes')
             ->add('idarea')
         ;
     }
@@ -28,6 +29,7 @@ class ProgramasAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('programanombre', null, ["label" => "Programa"])
+            ->add('valorMes')
             ->add('idarea')
             ->add('_action', null, array(
                 'actions' => array(
@@ -45,8 +47,9 @@ class ProgramasAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('programanombre', null, ["label" => "Programa"])
-            ->add('idarea')
+            ->add('programanombre', null, ["label" => "label.programa"])
+            ->add('valorMes', null, ["label"=> "label.valor.mes"])
+            ->add('idarea', null, ["label"=> "label.area"])
         ;
     }
 

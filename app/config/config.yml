@@ -14,8 +14,10 @@ parameters:
     locale: es
 
 framework:
-    #esi:             ~
-    translator:      { fallbacks: ["%locale%"] }
+    translator:
+        fallbacks: [es] 
+        paths:
+            - '%kernel.root_dir%/../src/AppBundle/Resources/translations'
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"

@@ -26,37 +26,83 @@
 
                     <div class="col-md-12">
 
-                        <div class="col-md-2" ><b>
+                        <div class="col-md-6" >
+                            <div class="col-md-12" >
                                 {{ form_label(form.solicitudfecha) }}
+                            </div>
+                            <div class="col-md-12" >
                                 {{ form_errors(form.solicitudfecha) }}
+                            </div>
+                            <div class="col-md-12" >
                                 {{ form_widget(form.solicitudfecha) }}
-                        </div></b>
-                        <div class="col-md-5"> <b>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
                                 {{ form_label(form.idseccional) }}
+                            </div>
+                            <div class="col-md-12">
                                 {{ form_errors(form.idseccional) }}
+                            </div>
+                            <div class="col-md-12">
                                 {{ form_widget(form.idseccional) }}
-                        </div></b>
-                        <div class="col-md-5"><b>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
                                 {{ form_label(form.idtiposolicitud) }}
+                            </div>
+                            <div class="col-md-12">
                                 {{ form_errors(form.idtiposolicitud) }}
+                            </div>
+                            <div class="col-md-12">
                                 {{ form_widget(form.idtiposolicitud) }}
-                        </div></b>
-
-                        <div class="col-md-6"><b>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
                                 {{ form_label(form.solicitudcedulasolicita) }}
+                            </div>
+                            <div class="col-md-12">
                                 {{ form_errors(form.solicitudcedulasolicita) }}
+                            </div>
+                            <div class="col-md-12">
                                 {{ form_widget(form.solicitudcedulasolicita) }}
-                        </div></b>
-                        <div class="col-md-6"><b>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
                                 {{ form_label(form.idparentesco) }}
+                            </div>
+                            <div class="col-md-12">
                                 {{ form_errors(form.idparentesco) }}
+                            </div>
+                            <div class="col-md-12">
                                 {{ form_widget(form.idparentesco) }}
-                        </div></b>
-                        <div class="col-md-12"><b>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
                                 {{ form_label(form.solicitudnombresolicita) }}
+                            </div>
+                            <div class="col-md-12">
                                 {{ form_errors(form.solicitudnombresolicita) }}
+                            </div>
+                            <div class="col-md-12">
                                 {{ form_widget(form.solicitudnombresolicita) }}
-                        </div></b>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                {{ form_label(form.emailSolicitante) }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form_errors(form.emailSolicitante) }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form_widget(form.emailSolicitante) }}
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-12">
                         <hr style="border-color:white;">
@@ -65,128 +111,247 @@
                         <h4><b>INFORMACION FUNCIONARIO POLICIAL</b></h4>
                         <hr style="border-color:white"></div>
 
-                    <div class="col-md-12"><b>
-                            <div class="col-md-4" ><b>
-                                    {{ form_label(form.solicitudcedulafuncionario) }}
-                                    {{ form_errors(form.solicitudcedulafuncionario) }}
-                                    {{ form_widget(form.solicitudcedulafuncionario) }}
-                            </div></b>
-                        <div class="col-md-4">
-                            {{ form_label(form.idgrado) }}
-                            {{ form_errors(form.idgrado) }}
-                            {{ form_widget(form.idgrado) }}
+                    <div class="col-md-12">
+                        <div class="col-md-4" >
+                            <div class="col-md-12" >
+                                {{ form_label(form.solicitudcedulafuncionario) }}
+                            </div>
+                            <div class="col-md-12" >
+                                {{ form_errors(form.solicitudcedulafuncionario) }}
+                            </div>
+                            <div class="col-md-12" >
+                                {{ form_widget(form.solicitudcedulafuncionario) }}
+                            </div>
                         </div>
                         <div class="col-md-4">
-                            {{ form_label(form.unidad) }}
-                            {{ form_errors(form.unidad) }}
-                            {{ form_widget(form.unidad) }}
+                            <div class="col-md-12" >
+                                {{ form_label(form.idgrado) }}
+                            </div>
+                            <div class="col-md-12" >
+                                {{ form_errors(form.idgrado) }}
+                            </div>
+                            <div class="col-md-12" >
+                                {{ form_widget(form.idgrado) }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="col-md-12" >
+                                {{ form_label(form.unidad) }}
+                            </div>
+                            <div class="col-md-12" >
+                                {{ form_errors(form.unidad) }}
+                            </div>
+                            <div class="col-md-12" >
+                                {{ form_widget(form.unidad) }}
+                            </div>
                             <hr style="border-color:white;">
                         </div>
                         <div class="col-md-12">
-                            {{ form_label(form.solicitudnombrefuncionario) }}
-                            {{ form_errors(form.solicitudnombrefuncionario) }}
-                            {{ form_widget(form.solicitudnombrefuncionario) }}
+                            <div class="col-md-12">
+                                {{ form_label(form.solicitudnombrefuncionario) }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form_errors(form.solicitudnombrefuncionario) }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form_widget(form.solicitudnombrefuncionario) }}
+                            </div>
                             <hr style="border-color:white;">
                         </div>
                         <div class="col-md-4">
-                            {{ form_label(form.solicituddireccionfuncionario) }}
-                            {{ form_errors(form.solicituddireccionfuncionario) }}
-                            {{ form_widget(form.solicituddireccionfuncionario) }}
+                            <div class="col-md-12">
+                                {{ form_label(form.solicituddireccionfuncionario) }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form_errors(form.solicituddireccionfuncionario) }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form_widget(form.solicituddireccionfuncionario) }}
+                            </div>
                         </div>
                         <div class="col-md-4">
-                            {{ form_label(form.solicitudtelefonosfuncionario) }}
-                            {{ form_errors(form.solicitudtelefonosfuncionario) }}
-                            {{ form_widget(form.solicitudtelefonosfuncionario) }}
+                            <div class="col-md-12">
+                                {{ form_label(form.solicitudtelefonosfuncionario) }}
+                            </div>    
+                            <div class="col-md-12">
+                                {{ form_errors(form.solicitudtelefonosfuncionario) }}
+                            </div>    
+                            <div class="col-md-12">
+                                {{ form_widget(form.solicitudtelefonosfuncionario) }}
+                            </div>    
                         </div>    
                         <div class="col-md-4">
-                            {{ form_label(form.antiguedad) }}
-                            {{ form_errors(form.antiguedad) }}
-                            {{ form_widget(form.antiguedad) }}
+                            <div class="col-md-12">
+                                {{ form_label(form.antiguedad) }}
+                            </div>  
+                            <div class="col-md-12">
+                                {{ form_errors(form.antiguedad) }}
+                            </div>  
+                            <div class="col-md-12">
+                                {{ form_widget(form.antiguedad) }}
+                            </div>  
                         </div>  
-                    </div></b>
-
-                    <div class="col-md-12"><b>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-12">  
+                            <hr style="border-color:white;">
+                            <hr style="border-color:white;">
+                            <hr style="border-color:white;">         
+                            <h4><b>DESCRIPCION DE LA SOLICITUD</b></h4>
+                        </div>
+                        <div class="col-md-4">
                             <div class="col-md-12">  
-                                <hr style="border-color:white;">
-                                <hr style="border-color:white;">
-                                <hr style="border-color:white;">         
-                                <h4><b>DESCRIPCION DE LA SOLICITUD</b></h4></div>
-
-                            <div class="col-md-4">
                                 {{ form_label(form.programas) }}
+                            </div>
+                            <div class="col-md-12">  
                                 {{ form_errors(form.programas) }}
+                            </div>
+                            <div class="col-md-12">  
                                 {{ form_widget(form.programas) }}
                             </div>
+                        </div>
 
-                            <div class="col-md-8">
+                        <div class="col-md-8">
+                            <div class="col-md-12">  
                                 {{ form_label(form.solicituddescripcion) }}
+                            </div>
+                            <div class="col-md-12">  
                                 {{ form_errors(form.solicituddescripcion) }}
+                            </div>
+                            <div class="col-md-12">  
                                 {{ form_widget(form.solicituddescripcion) }}
-                            </div></b>
+                            </div>
+                        </div>
 
                         <div class="prueba1">
-                            <div class="col-md-12"><b>
-                                    <div>
-                                        <hr style="border-color:white;">
-                                        <hr style="border-color:white;">
-                                        <h4><b>INFORMACION FAMILIAR Y PERSONAL</b></h4>
-                                    </div>
+                            <div class="col-md-12">
+                                <div>
+                                    <hr style="border-color:white;">
+                                    <hr style="border-color:white;">
+                                    <h4><b>INFORMACION FAMILIAR Y PERSONAL</b></h4>
+                                </div>
                             </div>
 
                             <div class="col-md-4">
-                                {{ form_label(form.idestadocivil) }}
-                                {{ form_errors(form.idestadocivil) }}
-                                {{ form_widget(form.idestadocivil) }}
+                                <div class="col-md-12">
+                                    {{ form_label(form.idestadocivil) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_errors(form.idestadocivil) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_widget(form.idestadocivil) }}
+                                </div>
                             </div>
                             <div class="col-md-4">
-                                {{ form_label(form.idingreso) }}
-                                {{ form_errors(form.idingreso) }}
-                                {{ form_widget(form.idingreso) }}
+                                <div class="col-md-12">
+                                    {{ form_label(form.idingreso) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_errors(form.idingreso) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_widget(form.idingreso) }}
+                                </div>
                             </div>
                             <div class="col-md-4">
-                                {{ form_label(form.idpersonacargo) }}
-                                {{ form_errors(form.idpersonacargo) }}
-                                {{ form_widget(form.idpersonacargo) }}
+                                <div class="col-md-12">
+                                    {{ form_label(form.idpersonacargo) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_errors(form.idpersonacargo) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_widget(form.idpersonacargo) }}
+                                </div>
                             </div>
                             <div class="col-md-4">
-                                {{ form_label(form.idsituacionvivienda) }}
-                                {{ form_errors(form.idsituacionvivienda) }}
-                                {{ form_widget(form.idsituacionvivienda) }}
+                                <div class="col-md-12">
+                                    {{ form_label(form.idsituacionvivienda) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_errors(form.idsituacionvivienda) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_widget(form.idsituacionvivienda) }}
+                                </div>
                             </div>
                             <div class="col-md-4">
-                                {{ form_label(form.idmotivodeuda) }}
-                                {{ form_errors(form.idmotivodeuda) }}
-                                {{ form_widget(form.idmotivodeuda) }}
+                                <div class="col-md-12">
+                                    {{ form_label(form.idmotivodeuda) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_errors(form.idmotivodeuda) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_widget(form.idmotivodeuda) }}
+                                </div>
                             </div>
                             <div class="col-md-4">
-                                {{ form_label(form.cantidadesbeneficio) }}
-                                {{ form_errors(form.cantidadesbeneficio) }}
-                                {{ form_widget(form.cantidadesbeneficio) }}
+                                <div class="col-md-12">
+                                    {{ form_label(form.cantidadesbeneficio) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_errors(form.cantidadesbeneficio) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_widget(form.cantidadesbeneficio) }}
+                                </div>
                             </div>
                             <div class="col-md-6">
-                                {{ form_label(form.idconceptovisita) }}
-                                {{ form_errors(form.idconceptovisita) }}
-                                {{ form_widget(form.idconceptovisita) }}
+                                <div class="col-md-12">
+                                    {{ form_label(form.idconceptovisita) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_errors(form.idconceptovisita) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_widget(form.idconceptovisita) }}
+                                </div>
                             </div>
                             <div class="col-md-6">
-                                {{ form_label(form.idafiliadodibie) }}
-                                {{ form_errors(form.idafiliadodibie) }}
-                                {{ form_widget(form.idafiliadodibie) }}
+                                <div class="col-md-12">
+                                    {{ form_label(form.idafiliadodibie) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_errors(form.idafiliadodibie) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_widget(form.idafiliadodibie) }}
+                                </div>
                             </div>
                             <div class="col-md-4">
-                                {{ form_label(form.documentoBeneficiarioFinal) }}
-                                {{ form_errors(form.documentoBeneficiarioFinal) }}
-                                {{ form_widget(form.documentoBeneficiarioFinal) }}
+                                <div class="col-md-12">
+                                    {{ form_label(form.documentoBeneficiarioFinal) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_errors(form.documentoBeneficiarioFinal) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_widget(form.documentoBeneficiarioFinal) }}
+                                </div>
                             </div>
                             <div class="col-md-4">
-                                {{ form_label(form.nombreBeneficiarioFinal) }}
-                                {{ form_errors(form.nombreBeneficiarioFinal) }}
-                                {{ form_widget(form.nombreBeneficiarioFinal) }}
+                                <div class="col-md-12">
+                                    {{ form_label(form.nombreBeneficiarioFinal) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_errors(form.nombreBeneficiarioFinal) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_widget(form.nombreBeneficiarioFinal) }}
+                                </div>
                             </div>
                             <div class="col-md-4">
-                                {{ form_label(form.fotoFile) }}
-                                {{ form_errors(form.fotoFile) }}
-                                {{ form_widget(form.fotoFile) }}
+                                <div class="col-md-12">
+                                    {{ form_label(form.fotoFile) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_errors(form.fotoFile) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_widget(form.fotoFile) }}
+                                </div>
                             </div>
                         </div>
 
@@ -198,24 +363,48 @@
                                     <h4><b>INFORMACION INSTITUCIONAL</b></h4></div></div>
 
                             <div class="col-md-6">
-                                {{ form_label(form.idpoblacionbeneficia) }}
-                                {{ form_errors(form.idpoblacionbeneficia) }}
-                                {{ form_widget(form.idpoblacionbeneficia) }}
+                                <div class="col-md-12">
+                                    {{ form_label(form.idpoblacionbeneficia) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_errors(form.idpoblacionbeneficia) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_widget(form.idpoblacionbeneficia) }}
+                                </div>
                             </div>
                             <div class="col-md-6">
-                                {{ form_label(form.idviabilidadplaneacion) }}
-                                {{ form_errors(form.idviabilidadplaneacion) }}
-                                {{ form_widget(form.idviabilidadplaneacion) }}
+                                <div class="col-md-12">
+                                    {{ form_label(form.idviabilidadplaneacion) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_errors(form.idviabilidadplaneacion) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_widget(form.idviabilidadplaneacion) }}
+                                </div>
                             </div>
                             <div class="col-md-6">
-                                {{ form_label(form.idzonaubicacion) }}
-                                {{ form_errors(form.idzonaubicacion) }}
-                                {{ form_widget(form.idzonaubicacion) }}
+                                <div class="col-md-12">
+                                    {{ form_label(form.idzonaubicacion) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_errors(form.idzonaubicacion) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_widget(form.idzonaubicacion) }}
+                                </div>
                             </div>
                             <div class="col-md-6">
-                                {{ form_label(form.idcantidadesbeneficioinst) }}
-                                {{ form_errors(form.idcantidadesbeneficioinst) }}
-                                {{ form_widget(form.idcantidadesbeneficioinst) }}
+                                <div class="col-md-12">
+                                    {{ form_label(form.idcantidadesbeneficioinst) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_errors(form.idcantidadesbeneficioinst) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_widget(form.idcantidadesbeneficioinst) }}
+                                </div>
                                 <hr style="border-color:white;">
                             </div>
 

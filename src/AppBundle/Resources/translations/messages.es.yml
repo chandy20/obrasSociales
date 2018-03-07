@@ -1,0 +1,10 @@
+label:
+    area: Área
+    programa: Programa
+    monto: Monto
+    saldo: Saldo
+    desde: Desde
+    hasta: Hasta
+    seccional: Seccional
+    valor:
+        mes: Valor por mes

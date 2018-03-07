@@ -1,3 +1,9 @@
+$(function () {
+    $(".prueba").fadeIn();
+    $(".prueba1").fadeOut();
+    mostrarFormulario();
+})
+
 function mostrarFormulario() {
     var tipo_solicitud = $("#frontendbundle_solicitudes_idtiposolicitud").val();
     if (tipo_solicitud != "") {

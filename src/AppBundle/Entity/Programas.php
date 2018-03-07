@@ -29,6 +29,13 @@ class Programas {
     private $programanombre;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="valor_mes", type="integer")
+     */
+    private $valorMes;
+
+    /**
      * @var \Areas
      *
      * @ORM\ManyToOne(targetEntity="Areas")
@@ -103,8 +110,7 @@ class Programas {
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->solicitudes = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -115,8 +121,7 @@ class Programas {
      *
      * @return Programas
      */
-    public function addSolicitude(\AppBundle\Entity\ProgramaSolicitud $solicitude)
-    {
+    public function addSolicitude(\AppBundle\Entity\ProgramaSolicitud $solicitude) {
         $this->solicitudes[] = $solicitude;
 
         return $this;
@@ -127,8 +132,7 @@ class Programas {
      *
      * @param \AppBundle\Entity\ProgramaSolicitud $solicitude
      */
-    public function removeSolicitude(\AppBundle\Entity\ProgramaSolicitud $solicitude)
-    {
+    public function removeSolicitude(\AppBundle\Entity\ProgramaSolicitud $solicitude) {
         $this->solicitudes->removeElement($solicitude);
     }
 
@@ -137,8 +141,32 @@ class Programas {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getSolicitudes()
-    {
+    public function getSolicitudes() {
         return $this->solicitudes;
+    }
+
+
+    /**
+     * Set valorMes
+     *
+     * @param integer $valorMes
+     *
+     * @return Programas
+     */
+    public function setValorMes($valorMes)
+    {
+        $this->valorMes = $valorMes;
+
+        return $this;
+    }
+
+    /**
+     * Get valorMes
+     *
+     * @return integer
+     */
+    public function getValorMes()
+    {
+        return $this->valorMes;
     }
 }
