@@ -8,6 +8,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Translation\Translator;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class PresupuestosAdmin extends AbstractAdmin {
 
@@ -21,12 +24,12 @@ class PresupuestosAdmin extends AbstractAdmin {
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
         $datagridMapper
-                ->add('presupuestomonto', null, ["label" => "label.monto"])
-                ->add('seccional', null, ["lable" => "label.seccional"])
-                ->add('idarea', null, ["lable" => "label.area"])
-                ->add('saldo', null, ["label" => "label.saldo"])
-                ->add('desde', null, ["label" => "label.desde"])
-                ->add('hasta', null, ["label" => "label.hasta"])
+                ->add('presupuestomonto', null, ["label" => "Monto"])
+                ->add('seccional', null, ["lable" => "Seccional"])
+                ->add('idarea', null, ["lable" => "Área"])
+                ->add('saldo', null, ["label" => "Saldo"])
+                ->add('desde', null, ["label" => "Desde"])
+                ->add('hasta', null, ["label" => "Hasta"])
         ;
     }
 
@@ -35,12 +38,12 @@ class PresupuestosAdmin extends AbstractAdmin {
      */
     protected function configureListFields(ListMapper $listMapper) {
         $listMapper
-                ->add('presupuestomonto', null, ["label" => "label.monto"])
-                ->add('seccional', null, ["label" => "label.seccional"])
-                ->add('idarea', null, ["label" => "label.area"])
-                ->add('saldo', null, ["label" => "label.saldo"])
-                ->add('desde', null, ["label" => "label.desde"])
-                ->add('hasta', null, ["label" => "label.hasta"])
+                ->add('presupuestomonto', null, ["label" => "Monto"])
+                ->add('seccional', null, ["lable" => "Seccional"])
+                ->add('idarea', null, ["lable" => "Área"])
+                ->add('saldo', null, ["label" => "Saldo"])
+                ->add('desde', null, ["label" => "Desde"])
+                ->add('hasta', null, ["label" => "Hasta"])
                 ->add('_action', null, array(
                     'actions' => array(
                         'show' => array(),
@@ -55,30 +58,27 @@ class PresupuestosAdmin extends AbstractAdmin {
      * @param FormMapper $formMapper
      */
     protected function configureFormFields(FormMapper $formMapper) {
+        $constraint = array(new NotBlank());
         $formMapper
-                ->add('presupuestomonto', null, ["label" => "label.monto"])
-                ->add('idarea', null, ["label" => "label.area"])
-                ->add('seccional', null, ["label" => "label.seccional"])
-                ->add('desde', 'sonata_type_date_picker', [
+                ->add('presupuestomonto', null, ["label" => "Monto"])
+                ->add('idarea', null, ["label" => "Área"])
+                ->add('seccional', null, ["label" => "Seccional"])
+                ->add('desde', DateType::class, array(
                     'widget' => 'single_text',
-                    "label" => "label.desde",
-                    'attr' => [
+                    'constraints' => $constraint,
+                    "label" => "Desde",
                     'format' => 'yyyy-MM-dd',
-                        'class' => 'form-control input-inline datepicker',
-                        'data-provide' => 'datepicker',
-                        'data-date-format' => 'yyyy-mm-dd'
-                    ]
-                ])
-                ->add('hasta', 'sonata_type_date_picker', [
-                    "label" => "label.hasta",
+                    'empty_value' => "",
+                    'attr' => array('class' => 'form-control')
+                ))
+                ->add('hasta', DateType::class, array(
                     'widget' => 'single_text',
-                    'attr' => [
+                    'constraints' => $constraint,
+                    "label" => "Hasta",
                     'format' => 'yyyy-MM-dd',
-                        'class' => 'form-control input-inline datepicker',
-                        'data-provide' => 'datepicker',
-                        'data-date-format' => 'yyyy-mm-dd'
-                    ]
-                ]);
+                    'empty_value' => "",
+                    'attr' => array('class' => 'form-control')
+        ));
     }
 
     /**
@@ -92,6 +92,11 @@ class PresupuestosAdmin extends AbstractAdmin {
                 ->add('hasta', null, ["label" => "label.hasta"])
                 ->add('idarea', null, ["label" => "label.area"])
         ;
+    }
+    
+    public function prePersist($object) {
+        parent::prePersist($object);
+        $object->setSaldo($object->getPresupuestomonto());
     }
 
 }

@@ -10,8 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="conceptosjunta", indexes={@ORM\Index(name="fk_ConceptosJunta_Solicitudes1_idx", columns={"solicitud_id"})})
  * @ORM\Entity
  */
-class Conceptosjunta
-{
+class Conceptosjunta {
+    
+    public function __toString() {
+        return "";
+    }
+
     /**
      * @var integer
      *
@@ -24,42 +28,42 @@ class Conceptosjunta
     /**
      * @var string
      *
-     * @ORM\Column(name="ConceptoJuntaValorB", type="decimal", precision=12, scale=2, nullable=false)
+     * @ORM\Column(name="ConceptoJuntaValorB", type="decimal", precision=12, scale=2, nullable=true)
      */
     private $conceptojuntavalorb;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="ConceptoJuntaTiempo", type="integer", nullable=false)
+     * @ORM\Column(name="ConceptoJuntaTiempo", type="integer", nullable=true)
      */
     private $conceptojuntatiempo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="ConceptoJuntaValorTotalB", type="decimal", precision=12, scale=2, nullable=false)
+     * @ORM\Column(name="ConceptoJuntaValorTotalB", type="decimal", precision=12, scale=2, nullable=true)
      */
     private $conceptojuntavalortotalb;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="ConceptosJuntaDesc", type="string", length=3000, nullable=false)
+     * @ORM\Column(name="ConceptosJuntaDesc", type="string", length=3000, nullable=true)
      */
     private $conceptosjuntadesc;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="ConceptosJuntaOtorgada", type="boolean", nullable=false)
+     * @ORM\Column(name="ConceptosJuntaOtorgada", type="boolean", nullable=true)
      */
     private $conceptosjuntaotorgada;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="ConceptosJuntaNumActa", type="string", length=45, nullable=false)
+     * @ORM\Column(name="ConceptosJuntaNumActa", type="string", length=45, nullable=true)
      */
     private $conceptosjuntanumacta;
 
@@ -73,15 +77,24 @@ class Conceptosjunta
      */
     private $solicitud;
 
-
+    /**
+     * @ORM\OneToMany(targetEntity="ProgramaConcepto", mappedBy="conceptoJunta" , cascade={"persist"})
+     */
+    private $programasConcepto;
+    
+     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="aprobado", type="boolean", nullable=true)
+     */
+    private $aprobado;
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -92,8 +105,7 @@ class Conceptosjunta
      *
      * @return Conceptosjunta
      */
-    public function setConceptojuntavalorb($conceptojuntavalorb)
-    {
+    public function setConceptojuntavalorb($conceptojuntavalorb) {
         $this->conceptojuntavalorb = $conceptojuntavalorb;
 
         return $this;
@@ -104,8 +116,7 @@ class Conceptosjunta
      *
      * @return string
      */
-    public function getConceptojuntavalorb()
-    {
+    public function getConceptojuntavalorb() {
         return $this->conceptojuntavalorb;
     }
 
@@ -116,8 +127,7 @@ class Conceptosjunta
      *
      * @return Conceptosjunta
      */
-    public function setConceptojuntatiempo($conceptojuntatiempo)
-    {
+    public function setConceptojuntatiempo($conceptojuntatiempo) {
         $this->conceptojuntatiempo = $conceptojuntatiempo;
 
         return $this;
@@ -128,8 +138,7 @@ class Conceptosjunta
      *
      * @return integer
      */
-    public function getConceptojuntatiempo()
-    {
+    public function getConceptojuntatiempo() {
         return $this->conceptojuntatiempo;
     }
 
@@ -140,8 +149,7 @@ class Conceptosjunta
      *
      * @return Conceptosjunta
      */
-    public function setConceptojuntavalortotalb($conceptojuntavalortotalb)
-    {
+    public function setConceptojuntavalortotalb($conceptojuntavalortotalb) {
         $this->conceptojuntavalortotalb = $conceptojuntavalortotalb;
 
         return $this;
@@ -152,8 +160,7 @@ class Conceptosjunta
      *
      * @return string
      */
-    public function getConceptojuntavalortotalb()
-    {
+    public function getConceptojuntavalortotalb() {
         return $this->conceptojuntavalortotalb;
     }
 
@@ -164,8 +171,7 @@ class Conceptosjunta
      *
      * @return Conceptosjunta
      */
-    public function setConceptosjuntadesc($conceptosjuntadesc)
-    {
+    public function setConceptosjuntadesc($conceptosjuntadesc) {
         $this->conceptosjuntadesc = $conceptosjuntadesc;
 
         return $this;
@@ -176,8 +182,7 @@ class Conceptosjunta
      *
      * @return string
      */
-    public function getConceptosjuntadesc()
-    {
+    public function getConceptosjuntadesc() {
         return $this->conceptosjuntadesc;
     }
 
@@ -188,8 +193,7 @@ class Conceptosjunta
      *
      * @return Conceptosjunta
      */
-    public function setConceptosjuntaotorgada($conceptosjuntaotorgada)
-    {
+    public function setConceptosjuntaotorgada($conceptosjuntaotorgada) {
         $this->conceptosjuntaotorgada = $conceptosjuntaotorgada;
 
         return $this;
@@ -200,8 +204,7 @@ class Conceptosjunta
      *
      * @return boolean
      */
-    public function getConceptosjuntaotorgada()
-    {
+    public function getConceptosjuntaotorgada() {
         return $this->conceptosjuntaotorgada;
     }
 
@@ -212,8 +215,7 @@ class Conceptosjunta
      *
      * @return Conceptosjunta
      */
-    public function setConceptosjuntanumacta($conceptosjuntanumacta)
-    {
+    public function setConceptosjuntanumacta($conceptosjuntanumacta) {
         $this->conceptosjuntanumacta = $conceptosjuntanumacta;
 
         return $this;
@@ -224,8 +226,7 @@ class Conceptosjunta
      *
      * @return string
      */
-    public function getConceptosjuntanumacta()
-    {
+    public function getConceptosjuntanumacta() {
         return $this->conceptosjuntanumacta;
     }
 
@@ -236,8 +237,7 @@ class Conceptosjunta
      *
      * @return Conceptosjunta
      */
-    public function setSolicitud(\AppBundle\Entity\Solicitudes $solicitud = null)
-    {
+    public function setSolicitud(\AppBundle\Entity\Solicitudes $solicitud = null) {
         $this->solicitud = $solicitud;
 
         return $this;
@@ -248,8 +248,70 @@ class Conceptosjunta
      *
      * @return \AppBundle\Entity\Solicitudes
      */
-    public function getSolicitud()
-    {
+    public function getSolicitud() {
         return $this->solicitud;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct() {
+        $this->programasConcepto = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add programasConcepto
+     *
+     * @param \AppBundle\Entity\ProgramaConcepto $programasConcepto
+     *
+     * @return Conceptosjunta
+     */
+    public function addProgramasConcepto(\AppBundle\Entity\ProgramaConcepto $programasConcepto) {
+        $this->programasConcepto[] = $programasConcepto;
+
+        return $this;
+    }
+
+    /**
+     * Remove programasConcepto
+     *
+     * @param \AppBundle\Entity\ProgramaConcepto $programasConcepto
+     */
+    public function removeProgramasConcepto(\AppBundle\Entity\ProgramaConcepto $programasConcepto) {
+        $this->programasConcepto->removeElement($programasConcepto);
+    }
+
+    /**
+     * Get programasConcepto
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProgramasConcepto() {
+        return $this->programasConcepto;
+    }
+
+
+    /**
+     * Set aprobado
+     *
+     * @param boolean $aprobado
+     *
+     * @return Conceptosjunta
+     */
+    public function setAprobado($aprobado)
+    {
+        $this->aprobado = $aprobado;
+
+        return $this;
+    }
+
+    /**
+     * Get aprobado
+     *
+     * @return boolean
+     */
+    public function getAprobado()
+    {
+        return $this->aprobado;
     }
 }

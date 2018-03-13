@@ -2,14 +2,18 @@
 
 namespace FrontendBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Entity\Conceptosjunta;
+use AppBundle\Entity\ProgramaConcepto;
+use AppBundle\Entity\ProgramaSolicitud;
+use AppBundle\Entity\Solicitudes;
+use FrontendBundle\Form\SolicitudesType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use AppBundle\Entity\Solicitudes;
-use FrontendBundle\Form\SolicitudesType;
-use AppBundle\Entity\ProgramaSolicitud;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Solicitudes controller.
@@ -49,10 +53,8 @@ class SolicitudesController extends Controller {
         $form->handleRequest($request);
         $puntaje = 0;
         $concepto = '';
-        $no = 'NO APROBADO';
-        $si = 'APROBADO';
-        $analisis = 'ANALISIS JUNTA';
         $enviado = $request->request->all();
+        $this->validaciones($form);
         if ($form->isValid()) {
             foreach ($enviado['frontendbundle_solicitudes']['programas'] as $prog) {
                 $programa = $em->getRepository('AppBundle:Programas')->findOneById($prog);
@@ -92,11 +94,9 @@ class SolicitudesController extends Controller {
             }
             $file = $entity->getCurriculum();
 
-            // Generate a unique name for the file before saving it
             if ($file) {
                 $fileName = md5(uniqid()) . '.' . $file->guessExtension();
                 $entity->setArchivo($fileName);
-                // Move the file to the directory where brochures are stored
                 $file->move(
                         $this->getParameter('uploads_directory'), $fileName
                 );
@@ -105,29 +105,34 @@ class SolicitudesController extends Controller {
             if ($foto) {
                 $fileName = md5(uniqid()) . '.' . $file->guessExtension();
                 $entity->setFoto($fileName);
-                // Move the file to the directory where brochures are stored
                 $file->move(
                         $this->getParameter('uploads_directory'), $fileName
                 );
             }
             $em = $this->getDoctrine()->getManager();
             $entity->setTotalPuntaje($puntaje);
-            $entity->setconcepto($concepto);
-            $entity->setsolicitudconceptopre($concepto);
 
 
             if ($puntaje >= 60) {
-                $entity->setsolicitudconceptopre($si);
+                $concepto = $em->getRepository("AppBundle:Concepto")->findOneBy(["nombre" => "Pre aprovado"]);
             } else if ($puntaje <= 40) {
-                $entity->setsolicitudconceptopre($no);
+                $concepto = $em->getRepository("AppBundle:Concepto")->findOneBy(["nombre" => "Rechazado"]);
             } else if ($puntaje <= 59 and $puntaje >= 45) {
-                $entity->setsolicitudconceptopre($analisis);
+                $concepto = $em->getRepository("AppBundle:Concepto")->findOneBy(["nombre" => "Análisis junta"]);
             }
-
-
+            $entity->setConcepto($concepto);
+            $conceptoJunta = new Conceptosjunta();
+            $conceptoJunta->setSolicitud($entity);
+            $em->persist($conceptoJunta);
+            foreach ($entity->getProgramas() as $programaSolicitud) {
+                $programaConcepto = new ProgramaConcepto();
+                $programaConcepto->setConceptoJunta($conceptoJunta);
+                $programaConcepto->setPrograma($programaSolicitud->getPrograma());
+                $programaConcepto->setAprobado(false);
+                $em->persist($programaConcepto);
+            }
             $em->persist($entity);
             $em->flush();
-
 
 
             return $this->redirect($this->generateUrl('solicitudes_show', array('id' => $entity->getId())));
@@ -144,7 +149,7 @@ class SolicitudesController extends Controller {
      *
      * @param Solicitudes $entity The entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createCreateForm(Solicitudes $entity) {
         $form = $this->createForm(new SolicitudesType(), $entity, array(
@@ -231,7 +236,7 @@ class SolicitudesController extends Controller {
      *
      * @param Solicitudes $entity The entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createEditForm(Solicitudes $entity) {
         $form = $this->createForm(new SolicitudesType(), $entity, array(
@@ -307,7 +312,7 @@ class SolicitudesController extends Controller {
      *
      * @param mixed $id The entity id
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createDeleteForm($id) {
         return $this->createFormBuilder()
@@ -316,6 +321,57 @@ class SolicitudesController extends Controller {
                         ->add('submit', 'submit', array('label' => 'Eliminar Registro'))
                         ->getForm()
         ;
+    }
+
+    public function validaciones($form) {
+        $tipoDeSolicitud = $form->get("idtiposolicitud")->getData();
+        if ($tipoDeSolicitud) {
+            if ($tipoDeSolicitud->getTiposolicitudnombre() == "Familiar y personal") {
+                if (!$form->get("idestadocivil")->getdata()) {
+                    $form->get("idestadocivil")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+                if (!$form->get("idingreso")->getdata()) {
+                    $form->get("idingreso")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+                if (!$form->get("idpersonacargo")->getdata()) {
+                    $form->get("idpersonacargo")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+                if (!$form->get("idsituacionvivienda")->getdata()) {
+                    $form->get("idsituacionvivienda")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+                if (!$form->get("idmotivodeuda")->getdata()) {
+                    $form->get("idmotivodeuda")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+                if (!$form->get("cantidadesbeneficio")->getdata()) {
+                    $form->get("cantidadesbeneficio")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+                if (!$form->get("idconceptovisita")->getdata()) {
+                    $form->get("idconceptovisita")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+                if (!$form->get("idafiliadodibie")->getdata()) {
+                    $form->get("idafiliadodibie")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+                if (!$form->get("documentoBeneficiarioFinal")->getdata()) {
+                    $form->get("documentoBeneficiarioFinal")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+                if (!$form->get("nombreBeneficiarioFinal")->getdata()) {
+                    $form->get("nombreBeneficiarioFinal")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+            } else if ($tipoDeSolicitud->getTiposolicitudnombre() == "Institucional") {
+                if (!$form->get("idpoblacionbeneficia")->getdata()) {
+                    $form->get("idpoblacionbeneficia")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+                if (!$form->get("idviabilidadplaneacion")->getdata()) {
+                    $form->get("idviabilidadplaneacion")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+                if (!$form->get("idzonaubicacion")->getdata()) {
+                    $form->get("idzonaubicacion")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+                if (!$form->get("idcantidadesbeneficioinst")->getdata()) {
+                    $form->get("idcantidadesbeneficioinst")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+            }
+        }
     }
 
 }

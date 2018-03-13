@@ -50,6 +50,11 @@ class Programas {
      */
     private $solicitudes;
 
+    /**
+     * @ORM\OneToMany(targetEntity="ProgramaConcepto", mappedBy="programa" , cascade={"persist"})
+     */
+    private $programasConcepto;
+
     public function __toString() {
         return (string) $this->getProgramanombre();
     }
@@ -145,7 +150,6 @@ class Programas {
         return $this->solicitudes;
     }
 
-
     /**
      * Set valorMes
      *
@@ -153,8 +157,7 @@ class Programas {
      *
      * @return Programas
      */
-    public function setValorMes($valorMes)
-    {
+    public function setValorMes($valorMes) {
         $this->valorMes = $valorMes;
 
         return $this;
@@ -165,8 +168,42 @@ class Programas {
      *
      * @return integer
      */
-    public function getValorMes()
-    {
+    public function getValorMes() {
         return $this->valorMes;
+    }
+
+
+    /**
+     * Add programasConcepto
+     *
+     * @param \AppBundle\Entity\ProgramaConcepto $programasConcepto
+     *
+     * @return Programas
+     */
+    public function addProgramasConcepto(\AppBundle\Entity\ProgramaConcepto $programasConcepto)
+    {
+        $this->programasConcepto[] = $programasConcepto;
+
+        return $this;
+    }
+
+    /**
+     * Remove programasConcepto
+     *
+     * @param \AppBundle\Entity\ProgramaConcepto $programasConcepto
+     */
+    public function removeProgramasConcepto(\AppBundle\Entity\ProgramaConcepto $programasConcepto)
+    {
+        $this->programasConcepto->removeElement($programasConcepto);
+    }
+
+    /**
+     * Get programasConcepto
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProgramasConcepto()
+    {
+        return $this->programasConcepto;
     }
 }

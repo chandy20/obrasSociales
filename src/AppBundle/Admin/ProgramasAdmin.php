@@ -47,9 +47,9 @@ class ProgramasAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('programanombre', null, ["label" => "label.programa"])
-            ->add('valorMes', null, ["label"=> "label.valor.mes"])
-            ->add('idarea', null, ["label"=> "label.area"])
+            ->add('programanombre', null, ["label" => "Nombre"])
+            ->add('valorMes', null, ["label"=> "Valor del mes"])
+            ->add('idarea', null, ["label"=> "Area"])
         ;
     }
 

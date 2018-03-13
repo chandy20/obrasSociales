@@ -46,21 +46,21 @@ class Solicitudes {
     /**
      * @var string
      *
-     * @ORM\Column(name="documentoBeneficiarioFinal", type="string", length=45, nullable=false)
+     * @ORM\Column(name="documentoBeneficiarioFinal", type="string", length=45, nullable=true)
      */
     private $documentoBeneficiarioFinal;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="nombreBeneficiarioFinal", type="string", length=45, nullable=false)
+     * @ORM\Column(name="nombreBeneficiarioFinal", type="string", length=45, nullable=true)
      */
     private $nombreBeneficiarioFinal;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="SolicitudNombreSolicita", type="string", length=300, nullable=false)
+     * @ORM\Column(name="SolicitudNombreSolicita", type="string", length=300, nullable=true)
      */
     private $solicitudnombresolicita;
 
@@ -100,13 +100,6 @@ class Solicitudes {
     private $solicituddescripcion;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="SolicitudConceptoPre", type="string", length=45, nullable=true)
-     */
-    private $solicitudconceptopre;
-
-    /**
      * @var \Ingresos
      *
      * @ORM\ManyToOne(targetEntity="Ingresos")
@@ -142,13 +135,6 @@ class Solicitudes {
      * @ORM\Column(name="totalPuntaje", type="integer", nullable=true)
      */
     private $totalPuntaje;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="concepto", type="string", nullable=true )
-     */
-    private $concepto;
 
     /**
      * @var \Conceptosvisita
@@ -380,6 +366,17 @@ class Solicitudes {
      * })
      */
     private $antiguedad;
+    
+    
+    /**
+     * @var \antiguedad
+     *
+     * @ORM\ManyToOne(targetEntity="Concepto")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="concepto_id", referencedColumnName="id")
+     * })
+     */
+    private $concepto;
 
     /**
      * @var string
@@ -571,28 +568,6 @@ class Solicitudes {
      */
     public function getSolicituddescripcion() {
         return $this->solicituddescripcion;
-    }
-
-    /**
-     * Set solicitudconceptopre
-     *
-     * @param string $solicitudconceptopre
-     *
-     * @return Solicitudes
-     */
-    public function setSolicitudconceptopre($solicitudconceptopre) {
-        $this->solicitudconceptopre = $solicitudconceptopre;
-
-        return $this;
-    }
-
-    /**
-     * Get solicitudconceptopre
-     *
-     * @return string
-     */
-    public function getSolicitudconceptopre() {
-        return $this->solicitudconceptopre;
     }
 
     /**
@@ -1033,28 +1008,6 @@ class Solicitudes {
     }
 
     /**
-     * Set concepto
-     *
-     * @param integer $concepto
-     *
-     * @return Solicitudes
-     */
-    public function setConcepto($concepto) {
-        $this->concepto = $concepto;
-
-        return $this;
-    }
-
-    /**
-     * Get concepto
-     *
-     * @return integer
-     */
-    public function getConcepto() {
-        return $this->concepto;
-    }
-
-    /**
      * Set valorBeneficio
      *
      * @param string $valorBeneficio
@@ -1319,5 +1272,29 @@ class Solicitudes {
     public function getEmailSolicitante()
     {
         return $this->emailSolicitante;
+    }
+
+    /**
+     * Set concepto
+     *
+     * @param \AppBundle\Entity\Concepto $concepto
+     *
+     * @return Solicitudes
+     */
+    public function setConcepto(\AppBundle\Entity\Concepto $concepto = null)
+    {
+        $this->concepto = $concepto;
+
+        return $this;
+    }
+
+    /**
+     * Get concepto
+     *
+     * @return \AppBundle\Entity\Concepto
+     */
+    public function getConcepto()
+    {
+        return $this->concepto;
     }
 }

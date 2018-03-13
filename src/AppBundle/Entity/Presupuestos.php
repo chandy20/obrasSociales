@@ -11,6 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  */
 class Presupuestos {
+    
+    public function __toString() {
+        return "";
+    }
 
     /**
      * @var integer
@@ -22,30 +26,30 @@ class Presupuestos {
     private $id;
 
     /**
-     * @var string
+     * @var bigint
      *
-     * @ORM\Column(name="PresupuestoMonto", type="decimal", precision=10, scale=2, nullable=false)
+     * @ORM\Column(name="PresupuestoMonto", type="bigint", nullable=false)
      */
     private $presupuestomonto;
 
     /**
-     * @var string
+     * @var bigint
      *
-     * @ORM\Column(name="saldo", type="decimal", precision=10, scale=2, nullable=false)
+     * @ORM\Column(name="saldo", type="bigint", nullable=false)
      */
     private $saldo;
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
-     * @ORM\Column(name="desde", type="datetime", nullable= true)
+     * @ORM\Column(name="desde", type="date", nullable= true)
      */
     private $desde;
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
-     * @ORM\Column(name="hasta", type="datetime", nullable= true)
+     * @ORM\Column(name="hasta", type="date", nullable= true)
      */
     private $hasta;
 
