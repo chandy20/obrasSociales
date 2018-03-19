@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="zonasubicacion")
  * @ORM\Entity
  */
-class Zonasubicacion
-{
+class Zonasubicacion {
+
     /**
      * @var integer
      *
@@ -42,18 +42,16 @@ class Zonasubicacion
      */
     private $zonasubicacionestado;
 
-public function __toString(){
-    return (string) $this->getzonasubicacionnombre();
-}
-
+    public function __toString() {
+        return (string) $this->getzonasubicacionnombre();
+    }
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -64,8 +62,7 @@ public function __toString(){
      *
      * @return Zonasubicacion
      */
-    public function setZonasubicacionnombre($zonasubicacionnombre)
-    {
+    public function setZonasubicacionnombre($zonasubicacionnombre) {
         $this->zonasubicacionnombre = $zonasubicacionnombre;
 
         return $this;
@@ -76,8 +73,7 @@ public function __toString(){
      *
      * @return string
      */
-    public function getZonasubicacionnombre()
-    {
+    public function getZonasubicacionnombre() {
         return $this->zonasubicacionnombre;
     }
 
@@ -88,8 +84,7 @@ public function __toString(){
      *
      * @return Zonasubicacion
      */
-    public function setZonasubicacionpuntaje($zonasubicacionpuntaje)
-    {
+    public function setZonasubicacionpuntaje($zonasubicacionpuntaje) {
         $this->zonasubicacionpuntaje = $zonasubicacionpuntaje;
 
         return $this;
@@ -100,8 +95,7 @@ public function __toString(){
      *
      * @return integer
      */
-    public function getZonasubicacionpuntaje()
-    {
+    public function getZonasubicacionpuntaje() {
         return $this->zonasubicacionpuntaje;
     }
 
@@ -112,8 +106,7 @@ public function __toString(){
      *
      * @return Zonasubicacion
      */
-    public function setZonasubicacionestado($zonasubicacionestado)
-    {
+    public function setZonasubicacionestado($zonasubicacionestado) {
         $this->zonasubicacionestado = $zonasubicacionestado;
 
         return $this;
@@ -124,8 +117,8 @@ public function __toString(){
      *
      * @return boolean
      */
-    public function getZonasubicacionestado()
-    {
+    public function getZonasubicacionestado() {
         return $this->zonasubicacionestado;
     }
+
 }

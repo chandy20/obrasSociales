@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Conceptosjunta;
 use AppBundle\Entity\Movimiento;
+use AppBundle\Form\FormularioReportesType;
 use DateTime;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Exception\LockException;
@@ -16,7 +17,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
-use function dump;
 
 class ConceptosjuntaAdminController extends CRUDController {
 
@@ -191,6 +191,21 @@ class ConceptosjuntaAdminController extends CRUDController {
         }
         $concepto->setConceptojuntavalortotalb($totalBeneficio);
         $this->em->persist($concepto);
+    }
+
+    public function reporteAction() {
+        $concepto = new Conceptosjunta();
+        $form = $this->createForm(FormularioReportesType::class, $concepto, []);
+        $form->handleRequest($this->getRequest());
+        if ($form->isSubmitted()) {
+            
+        }
+
+        return $this->renderWithExtraParams("AppBundle:Reporte:base_reporte.html.twig", [
+                    'action' => 'edit',
+                    'form' => $form->createView(),
+                    'object' => $concepto
+                        ], null);
     }
 
 }

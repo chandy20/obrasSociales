@@ -3,172 +3,172 @@ services:
         class: AppBundle\Admin\CantidadesbeneficioAdmin
         arguments: [~, AppBundle\Entity\Cantidadesbeneficio, AppBundle:CantidadesbeneficioAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: familiar, label: Cantidadesbeneficio }
+            - { name: sonata.admin, manager_type: orm, group: familiar, label: Cantidad  beneficio }
         public: true
     app.admin.areas:
         class: AppBundle\Admin\AreasAdmin
         arguments: [~, AppBundle\Entity\Areas, AppBundle:AreasAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: funcionario, label: Areas }
+            - { name: sonata.admin, manager_type: orm, group: funcionario, label: Área }
         public: true
 
     app.admin.cantidadesbeneficioinst:
         class: AppBundle\Admin\CantidadesbeneficioinstAdmin
         arguments: [~, AppBundle\Entity\Cantidadesbeneficioinst, AppBundle:CantidadesbeneficioinstAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: institucional, label: Cantidadesbeneficioinst }
+            - { name: sonata.admin, manager_type: orm, group: institucional, label: Cantidad beneficio institucional }
         public: true
 
     app.admin.conceptosjunta:
         class: AppBundle\Admin\ConceptosjuntaAdmin
         arguments: [~, AppBundle\Entity\Conceptosjunta, AppBundle:ConceptosjuntaAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: auditoria, label: Conceptosjunta }
+            - { name: sonata.admin, manager_type: orm, group: auditoria, label: Conceptos junta }
         public: true
 
     app.admin.conceptosvisita:
         class: AppBundle\Admin\ConceptosvisitaAdmin
         arguments: [~, AppBundle\Entity\Conceptosvisita, AppBundle:ConceptosvisitaAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: familiar, label: Conceptosvisita }
+            - { name: sonata.admin, manager_type: orm, group: familiar, label: Concepto visita }
         public: true
 
     app.admin.estadosciviles:
         class: AppBundle\Admin\EstadoscivilesAdmin
         arguments: [~, AppBundle\Entity\Estadosciviles, AppBundle:EstadoscivilesAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: familiar, label: Estadosciviles }
+            - { name: sonata.admin, manager_type: orm, group: familiar, label: Estado civil }
         public: true
 
     app.admin.grados:
         class: AppBundle\Admin\GradosAdmin
         arguments: [~, AppBundle\Entity\Grados, AppBundle:GradosAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: funcionario, label: Grados }
+            - { name: sonata.admin, manager_type: orm, group: funcionario, label: Grado }
         public: true
 
     app.admin.ingresos:
         class: AppBundle\Admin\IngresosAdmin
         arguments: [~, AppBundle\Entity\Ingresos, AppBundle:IngresosAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: familiar, label: Ingresos }
+            - { name: sonata.admin, manager_type: orm, group: familiar, label: Ingreso }
         public: true
 
     app.admin.motivosdeuda:
         class: AppBundle\Admin\MotivosdeudaAdmin
         arguments: [~, AppBundle\Entity\Motivosdeuda, AppBundle:MotivosdeudaAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: familiar, label: Motivosdeuda }
+            - { name: sonata.admin, manager_type: orm, group: familiar, label: Motivo deuda }
         public: true
 
     app.admin.parentescos:
         class: AppBundle\Admin\ParentescosAdmin
         arguments: [~, AppBundle\Entity\Parentescos, AppBundle:ParentescosAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Datos, label: Parentescos }
+            - { name: sonata.admin, manager_type: orm, group: Datos, label: Parentesco }
         public: true
 
     app.admin.personascargo:
         class: AppBundle\Admin\PersonascargoAdmin
         arguments: [~, AppBundle\Entity\Personascargo, AppBundle:PersonascargoAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: familiar, label: Personascargo }
+            - { name: sonata.admin, manager_type: orm, group: familiar, label: Personas a cargo }
         public: true
 
     app.admin.poblacionbeneficia:
         class: AppBundle\Admin\PoblacionbeneficiaAdmin
         arguments: [~, AppBundle\Entity\Poblacionbeneficia, AppBundle:PoblacionbeneficiaAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Datos, label: Poblacionbeneficia }
+            - { name: sonata.admin, manager_type: orm, group: Datos, label: Poblacion beneficiada }
         public: true
 
     app.admin.presupuestos:
         class: AppBundle\Admin\PresupuestosAdmin
         arguments: [~, AppBundle\Entity\Presupuestos, AppBundle:PresupuestosAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: auditoria, label: Presupuestos }
+            - { name: sonata.admin, manager_type: orm, group: auditoria, label: Presupuesto }
         public: true
 
     app.admin.programas:
         class: AppBundle\Admin\ProgramasAdmin
         arguments: [~, AppBundle\Entity\Programas, AppBundle:ProgramasAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Datos, label: Programas }
+            - { name: sonata.admin, manager_type: orm, group: Datos, label: Programa }
         public: true
 
     app.admin.seccionales:
         class: AppBundle\Admin\SeccionalesAdmin
         arguments: [~, AppBundle\Entity\Seccionales, AppBundle:SeccionalesAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Datos, label: Seccionales }
+            - { name: sonata.admin, manager_type: orm, group: Datos, label: Seccional }
         public: true
 
     app.admin.situacionesvivienda:
         class: AppBundle\Admin\SituacionesviviendaAdmin
         arguments: [~, AppBundle\Entity\Situacionesvivienda, AppBundle:SituacionesviviendaAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: familiar, label: Situacionesvivienda }
+            - { name: sonata.admin, manager_type: orm, group: familiar, label: Situación vivienda }
         public: true
 
     app.admin.solicitudes:
         class: AppBundle\Admin\SolicitudesAdmin
         arguments: [~, AppBundle\Entity\Solicitudes, AppBundle:SolicitudesAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Solicitudes, label: Solicitudes }
+            - { name: sonata.admin, manager_type: orm, group: Solicitudes, label: Solicitud }
         public: true
 
     app.admin.tipossolicitud:
         class: AppBundle\Admin\TipossolicitudAdmin
         arguments: [~, AppBundle\Entity\Tipossolicitud, AppBundle:TipossolicitudAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Datos, label: Tipossolicitud }
+            - { name: sonata.admin, manager_type: orm, group: Datos, label: Tipo de solicitud }
         public: true
 
     app.admin.viabilidadplaneacion:
         class: AppBundle\Admin\ViabilidadplaneacionAdmin
         arguments: [~, AppBundle\Entity\Viabilidadplaneacion, AppBundle:ViabilidadplaneacionAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: institucional, label: Viabilidadplaneacion }
+            - { name: sonata.admin, manager_type: orm, group: institucional, label: Viabilidad planeación }
         public: true
 
     app.admin.zonasubicacion:
         class: AppBundle\Admin\ZonasubicacionAdmin
         arguments: [~, AppBundle\Entity\Zonasubicacion, AppBundle:ZonasubicacionAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: institucional, label: Zonasubicacion }
+            - { name: sonata.admin, manager_type: orm, group: institucional, label: Zona ubicación }
         public: true
 
     app.admin.afiliadodibie:
         class: AppBundle\Admin\AfiliadodibieAdmin
         arguments: [~, AppBundle\Entity\Afiliadodibie, AppBundle:AfiliadodibieAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: familiar, label: Afiliadodibie }
+            - { name: sonata.admin, manager_type: orm, group: familiar, label: Afiliado dibie }
         public: true
 
     app.admin.unidad:
         class: AppBundle\Admin\unidadAdmin
         arguments: [~, AppBundle\Entity\unidad, AppBundle:unidadAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Datos, label: unidad }
+            - { name: sonata.admin, manager_type: orm, group: Datos, label: Unidad }
         public: true
 
     app.admin.antiguedad:
         class: AppBundle\Admin\antiguedadAdmin
         arguments: [~, AppBundle\Entity\antiguedad, AppBundle:antiguedadAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: institucional, label: antiguedad }
+            - { name: sonata.admin, manager_type: orm, group: institucional, label: Antiguedad }
         public: true
 
     app.admin.puntaje:
         class: AppBundle\Admin\puntajeAdmin
         arguments: [~, AppBundle\Entity\puntaje, AppBundle:puntajeAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Datos, label: puntaje }
+            - { name: sonata.admin, manager_type: orm, group: Datos, label: Puntaje }
         public: true
 
     app.admin.otorga:
         class: AppBundle\Admin\otorgaAdmin
         arguments: [~, AppBundle\Entity\otorga, AppBundle:otorgaAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Datos, label: otorga }
+            - { name: sonata.admin, manager_type: orm, group: Datos, label: Otorga }
         public: true

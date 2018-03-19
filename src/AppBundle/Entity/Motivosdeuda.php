@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="motivosdeuda")
  * @ORM\Entity
  */
-class Motivosdeuda
-{
+class Motivosdeuda {
+
     /**
      * @var integer
      *
@@ -42,18 +42,16 @@ class Motivosdeuda
      */
     private $motivodeudaestado;
 
-public function __toString(){
-    return (string) $this->getmotivodeudanombre();
-}
-
+    public function __toString() {
+        return (string) $this->getmotivodeudanombre();
+    }
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -64,8 +62,7 @@ public function __toString(){
      *
      * @return Motivosdeuda
      */
-    public function setMotivodeudanombre($motivodeudanombre)
-    {
+    public function setMotivodeudanombre($motivodeudanombre) {
         $this->motivodeudanombre = $motivodeudanombre;
 
         return $this;
@@ -76,8 +73,7 @@ public function __toString(){
      *
      * @return string
      */
-    public function getMotivodeudanombre()
-    {
+    public function getMotivodeudanombre() {
         return $this->motivodeudanombre;
     }
 
@@ -88,8 +84,7 @@ public function __toString(){
      *
      * @return Motivosdeuda
      */
-    public function setMotivodeudapuntaje($motivodeudapuntaje)
-    {
+    public function setMotivodeudapuntaje($motivodeudapuntaje) {
         $this->motivodeudapuntaje = $motivodeudapuntaje;
 
         return $this;
@@ -100,8 +95,7 @@ public function __toString(){
      *
      * @return integer
      */
-    public function getMotivodeudapuntaje()
-    {
+    public function getMotivodeudapuntaje() {
         return $this->motivodeudapuntaje;
     }
 
@@ -112,8 +106,7 @@ public function __toString(){
      *
      * @return Motivosdeuda
      */
-    public function setMotivodeudaestado($motivodeudaestado)
-    {
+    public function setMotivodeudaestado($motivodeudaestado) {
         $this->motivodeudaestado = $motivodeudaestado;
 
         return $this;
@@ -124,8 +117,8 @@ public function __toString(){
      *
      * @return boolean
      */
-    public function getMotivodeudaestado()
-    {
+    public function getMotivodeudaestado() {
         return $this->motivodeudaestado;
     }
+
 }

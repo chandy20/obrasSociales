@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="parentescos")
  * @ORM\Entity
  */
-class Parentescos
-{
+class Parentescos {
+
     /**
      * @var integer
      *
@@ -28,17 +28,16 @@ class Parentescos
      */
     private $parentesconombre;
 
-public function __toString(){
-    return (string) $this->getParentesconombre();
-}
+    public function __toString() {
+        return (string) $this->getParentesconombre();
+    }
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -49,8 +48,7 @@ public function __toString(){
      *
      * @return Parentescos
      */
-    public function setParentesconombre($parentesconombre)
-    {
+    public function setParentesconombre($parentesconombre) {
         $this->parentesconombre = $parentesconombre;
 
         return $this;
@@ -61,8 +59,8 @@ public function __toString(){
      *
      * @return string
      */
-    public function getParentesconombre()
-    {
+    public function getParentesconombre() {
         return $this->parentesconombre;
     }
+
 }

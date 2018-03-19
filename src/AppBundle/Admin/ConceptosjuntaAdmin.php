@@ -24,6 +24,7 @@ class ConceptosjuntaAdmin extends AbstractAdmin {
     protected function configureRoutes(RouteCollection $collection) {
         $collection->remove('delete');
         $collection->remove('create');
+        $collection->add('reporte', 'reporte');
     }
 
     /**

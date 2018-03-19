@@ -90,17 +90,17 @@ sonata_admin:
                 label: 'Datos'
             funcionario:
                 roles: [ IS_AUTHENTICATED_ANONYMOUSLY]
-                label: 'funcionario'
+                label: 'Funcionario'
             
             familiar:
                 roles: [ IS_AUTHENTICATED_ANONYMOUSLY ]
-                label: 'familiar'
+                label: 'Familiar'
             institucional:
                 roles: [ IS_AUTHENTICATED_ANONYMOUSLY ]
-                label: 'institucional'
+                label: 'Institucional'
             auditoria:
                 roles: [ IS_AUTHENTICATED_ANONYMOUSLY ]
-                label: 'auditoria'
+                label: 'Auditoría'
 
            
                 
