@@ -17,6 +17,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class ConceptosjuntaAdminController extends CRUDController {
 
@@ -206,6 +208,148 @@ class ConceptosjuntaAdminController extends CRUDController {
                     'form' => $form->createView(),
                     'object' => $concepto
                         ], null);
+    }
+
+    public function dataReporteAction(Request $request) {
+        $form = (array) json_decode($request->request->get('form'));
+        $pestana = json_decode($request->request->get('pestana'));
+        switch ($pestana) {
+            case 1:
+                $html = $this->cargarDatosCantidades($form["formulario_reportes"]);
+                break;
+            case 2;
+                $html = $this->cargarDatosInscritos($form["formulario_reportes"]);
+                break;
+            case 3:
+                $html = $this->cargarDatosPresupuesto($form["formulario_reportes"]);
+                break;
+            case 4:
+                $html = $this->cargarDatosMovimientos($form["formulario_reportes"]);
+                break;
+        }
+        $respuesta['html'] = $html;
+        return new JsonResponse($respuesta);
+    }
+
+    public function cargarDatosCantidades($form) {
+        $query = $this->em->getRepository("AppBundle:Solicitudes")->createQueryBuilder('s')
+                ->where("s.solicitudfecha BETWEEN :inicio AND :fin")
+                ->setParameter("inicio", $form->fechaInicial)
+                ->setParameter("fin", $form->fechaFinal);
+        if ($form->seccional != "") {
+            $query->join("s.idseccional", "se")
+                    ->andWhere("se.id = :seccional")
+                    ->setParameter("seccional", $form->seccional);
+        }
+        if ($form->concepto != "") {
+            $query->join("s.concepto", "co")
+                    ->andWhere("co.id = :concepto")
+                    ->setParameter("concepto", $form->concepto);
+        }
+        if ($form->parentesco != "") {
+            $query->join("s.idparentesco", "pa")
+                    ->andWhere("pa.id = :parentesco")
+                    ->setParameter("parentesco", $form->parentesco);
+        }
+        if ($form->grado != "") {
+            $query->join("s.idgrado", "g")
+                    ->andWhere("g.id = :grado")
+                    ->setParameter("grado", $form->grado);
+        }
+        if ($form->tipoSolicitud != "") {
+            $query->join("s.idtiposolicitud", "ts")
+                    ->andWhere("ts.id = :tipoSolicitud")
+                    ->setParameter("tipoSolicitud", $form->tipoSolicitud);
+        }
+        if ($form->estadoCivil != "") {
+            $query->join("s.idestadocivil", "es")
+                    ->andWhere("es.id = :estadoCivil")
+                    ->setParameter("estadoCivil", $form->estadoCivil);
+        }
+        if ($form->ingreso != "") {
+            $query->join("s.idingreso", "i")
+                    ->andWhere("i.id = :ingreso")
+                    ->setParameter("ingreso", $form->ingreso);
+        }
+        if ($form->personasCargo != "") {
+            $query->join("s.idpersonacargo", "pc")
+                    ->andWhere("pc.id = :personasCargo")
+                    ->setParameter("personasCargo", $form->personasCargo);
+        }
+        if ($form->situacionVivienda != "") {
+            $query->join("s.idsituacionvivienda", "sv")
+                    ->andWhere("sv.id = :situacionVivienda")
+                    ->setParameter("situacionVivienda", $form->situacionVivienda);
+        }
+        if ($form->motivoDeuda != "") {
+            $query->join("s.idmotivodeuda", "md")
+                    ->andWhere("md.id = :motivoDeuda")
+                    ->setParameter("motivoDeuda", $form->motivoDeuda);
+        }
+        if ($form->cantidadBeneficio != "") {
+            $query->join("s.cantidadesbeneficio", "cb")
+                    ->andWhere("cb.cantidadesbeneficio_id = :cantidadBeneficio")
+                    ->setParameter("cantidadBeneficio", $form->cantidadBeneficio);
+        }
+        if ($form->conceptoVisita != "") {
+            $query->join("s.idconceptovisita", "cv")
+                    ->andWhere("cv.idconceptovisita = :conceptoVisita")
+                    ->setParameter("conceptoVisita", $form->conceptoVisita);
+        }
+        if ($form->afiliadoDibie != "") {
+            $query->join("s.idafiliadodibie", "ad")
+                    ->andWhere("ad.idafiliadodibie = :afiliadoDibie")
+                    ->setParameter("afiliadoDibie", $form->afiliadoDibie);
+        }
+        if ($form->poblacionBeneficiada != "") {
+            $query->join("s.idpoblacionbeneficia", "pb")
+                    ->andWhere("pb.id = :poblacionBeneficiada")
+                    ->setParameter("poblacionBeneficiada", $form->poblacionBeneficiada);
+        }
+        if ($form->viabilidadPlaneacion != "") {
+            $query->join("s.idviabilidadplaneacion", "vp")
+                    ->andWhere("vp.id = :viabilidadPlaneacion")
+                    ->setParameter("viabilidadPlaneacion", $form->viabilidadPlaneacion);
+        }
+        if ($form->zonaUbicacion != "") {
+            $query->join("s.idzonaubicacion", "z")
+                    ->andWhere("z.id = :zonaUbicacion")
+                    ->setParameter("zonaUbicacion", $form->zonaUbicacion);
+        }
+        if ($form->programa != "") {
+            $query->join("s.programas", "sp")
+                    ->join("sp.programa", "p")
+                    ->andWhere("p.id = :programa")
+                    ->setParameter("programa", $form->programa);
+        }
+        $solicitudes = $query->getQuery()->getResult();
+        $datos = [];
+        foreach ($solicitudes as $solicitud) {
+            foreach ($solicitud->getProgramas() as $programa) {
+                if (!array_key_exists($programa->getPrograma()->getProgramanombre(), $datos)) {
+                    $datos[$programa->getPrograma()->getProgramanombre()]["total"] = 1;
+                } else {
+                    $datos[$programa->getPrograma()->getProgramanombre()]["total"] ++;
+                }
+            }
+        }
+        $html = $this->renderView('AppBundle:Reporte:reporte_cantidades.html.twig', [
+            'datos' => $datos
+        ]);
+
+        return $html;
+    }
+
+    public function cargarDatosInscritos($form) {
+        
+    }
+
+    public function cargarDatosPresupuesto($form) {
+        
+    }
+
+    public function cargarDatosMovimientos($form) {
+        
     }
 
 }

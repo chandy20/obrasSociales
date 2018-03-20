@@ -1,0 +1,54 @@
+{%if datos %}
+<br>
+<br>
+<div id="chart_div"></div>
+<div class="col-md-12">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 text-center">
+        <div class="col-md-8">Programa</div>
+        <div class="col-md-4">Cantidad</div>
+        {%for key, dato in datos%}
+            <div class="col-md-8">{{key}}</div>
+            <div class="col-md-4">{{dato.total}}</div>
+        {%endfor%}
+    </div>
+    <div class="col-md-2"></div>
+</div>
+<script type="text/javascript">
+    google.charts.load('current', {'packages': ['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        google.charts.load('current', {packages: ['corechart', 'bar']});
+        google.charts.setOnLoadCallback(drawBasic);
+        function drawBasic() {
+            var data = google.visualization.arrayToDataTable([                
+                                ['Programa', 'Cantidad', ],
+                    {%for k, dato in datos%}
+                        {% if k < datos|length%}
+                                ['{{k}}', {{dato.total}} ],
+                            {%else%}
+                                ['{{k}}', {{dato.total}} ]
+                            {%endif%}
+                    {%endfor%}
+                    ]);
+
+            var options = {
+                title: 'Cantidad',
+                chartArea: {width: '50%'},
+                hAxis: {
+                    title: 'Total',
+                    minValue: 0
+                },
+                vAxis: {
+                    title: 'Programa'
+                }
+            };
+            var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+    }
+</script>
+{%else%}
+    <div>No se encontró información con los parametros de busqueda.</div>
+{%endif%}
+    

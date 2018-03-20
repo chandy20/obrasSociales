@@ -99,7 +99,6 @@ class FormularioReportesType extends AbstractType {
                     }
                 ])
                 ->add("seccional", EntityType::class, $opcionesSeccional)
-                ->add("seccional2", EntityType::class, $opcionesSeccional)
                 ->add("seccional3", EntityType::class, $opcionesSeccional)
                 ->add("seccional4", EntityType::class, $opcionesSeccional)
                 ->add("parentesco", EntityType::class, [

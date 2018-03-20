@@ -25,6 +25,7 @@ class ConceptosjuntaAdmin extends AbstractAdmin {
         $collection->remove('delete');
         $collection->remove('create');
         $collection->add('reporte', 'reporte');
+        $collection->add('dataReporte', 'dataReporte');
     }
 
     /**

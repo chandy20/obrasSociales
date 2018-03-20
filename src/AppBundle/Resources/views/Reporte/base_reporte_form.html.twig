@@ -4,7 +4,6 @@
 
     {# NEXT_MAJOR: remove default filter #}
     {% set url = "reporte" %}
-
     <style>
         body {
             padding : 10px ;
@@ -29,17 +28,56 @@
             background-color: #FFFFFF;
             padding : 5px 15px;
         }
+        .cCargando {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            position: fixed;
+            background-color: #000;
+            opacity: 0.8;
+            filter: alpha(opacity=80); /* Internet Explorer 8*/
+            z-index: 9999;
+            transition: width 2s;
+            -moz-transition: width 2s; /* Firefox 4 */
+            -webkit-transition: width 2s; /* Safari and Chrome */
+            -o-transition: width 2s; /* Opera */
+            cursor: progress;
+        }
+
+        .cCargandoImg {
+            cursor: progress;
+            position: absolute;
+            top: 32%;
+            right: 45%;
+            left: 35%;
+            filter: alpha(opacity=80); /* Internet Explorer 8*/
+            opacity: 0.8;
+            margin: auto;
+            width: 350px;
+            text-align: center;
+            height: 150px;
+            padding: 10px;
+            background-color: #000;
+            /*border: 1px solid #000;*/
+            color: #ffffff;
+            font-size: 2em;
+        }
     </style>
     <link rel="stylesheet" href="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/css/sweetalert.css">
     <script src="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/js/sweetalert.js"></script>
     <script src="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/js/serializeObject.js"></script>
+    <script src="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/js/loader.js"></script>
     <form id="formulario_reporte"
-        {% if sonata_admin.adminPool.getOption('form_type') == 'horizontal' %}class="form-horizontal"{% endif %}
-        role="form"
-        {# NEXT_MAJOR: remove default filter #}
-        action="{% block sonata_form_action_url %}{{ admin.generateUrl(url, {'id': "reporte", 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}{% endblock %}"
-        method="POST"
-        {% if not sonata_admin.adminPool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+          {% if sonata_admin.adminPool.getOption('form_type') == 'horizontal' %}class="form-horizontal"{% endif %}
+          role="form"
+          {# NEXT_MAJOR: remove default filter #}
+          action="{% block sonata_form_action_url %}{{ admin.generateUrl(url, {'id': "reporte", 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}{% endblock %}"
+          method="POST"
+          {% if not sonata_admin.adminPool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
     {% block sonata_form_attributes %}{% endblock %}
     >
     <div id="exTab2" class="container col-md-12">	
@@ -57,7 +95,6 @@
                 <a href="#movimientos" onclick="marcarPestana(4)" data-toggle="tab">Movimientos financieros</a>
             </li>
         </ul>
-
         <div class="tab-content ">
             <div class="tab-pane active" id="cantidades">
                 <div class="col-md-3">
@@ -79,11 +116,6 @@
                     {{ form_label(form.concepto) }}
                     {{ form_errors(form.concepto) }}
                     {{ form_widget(form.concepto) }}
-                </div>
-                <div class="col-md-3">
-                    {{ form_label(form.seccional2) }}
-                    {{ form_errors(form.seccional2) }}
-                    {{ form_widget(form.seccional2) }}
                 </div>
                 <div class="col-md-3">
                     {{ form_label(form.parentesco) }}
@@ -233,66 +265,72 @@
                 </div>
             </div>
         </div>
-    </div>
-    {{ include('SonataAdminBundle:Helper:render_form_dismissable_errors.html.twig') }}
+        {{ include('SonataAdminBundle:Helper:render_form_dismissable_errors.html.twig') }}
 
-    {% block sonata_pre_fieldsets %}
-        <div class="row">
-        {% endblock %}
+        {% block sonata_pre_fieldsets %}
+            <div class="row">
+            {% endblock %}
 
-        {% block sonata_tab_content %}
-            {% set has_tab = ((admin.formtabs|length == 1 and admin.formtabs|keys[0] != 'default') or admin.formtabs|length > 1 ) %}
+            {% block sonata_tab_content %}
+                {% set has_tab = ((admin.formtabs|length == 1 and admin.formtabs|keys[0] != 'default') or admin.formtabs|length > 1 ) %}
 
-            <div class="col-md-12">
-                {% if has_tab %}
-                    <div class="nav-tabs-custom">
-                        <ul class="nav nav-tabs" role="tablist">
-                            {% for name, form_tab in admin.formtabs %}
-                                <li{% if loop.index == 1 %} class="active"{% endif %}><a href="#tab_{{ admin.uniqid }}_{{ loop.index }}" data-toggle="tab"><i class="fa fa-exclamation-circle has-errors hide" aria-hidden="true"></i> {{ form_tab.label|trans({}, form_tab.translation_domain ?: admin.translationDomain) }}</a></li>
-                                {% endfor %}
-                        </ul>
-                        <div class="tab-content">
-                            {% for code, form_tab in admin.formtabs %}
-                                <div class="tab-pane fade{% if loop.first %} in active{% endif %}" id="tab_{{ admin.uniqid }}_{{ loop.index }}">
-                                    <div class="box-body  container-fluid">
-                                        <div class="sonata-ba-collapsed-fields">
-                                            {% if form_tab.description != false %}
-                                                <p>{{ form_tab.description|raw }}</p>
-                                            {% endif %}
+                <div class="col-md-12">
+                    {% if has_tab %}
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs" role="tablist">
+                                {% for name, form_tab in admin.formtabs %}
+                                    <li{% if loop.index == 1 %} class="active"{% endif %}><a href="#tab_{{ admin.uniqid }}_{{ loop.index }}" data-toggle="tab"><i class="fa fa-exclamation-circle has-errors hide" aria-hidden="true"></i> {{ form_tab.label|trans({}, form_tab.translation_domain ?: admin.translationDomain) }}</a></li>
+                                    {% endfor %}
+                            </ul>
+                            <div class="tab-content">
+                                {% for code, form_tab in admin.formtabs %}
+                                    <div class="tab-pane fade{% if loop.first %} in active{% endif %}" id="tab_{{ admin.uniqid }}_{{ loop.index }}">
+                                        <div class="box-body  container-fluid">
+                                            <div class="sonata-ba-collapsed-fields">
+                                                {% if form_tab.description != false %}
+                                                    <p>{{ form_tab.description|raw }}</p>
+                                                {% endif %}
 
-                                            {{ form_helper.render_groups(admin, form, form_tab['groups'], has_tab) }}
+                                                {{ form_helper.render_groups(admin, form, form_tab['groups'], has_tab) }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            {% endfor %}
+                                {% endfor %}
+                            </div>
                         </div>
-                    </div>
-                {% else %}
+                    {% else %}
 
-                {% endif %}
+                    {% endif %}
+                </div>
+            {% endblock %}
+
+            {% block sonata_post_fieldsets %}
             </div>
         {% endblock %}
-
-        {% block sonata_post_fieldsets %}
+        <div id="divProceso" class="cCargando" style="visibility: hidden;">
+            <div id="divProcesoMsg" class="cCargandoImg">
+                <br />
+                Consultando datos por favor espere... 
+                <br />
+            </div>
         </div>
-    {% endblock %}
-
-    {{ form_rest(form) }}
-    <input type="hidden" id="pestanaActiva" value="1">
-    <br>
-    <br>
-    <div class="col-md-12">
-        <div class="col-md-5"></div>
-        <div class="col-md-2">
-            <label class="btn btn-success" onclick="buscarDatos()" name="btn_create_and_edit"><i class="fa fa-search" aria-hidden="true"></i> Consultar datos</label>
+        {{ form_rest(form) }}
+        <input type="hidden" id="pestanaActiva" value="1">
+        <div class="col-md-12">
+            <div class="col-md-12" id="datosConsulta"></div>
+            <div class="col-md-5"></div>
+            <div class="col-md-2">
+                <label class="btn btn-success" onclick="buscarDatos()" name="btn_create_and_edit"><i class="fa fa-search" aria-hidden="true"></i> Consultar datos</label>
+            </div>
+            <div class="col-md-5"></div>
         </div>
-        <div class="col-md-5"></div>
     </div>
-    <br>
-    <br>
 
 </form>
 <script>
+    $(function(){
+        $("div.content-wrapper").addClass("col-md-10");
+    })
     function marcarPestana(valor) {
         $("#pestanaActiva").val(valor);
         console.log(valor);
@@ -355,10 +393,29 @@
             var form = {};
             try {
                 form = $('#formulario_reporte').serializeObject();
-             } catch (e) {
+            } catch (e) {
                 console.log("se murió");
-            } 
+            }
             form = JSON.stringify(form);
+            var url = 'dataReporte';
+            $.ajax({
+                type: 'post',
+                url: url,
+                data: {
+                    form: form,
+                    pestana: pestana
+                },
+                beforeSend: function (xhr) {
+                    document.getElementById("divProceso").style.visibility = "visible";
+                },
+                success: function (data) {
+                    $("#datosConsulta").html("");
+                    $("#datosConsulta").html(data.html);
+                },
+                complete: function (jqXHR, textStatus) {
+                    document.getElementById("divProceso").style.visibility = "hidden";
+                }
+            });
         }
     }
 
