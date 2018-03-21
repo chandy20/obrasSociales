@@ -1,0 +1,21 @@
+{%if datos %}
+    <div class="col-md-12">
+        <br>
+        <br>
+        <div class="col-md-12 text-center">
+            <div class="col-md-4">seccional</div>
+            <div class="col-md-4">Valor</div>
+            <div class="col-md-4">Beneficios entregados</div>
+            {%for key, dato in datos%}
+                <div class="col-md-4">{{key}}</div>
+                <div class="col-md-4">{{dato.valor}}</div>
+                <div class="col-md-4">{{dato.movimientos}}</div>
+            {%endfor%}
+        </div>
+        <br>
+        <br>
+        <br>
+    </div>
+{%else%}
+    <div>No se encontró información con los parametros de busqueda.</div>
+{%endif%}

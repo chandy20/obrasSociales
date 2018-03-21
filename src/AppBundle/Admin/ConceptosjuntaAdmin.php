@@ -69,6 +69,7 @@ class ConceptosjuntaAdmin extends AbstractAdmin {
                 ->add('conceptojuntatiempo', null, ["label" => "Tiempo del Beneficio (Meses)"])
                 ->add('conceptosjuntadesc', null, ["label" => "Descripcion Junta"])
                 ->add('conceptosjuntanumacta', null, ["label" => "Numero Acta Aprobación"])
+                ->add('aprobado', null, ["label" => "¿Aprueba solicitud?"])
         ;
     }
 

@@ -88,6 +88,13 @@ class Conceptosjunta {
      * @ORM\Column(name="aprobado", type="boolean", nullable=true)
      */
     private $aprobado;
+    
+     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="editado", type="boolean", nullable=true)
+     */
+    private $editado;
 
     /**
      * Get id
@@ -313,5 +320,29 @@ class Conceptosjunta {
     public function getAprobado()
     {
         return $this->aprobado;
+    }
+
+    /**
+     * Set editado
+     *
+     * @param boolean $editado
+     *
+     * @return Conceptosjunta
+     */
+    public function setEditado($editado)
+    {
+        $this->editado = $editado;
+
+        return $this;
+    }
+
+    /**
+     * Get editado
+     *
+     * @return boolean
+     */
+    public function getEditado()
+    {
+        return $this->editado;
     }
 }

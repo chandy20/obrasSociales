@@ -40,6 +40,13 @@ class ConceptosjuntaAdminController extends CRUDController {
 
         if (!$existingObject) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
+        } else {
+            $form = $this->admin->getForm();
+            $form->setData($existingObject);
+            if ($existingObject->getEditado()) {
+                $this->addFlash('sonata_flash_error', $this->trans('El concepto junta ya fue editado, solo es posible realizar el proceso una vez.'));
+                return $this->redirect($this->generateUrl('admin_app_conceptosjunta_list'));
+            }
         }
 
         $this->admin->checkAccess('edit', $existingObject);
@@ -53,8 +60,6 @@ class ConceptosjuntaAdminController extends CRUDController {
         $objectId = $this->admin->getNormalizedIdentifier($existingObject);
 
         /** @var $form Form */
-        $form = $this->admin->getForm();
-        $form->setData($existingObject);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $this->validar($existingObject, $form);
@@ -159,10 +164,11 @@ class ConceptosjuntaAdminController extends CRUDController {
                             ->andWhere("p.idarea = :area")
                             ->setParameter("seccional", $concepto->getSolicitud()->getIdseccional())
                             ->setParameter("area", $programaConcepto->getPrograma()->getIdarea())
-                            ->setParameter("hoy", $hoy)->getQuery()->getOneOrNullResult();
+                            ->setParameter("hoy", $hoy)->getQuery()->getResult();
             if (!$presupuesto) {
                 $form->addError(new FormError("No existe presupuesto vigente disponible para la seccional selecional " . $concepto->getSolicitud()->getIdseccional()->getSeccionalnombre() . " para el area de " . $programaConcepto->getPrograma()->getIdarea()));
             } else {
+                $presupuesto = $presupuesto[0];
                 $totalMovimiento = $programaConcepto->getPrograma()->getValorMes() * $concepto->getConceptojuntatiempo();
                 $totalBeneficio += $totalMovimiento;
                 $movimiento = $this->em->getRepository("AppBundle:Movimiento")->createQueryBuilder('m')
@@ -199,10 +205,6 @@ class ConceptosjuntaAdminController extends CRUDController {
         $concepto = new Conceptosjunta();
         $form = $this->createForm(FormularioReportesType::class, $concepto, []);
         $form->handleRequest($this->getRequest());
-        if ($form->isSubmitted()) {
-            
-        }
-
         return $this->renderWithExtraParams("AppBundle:Reporte:base_reporte.html.twig", [
                     'action' => 'edit',
                     'form' => $form->createView(),
@@ -341,15 +343,102 @@ class ConceptosjuntaAdminController extends CRUDController {
     }
 
     public function cargarDatosInscritos($form) {
-        
+        $query = $this->em->getRepository("AppBundle:Solicitudes")->createQueryBuilder('s')
+                ->where("s.solicitudfecha BETWEEN :inicio AND :fin")
+                ->setParameter("inicio", $form->fechaInicial)
+                ->setParameter("fin", $form->fechaFinal);
+        if ($form->documentoSolicitante != "") {
+            $query->andWhere("s.solicitudcedulasolicita = :documento")
+                    ->setParameter("documento", $form->documentoSolicitante);
+        }
+        if ($form->documentoTitular != "") {
+            $query->andWhere("s.solicitudcedulafuncionario = :documentoTitular")
+                    ->setParameter("documentoTitular", $form->documentoTitular);
+        }
+        $solicitudes = $query->getQuery()->getResult();
+        $datos = [];
+        foreach ($solicitudes as $solicitud) {
+            if (!array_key_exists($solicitud->getSolicitudnombrefuncionario(), $datos) && $solicitud->getNombreBeneficiarioFinal()) {
+                $datos[$solicitud->getSolicitudnombrefuncionario()]["beneficiarios"]["datos"]["nombre"][] = $solicitud->getDocumentoBeneficiarioFinal() . " - " . $solicitud->getNombreBeneficiarioFinal();
+                $datos[$solicitud->getSolicitudnombrefuncionario()]["beneficiarios"]["datos"]["seccional"][] = $solicitud->getIdseccional()->getSeccionalnombre();
+            }
+        }
+        $html = $this->renderView('AppBundle:Reporte:reporte_inscritos.html.twig', [
+            'datos' => $datos
+        ]);
+        return $html;
     }
 
     public function cargarDatosPresupuesto($form) {
-        
+        $query = $this->em->getRepository("AppBundle:Movimiento")->createQueryBuilder('m')
+                ->join("m.seccional", "s")
+                ->join("m.concepto", "c")
+                ->join("c.solicitud", "so")
+                ->where("so.solicitudfecha BETWEEN :inicio AND :fin")
+                ->setParameter("inicio", $form->fechaInicial3)
+                ->setParameter("fin", $form->fechaFinal3);
+        if ($form->seccional3) {
+            $query->andWhere("s.id = :seccional")
+                    ->setParameter("seccional", $form->seccional3);
+        }
+        $movimientos = $query->getQuery()->getResult();
+        $datos = [];
+        foreach ($movimientos as $movimiento) {
+            if (!array_key_exists($movimiento->getSeccional()->getSeccionalnombre(), $datos)) {
+                $presupuestos = $this->em->getRepository("AppBundle:Presupuestos")->createQueryBuilder('p')
+                                ->where("p.desde <= :inicio OR p.hasta >= :fin")
+                                ->andWhere("p.seccional = :seccional")
+                                ->setParameter("inicio", $form->fechaInicial3)
+                                ->setParameter("fin", $form->fechaFinal3)
+                                ->setParameter("seccional", $movimiento->getSeccional())
+                                ->getQuery()->getResult();
+                $totalValor = 0;
+                foreach ($presupuestos as $presupuesto) {
+                    $totalValor += $presupuesto->getPresupuestomonto();
+                }
+                $datos[$movimiento->getSeccional()->getSeccionalnombre()]["valor"] = $totalValor;
+                $datos[$movimiento->getSeccional()->getSeccionalnombre()]["movimientos"] = $movimiento->getValor();
+            } else {
+                $datos[$movimiento->getSeccional()->getSeccionalnombre()]["movimientos"] += $movimiento->getValor();
+            }
+        }
+        $html = $this->renderView('AppBundle:Reporte:reporte_presupuesto.html.twig', [
+            'datos' => $datos
+        ]);
+        return $html;
     }
 
     public function cargarDatosMovimientos($form) {
-        
+        $query = $this->em->getRepository("AppBundle:Movimiento")->createQueryBuilder('m')
+                ->join("m.seccional", "s")
+                ->join("m.concepto", "c")
+                ->join("c.solicitud", "so")
+                ->where("so.solicitudfecha BETWEEN :inicio AND :fin")
+                ->setParameter("inicio", $form->fechaInicial3)
+                ->setParameter("fin", $form->fechaFinal3);
+        if ($form->documentoSolicitante2) {
+            $query->andWhere("so.solicitudcedulasolicita = :cedula")
+                    ->setParameter("cedula", $form->documentoSolicitante2);
+        }
+        if ($form->documentoTitular2) {
+            $query->andWhere("so.solicitudcedulafuncionario = :cedulaTitular")
+                    ->setParameter("cedulaTitular", $form->documentoTitular2);
+        }
+        if ($form->seccional4) {
+            $query->andWhere("s.idseccional = :seccional")
+                    ->setParameter("seccional", $form->seccional4);
+        }
+        if ($form->programa2) {
+             $query->join("s.programas", "sp")
+                    ->join("sp.programa", "p")
+                    ->andWhere("p.id = :programa")
+                    ->setParameter("programa", $form->programa2);
+        }
+        $movimientos = $query->getQuery()->getResult();
+         $html = $this->renderView('AppBundle:Reporte:reporte_movimientos.html.twig', [
+            'movimientos' => $movimientos
+        ]);
+        return $html;
     }
 
 }

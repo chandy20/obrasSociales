@@ -1,0 +1,23 @@
+{%if movimientos %}
+    <div class="col-md-12">
+        <br>
+        <br>
+        <div class="col-md-12 text-center">
+            <div class="col-md-3">Solicitante</div>
+            <div class="col-md-3">titular</div>
+            <div class="col-md-3">Seccional</div>
+            <div class="col-md-3">Beneficio entregado</div>
+            {%for movimiento in movimientos%}
+                <div class="col-md-3">{{movimiento.concepto.solicitud.solicitudnombresolicita}}</div>
+                <div class="col-md-3">{{movimiento.concepto.solicitud.solicitudnombrefuncionario}}</div>
+                <div class="col-md-3">{{movimiento.seccional}}</div>
+                <div class="col-md-3">{{movimiento.valor}}</div>
+            {%endfor%}
+        </div>
+        <br>
+        <br>
+        <br>
+    </div>
+{%else%}
+    <div>No se encontró información con los parametros de busqueda.</div>
+{%endif%}

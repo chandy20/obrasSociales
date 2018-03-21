@@ -12,6 +12,7 @@ class SolicitudesAdmin extends AbstractAdmin {
 
     protected function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection) {
          $collection->remove('delete'); 
+         $collection->remove('create'); 
     }
     
     /**
