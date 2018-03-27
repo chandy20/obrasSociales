@@ -7,6 +7,12 @@ body {
     line-height: 30px;
     text-align: center;
 }
+.error-form{
+    color: red !important;
+}
+.text-black{
+    color: #555 !important;
+}
 
 strong { font-weight: 500; }
 

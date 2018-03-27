@@ -103,9 +103,9 @@ class SolicitudesController extends Controller {
             }
             $foto = $entity->getFotoFile();
             if ($foto) {
-                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                $fileName = md5(uniqid()) . '.' . $foto->guessExtension();
                 $entity->setFoto($fileName);
-                $file->move(
+                $foto->move(
                         $this->getParameter('uploads_directory'), $fileName
                 );
             }
@@ -357,6 +357,27 @@ class SolicitudesController extends Controller {
                 if (!$form->get("nombreBeneficiarioFinal")->getdata()) {
                     $form->get("nombreBeneficiarioFinal")->addError(new FormError("Este valor no debería estar vacío"));
                 }
+                if (!$form->get("antiguedad")->getdata()) {
+                    $form->get("antiguedad")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+                if (!$form->get("solicitudcedulafuncionario")->getdata()) {
+                    $form->get("solicitudcedulafuncionario")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+                if (!$form->get("idgrado")->getdata()) {
+                    $form->get("idgrado")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+                if (!$form->get("unidad")->getdata()) {
+                    $form->get("unidad")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+                if (!$form->get("solicitudnombrefuncionario")->getdata()) {
+                    $form->get("solicitudnombrefuncionario")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+                if (!$form->get("solicituddireccionfuncionario")->getdata()) {
+                    $form->get("solicituddireccionfuncionario")->addError(new FormError("Este valor no debería estar vacío"));
+                }
+                if (!$form->get("solicitudtelefonosfuncionario")->getdata()) {
+                    $form->get("solicitudtelefonosfuncionario")->addError(new FormError("Este valor no debería estar vacío"));
+                }
             } else if ($tipoDeSolicitud->getTiposolicitudnombre() == "Institucional") {
                 if (!$form->get("idpoblacionbeneficia")->getdata()) {
                     $form->get("idpoblacionbeneficia")->addError(new FormError("Este valor no debería estar vacío"));
@@ -370,6 +391,18 @@ class SolicitudesController extends Controller {
                 if (!$form->get("idcantidadesbeneficioinst")->getdata()) {
                     $form->get("idcantidadesbeneficioinst")->addError(new FormError("Este valor no debería estar vacío"));
                 }
+            }
+            if (!$form->get("curriculum")->getdata()) {
+                $form->get("curriculum")->addError(new FormError("Por favor adjunte la documentación"));
+            }
+            if (count($form->get("programas")->getdata()) == 0) {
+                $form->get("programas")->addError(new FormError("Seleccióne al menos un programa del listado"));
+            }
+            $fotoFormulario = $form->get("fotoFile")->getdata();
+            if ($fotoFormulario) {
+                $imagen = getimagesize($fotoFormulario);    //Sacamos la información
+                $ancho = $imagen[0];              //Ancho
+                $alto = $imagen[1];               //Alto
             }
         }
     }

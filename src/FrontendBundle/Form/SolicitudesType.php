@@ -77,52 +77,43 @@ class SolicitudesType extends AbstractType {
                     'attr' => array('class' => 'form-control', 'placeholder' => "Digita Nombres y Apellidos del Solicitante")]
                 )
                 ->add('antiguedad', null, [
-                    'constraints' => $constraint,
                     "placeholder" => "Seleccione",
-                    "label" => "Antiguedad Funcionario",
+                    "label" => "Antigüedad Funcionario",
                     'attr' => array('class' => 'form-control')]
                 )
                 ->add('idparentesco', null, [
-                    'constraints' => $constraint,
                     "placeholder" => "Seleccione",
                     "label" => "Parentesco con el Solicitante",
                     'attr' => array('class' => 'form-control')]
                 )
                 ->add('solicitudcedulafuncionario', null, [
                     'required' => false,
-                    'constraints' => $constraint,
-                    'constraints' => $constraint,
-                    "label" => "Cedula Funcionario Policial",
+                    "label" => "Cédula Funcionario Policial",
                     'attr' => array('onkeyup' => "soloNumeros(this)", 'class' => 'form-control', 'placeholder' => "Digita Cedula Funcionario Policial")]
                 )
                 ->add('idgrado', null, [
-                    'constraints' => $constraint,
                     "placeholder" => "Seleccione",
                     "label" => "Grado Funcionario Policial",
                     'attr' => array('class' => 'form-control')]
                 )
                 ->add('unidad', null, [
-                    'constraints' => $constraint,
                     "placeholder" => "Seleccione",
                     "label" => "unidad", 'attr' => array('class' => 'form-control')]
                 )
                 ->add('solicitudnombrefuncionario', null, [
                     'required' => false,
-                    'constraints' => $constraint,
                     "label" => "Nombre del Funcionario Policial",
                     'attr' => array('class' => 'form-control',
                         'placeholder' => "Digita Nombre Completo del Funcionario")]
                 )
                 ->add('solicituddireccionfuncionario', null, [
                     'required' => false,
-                    'constraints' => $constraint,
                     "label" => "Direccion Funcionario",
                     'attr' => array('class' => 'form-control',
                         'placeholder' => "Digita Direccion del Funcionario")]
                 )
                 ->add('solicitudtelefonosfuncionario', null, [
                     'required' => false,
-                    'constraints' => $constraint,
                     "label" => "Teléfono Funcionario",
                     'attr' => array('onkeyup' => "soloNumeros(this)",
                         'class' => 'form-control',
@@ -130,6 +121,7 @@ class SolicitudesType extends AbstractType {
                 )
                 ->add('programas', null, [
                     'class' => "AppBundle:Programas",
+                    'label'=> "Seleccione los programas para los cuales necesita asistencia",
                     'constraints' => $constraint,
                     'query_builder' => function(EntityRepository $repository) {
                         return $repository->createQueryBuilder('p')->orderBy('p.programanombre', 'ASC');
@@ -138,13 +130,12 @@ class SolicitudesType extends AbstractType {
                     'required' => false,
                     "mapped" => false,
                     "multiple" => true,
-                    "label" => "Programa",
-                    'attr' => array('class' => 'form-control')]
+                    "expanded" => true]
                 )
                 ->add('solicituddescripcion', null, [
                     'required' => false,
                     'constraints' => $constraint,
-                    "label" => "Descripcion de la Solicitud",
+                    "label" => "Descripción breve de la solicitud y de la situación económica",
                     'attr' => array('class' => 'form-control',
                         'placeholder' => "Digita una descripción para su Solicitud")]
                 )
@@ -210,11 +201,11 @@ class SolicitudesType extends AbstractType {
                     'attr' => array('class' => 'form-control')]
                 )
                 ->add('curriculum', FileType::class, [
-                    'label' => 'Adjunte Documentación en formato .pdf',
+                    'label' => 'Documentación anexa',
                     'required' => false]
                 )
                 ->add('fotoFile', FileType::class, [
-                    'label' => 'Fotografía del beneficiario (3x4)',
+                    'label' => 'Adjunte fotografía 3*4',
                     'required' => false]
         );
     }

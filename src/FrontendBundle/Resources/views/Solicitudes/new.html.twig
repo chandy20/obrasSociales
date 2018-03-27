@@ -25,12 +25,11 @@
 
 
                     <div class="col-md-12">
-
                         <div class="col-md-6" >
-                            <div class="col-md-12" >
+                            <div class="col-md-12 text-black" >
                                 {{ form_label(form.solicitudfecha) }}
                             </div>
-                            <div class="col-md-12" >
+                            <div class="col-md-12 error-form" >
                                 {{ form_errors(form.solicitudfecha) }}
                             </div>
                             <div class="col-md-12" >
@@ -38,10 +37,10 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="col-md-12">
+                            <div class="col-md-12 text-black">
                                 {{ form_label(form.idseccional) }}
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 error-form">
                                 {{ form_errors(form.idseccional) }}
                             </div>
                             <div class="col-md-12">
@@ -49,10 +48,10 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="col-md-12">
+                            <div class="col-md-12 text-black">
                                 {{ form_label(form.idtiposolicitud) }}
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 error-form">
                                 {{ form_errors(form.idtiposolicitud) }}
                             </div>
                             <div class="col-md-12">
@@ -60,10 +59,10 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="col-md-12">
+                            <div class="col-md-12 text-black">
                                 {{ form_label(form.solicitudcedulasolicita) }}
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 error-form">
                                 {{ form_errors(form.solicitudcedulasolicita) }}
                             </div>
                             <div class="col-md-12">
@@ -71,21 +70,10 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="col-md-12">
-                                {{ form_label(form.idparentesco) }}
-                            </div>
-                            <div class="col-md-12">
-                                {{ form_errors(form.idparentesco) }}
-                            </div>
-                            <div class="col-md-12">
-                                {{ form_widget(form.idparentesco) }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="col-md-12">
+                            <div class="col-md-12 text-black">
                                 {{ form_label(form.solicitudnombresolicita) }}
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 error-form">
                                 {{ form_errors(form.solicitudnombresolicita) }}
                             </div>
                             <div class="col-md-12">
@@ -93,10 +81,10 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="col-md-12">
+                            <div class="col-md-12 text-black">
                                 {{ form_label(form.emailSolicitante) }}
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 error-form">
                                 {{ form_errors(form.emailSolicitante) }}
                             </div>
                             <div class="col-md-12">
@@ -104,93 +92,95 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        <hr style="border-color:white;">
-                        <hr style="border-color:white;">
-                        <hr style="border-color:white;">
-                        <h4><b>INFORMACION FUNCIONARIO POLICIAL</b></h4>
-                        <hr style="border-color:white"></div>
-
-                    <div class="col-md-12">
-                        <div class="col-md-4" >
-                            <div class="col-md-12" >
-                                {{ form_label(form.solicitudcedulafuncionario) }}
-                            </div>
-                            <div class="col-md-12" >
-                                {{ form_errors(form.solicitudcedulafuncionario) }}
-                            </div>
-                            <div class="col-md-12" >
-                                {{ form_widget(form.solicitudcedulafuncionario) }}
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="col-md-12" >
-                                {{ form_label(form.idgrado) }}
-                            </div>
-                            <div class="col-md-12" >
-                                {{ form_errors(form.idgrado) }}
-                            </div>
-                            <div class="col-md-12" >
-                                {{ form_widget(form.idgrado) }}
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="col-md-12" >
-                                {{ form_label(form.unidad) }}
-                            </div>
-                            <div class="col-md-12" >
-                                {{ form_errors(form.unidad) }}
-                            </div>
-                            <div class="col-md-12" >
-                                {{ form_widget(form.unidad) }}
-                            </div>
+                    <div class="col-md-12 funcionario">
+                        <div class="col-md-12">
                             <hr style="border-color:white;">
+                            <hr style="border-color:white;">
+                            <hr style="border-color:white;">
+                            <h4><b>INFORMACION FUNCIONARIO POLICIAL</b></h4>
+                            <hr style="border-color:white">
                         </div>
                         <div class="col-md-12">
-                            <div class="col-md-12">
-                                {{ form_label(form.solicitudnombrefuncionario) }}
+                            <div class="col-md-4" >
+                                <div class="col-md-12 text-black" >
+                                    {{ form_label(form.solicitudcedulafuncionario) }}
+                                </div>
+                                <div class="col-md-12 error-form" >
+                                    {{ form_errors(form.solicitudcedulafuncionario) }}
+                                </div>
+                                <div class="col-md-12" >
+                                    {{ form_widget(form.solicitudcedulafuncionario) }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="col-md-12 text-black" >
+                                    {{ form_label(form.idgrado) }}
+                                </div>
+                                <div class="col-md-12 error-form" >
+                                    {{ form_errors(form.idgrado) }}
+                                </div>
+                                <div class="col-md-12" >
+                                    {{ form_widget(form.idgrado) }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="col-md-12 text-black" >
+                                    {{ form_label(form.unidad) }}
+                                </div>
+                                <div class="col-md-12 error-form" >
+                                    {{ form_errors(form.unidad) }}
+                                </div>
+                                <div class="col-md-12" >
+                                    {{ form_widget(form.unidad) }}
+                                </div>
+                                <hr style="border-color:white;">
                             </div>
                             <div class="col-md-12">
-                                {{ form_errors(form.solicitudnombrefuncionario) }}
+                                <div class="col-md-12 text-black">
+                                    {{ form_label(form.solicitudnombrefuncionario) }}
+                                </div>
+                                <div class="col-md-12 error-form">
+                                    {{ form_errors(form.solicitudnombrefuncionario) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_widget(form.solicitudnombrefuncionario) }}
+                                </div>
+                                <hr style="border-color:white;">
                             </div>
-                            <div class="col-md-12">
-                                {{ form_widget(form.solicitudnombrefuncionario) }}
+                            <div class="col-md-4">
+                                <div class="col-md-12 text-black">
+                                    {{ form_label(form.solicituddireccionfuncionario) }}
+                                </div>
+                                <div class="col-md-12 error-form">
+                                    {{ form_errors(form.solicituddireccionfuncionario) }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_widget(form.solicituddireccionfuncionario) }}
+                                </div>
                             </div>
-                            <hr style="border-color:white;">
+                            <div class="col-md-4">
+                                <div class="col-md-12 text-black">
+                                    {{ form_label(form.solicitudtelefonosfuncionario) }}
+                                </div>    
+                                <div class="col-md-12 error-form">
+                                    {{ form_errors(form.solicitudtelefonosfuncionario) }}
+                                </div>    
+                                <div class="col-md-12">
+                                    {{ form_widget(form.solicitudtelefonosfuncionario) }}
+                                </div>    
+                            </div>    
+                            <div class="col-md-4">
+                                <div class="col-md-12 text-black">
+                                    {{ form_label(form.antiguedad) }}
+                                </div>  
+                                <div class="col-md-12 error-form">
+                                    {{ form_errors(form.antiguedad) }}
+                                </div>  
+                                <div class="col-md-12">
+                                    {{ form_widget(form.antiguedad) }}
+                                </div>  
+                            </div>  
                         </div>
-                        <div class="col-md-4">
-                            <div class="col-md-12">
-                                {{ form_label(form.solicituddireccionfuncionario) }}
-                            </div>
-                            <div class="col-md-12">
-                                {{ form_errors(form.solicituddireccionfuncionario) }}
-                            </div>
-                            <div class="col-md-12">
-                                {{ form_widget(form.solicituddireccionfuncionario) }}
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="col-md-12">
-                                {{ form_label(form.solicitudtelefonosfuncionario) }}
-                            </div>    
-                            <div class="col-md-12">
-                                {{ form_errors(form.solicitudtelefonosfuncionario) }}
-                            </div>    
-                            <div class="col-md-12">
-                                {{ form_widget(form.solicitudtelefonosfuncionario) }}
-                            </div>    
-                        </div>    
-                        <div class="col-md-4">
-                            <div class="col-md-12">
-                                {{ form_label(form.antiguedad) }}
-                            </div>  
-                            <div class="col-md-12">
-                                {{ form_errors(form.antiguedad) }}
-                            </div>  
-                            <div class="col-md-12">
-                                {{ form_widget(form.antiguedad) }}
-                            </div>  
-                        </div>  
                     </div>
                     <div class="col-md-12">
                         <div class="col-md-12">  
@@ -199,31 +189,36 @@
                             <hr style="border-color:white;">         
                             <h4><b>DESCRIPCION DE LA SOLICITUD</b></h4>
                         </div>
-                        <div class="col-md-4">
-                            <div class="col-md-12">  
-                                {{ form_label(form.programas) }}
-                            </div>
-                            <div class="col-md-12">  
-                                {{ form_errors(form.programas) }}
-                            </div>
-                            <div class="col-md-12">  
-                                {{ form_widget(form.programas) }}
-                            </div>
-                        </div>
-
-                        <div class="col-md-8">
-                            <div class="col-md-12">  
+                        <div class="col-md-12">
+                            <div class="col-md-12 text-black">  
                                 {{ form_label(form.solicituddescripcion) }}
                             </div>
-                            <div class="col-md-12">  
+                            <div class="col-md-12 error-form">  
                                 {{ form_errors(form.solicituddescripcion) }}
                             </div>
-                            <div class="col-md-12">  
+                            <div class="col-md-12" >  
                                 {{ form_widget(form.solicituddescripcion) }}
                             </div>
                         </div>
-
-                        <div class="prueba1">
+                        <div class="col-md-12">
+                            <div class="col xs-12 col-md-12 text-black">  
+                                {{ form_label(form.programas) }}
+                            </div>
+                            <div class=" col xs-12 col-md-12 error-form">  
+                                {{ form_errors(form.programas) }}
+                            </div>
+                            <div class="col xs-12 col-md-12 error">  
+                                {% for child in form.programas %}
+                                    <div class="col-md-4">
+                                        <label class="checkbox text-black">
+                                            {{ form_widget(child) }}
+                                            {{ child.vars.label }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-md-12 familiar">
                             <div class="col-md-12">
                                 <div>
                                     <hr style="border-color:white;">
@@ -231,12 +226,22 @@
                                     <h4><b>INFORMACION FAMILIAR Y PERSONAL</b></h4>
                                 </div>
                             </div>
-
                             <div class="col-md-4">
-                                <div class="col-md-12">
-                                    {{ form_label(form.idestadocivil) }}
+                                <div class="col-md-12 text-black">
+                                    {{ form_label(form.idparentesco) }}
+                                </div>
+                                <div class="col-md-12 error-form">
+                                    {{ form_errors(form.idparentesco) }}
                                 </div>
                                 <div class="col-md-12">
+                                    {{ form_widget(form.idparentesco) }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="col-md-12 text-black">
+                                    {{ form_label(form.idestadocivil) }}
+                                </div>
+                                <div class="col-md-12 error-form">
                                     {{ form_errors(form.idestadocivil) }}
                                 </div>
                                 <div class="col-md-12">
@@ -244,10 +249,10 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="col-md-12">
+                                <div class="col-md-12 text-black">
                                     {{ form_label(form.idingreso) }}
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 error-form">
                                     {{ form_errors(form.idingreso) }}
                                 </div>
                                 <div class="col-md-12">
@@ -255,10 +260,10 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="col-md-12">
+                                <div class="col-md-12 text-black">
                                     {{ form_label(form.idpersonacargo) }}
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 error-form">
                                     {{ form_errors(form.idpersonacargo) }}
                                 </div>
                                 <div class="col-md-12">
@@ -266,10 +271,10 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="col-md-12">
+                                <div class="col-md-12 text-black">
                                     {{ form_label(form.idsituacionvivienda) }}
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 error-form">
                                     {{ form_errors(form.idsituacionvivienda) }}
                                 </div>
                                 <div class="col-md-12">
@@ -277,10 +282,10 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="col-md-12">
+                                <div class="col-md-12 text-black">
                                     {{ form_label(form.idmotivodeuda) }}
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 error-form">
                                     {{ form_errors(form.idmotivodeuda) }}
                                 </div>
                                 <div class="col-md-12">
@@ -288,32 +293,32 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="col-md-12">
+                                <div class="col-md-12 text-black">
                                     {{ form_label(form.cantidadesbeneficio) }}
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 error-form">
                                     {{ form_errors(form.cantidadesbeneficio) }}
                                 </div>
                                 <div class="col-md-12">
                                     {{ form_widget(form.cantidadesbeneficio) }}
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="col-md-12 text-black">
                                     {{ form_label(form.idconceptovisita) }}
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 error-form">
                                     {{ form_errors(form.idconceptovisita) }}
                                 </div>
                                 <div class="col-md-12">
                                     {{ form_widget(form.idconceptovisita) }}
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="col-md-12 text-black">
                                     {{ form_label(form.idafiliadodibie) }}
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 error-form">
                                     {{ form_errors(form.idafiliadodibie) }}
                                 </div>
                                 <div class="col-md-12">
@@ -321,10 +326,10 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="col-md-12">
+                                <div class="col-md-12 text-black">
                                     {{ form_label(form.documentoBeneficiarioFinal) }}
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 error-form">
                                     {{ form_errors(form.documentoBeneficiarioFinal) }}
                                 </div>
                                 <div class="col-md-12">
@@ -332,10 +337,10 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="col-md-12">
+                                <div class="col-md-12 text-black">
                                     {{ form_label(form.nombreBeneficiarioFinal) }}
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 error-form">
                                     {{ form_errors(form.nombreBeneficiarioFinal) }}
                                 </div>
                                 <div class="col-md-12">
@@ -343,19 +348,19 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="col-md-12">
+                                <div class="col-md-12 text-black">
                                     {{ form_label(form.fotoFile) }}
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 error-form">
                                     {{ form_errors(form.fotoFile) }}
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 text-black">
                                     {{ form_widget(form.fotoFile) }}
                                 </div>
                             </div>
                         </div>
 
-                        <div class="prueba">
+                        <div class="institucional">
                             <div class="col-md-12">
                                 <div >
                                     <hr style="border-color:white;">
@@ -363,10 +368,10 @@
                                     <h4><b>INFORMACION INSTITUCIONAL</b></h4></div></div>
 
                             <div class="col-md-6">
-                                <div class="col-md-12">
+                                <div class="col-md-12 text-black">
                                     {{ form_label(form.idpoblacionbeneficia) }}
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 error-form">
                                     {{ form_errors(form.idpoblacionbeneficia) }}
                                 </div>
                                 <div class="col-md-12">
@@ -374,10 +379,10 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="col-md-12">
+                                <div class="col-md-12 text-black">
                                     {{ form_label(form.idviabilidadplaneacion) }}
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 error-form">
                                     {{ form_errors(form.idviabilidadplaneacion) }}
                                 </div>
                                 <div class="col-md-12">
@@ -385,10 +390,10 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="col-md-12">
+                                <div class="col-md-12 text-black">
                                     {{ form_label(form.idzonaubicacion) }}
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 error-form">
                                     {{ form_errors(form.idzonaubicacion) }}
                                 </div>
                                 <div class="col-md-12">
@@ -396,10 +401,10 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="col-md-12">
+                                <div class="col-md-12 text-black">
                                     {{ form_label(form.idcantidadesbeneficioinst) }}
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 error-form">
                                     {{ form_errors(form.idcantidadesbeneficioinst) }}
                                 </div>
                                 <div class="col-md-12">
@@ -410,8 +415,22 @@
 
                         </div>
                     </div>
-
-                    {{ form(form) }}
+                    <br>
+                    <br>
+                    <div class="col-md-12 text-left">
+                        <div class="col-md-12 text-black">
+                            {{ form_label(form.curriculum) }}
+                        </div>
+                        <div class="col-md-12 error-form">
+                            {{ form_errors(form.curriculum) }}
+                        </div>
+                        <div class="col-md-12 text-black">
+                            {{ form_widget(form.curriculum) }}
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        {{ form(form) }}
+                    </div>
                 </div>
             </div>
             {{ form_end(form) }}

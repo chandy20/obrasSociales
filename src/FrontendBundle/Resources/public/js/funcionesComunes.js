@@ -1,6 +1,7 @@
 $(function () {
-    $(".prueba").fadeIn();
-    $(".prueba1").fadeOut();
+    $(".institucional").fadeOut();
+    $(".familiar").fadeOut();
+    $(".funcionario").fadeOut();
     mostrarFormulario();
 })
 
@@ -8,14 +9,16 @@ function mostrarFormulario() {
     var tipo_solicitud = $("#frontendbundle_solicitudes_idtiposolicitud").val();
     if (tipo_solicitud != "") {
         if (tipo_solicitud == 1) {
-            $(".prueba").fadeOut();
+            $(".institucional").fadeOut();
         } else {
-            $(".prueba").fadeIn();
+            $(".institucional").fadeIn();
         }
         if (tipo_solicitud == 2) {
-            $(".prueba1").fadeOut();
+            $(".familiar").fadeOut();
+            $(".funcionario").fadeOut();
         } else {
-            $(".prueba1").fadeIn();
+            $(".familiar").fadeIn();
+            $(".funcionario").fadeIn();
         }
     }
 }

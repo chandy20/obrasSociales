@@ -95,7 +95,7 @@ class Solicitudes {
     /**
      * @var string
      *
-     * @ORM\Column(name="SolicitudDescripcion", type="string", length=3000, nullable=false)
+     * @ORM\Column(name="SolicitudDescripcion", type="text", nullable=false)
      */
     private $solicituddescripcion;
 
