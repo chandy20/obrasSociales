@@ -11,10 +11,10 @@ use Sonata\AdminBundle\Show\ShowMapper;
 class SolicitudesAdmin extends AbstractAdmin {
 
     protected function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection) {
-         $collection->remove('delete'); 
-         $collection->remove('create'); 
+        $collection->remove('delete');
+        $collection->remove('create');
     }
-    
+
     /**
      * @param DatagridMapper $datagridMapper
      */
@@ -129,12 +129,45 @@ class SolicitudesAdmin extends AbstractAdmin {
                 ->add('idseccional', null, ["label" => "Seccional"])
                 ->add('totalPuntaje', null, ["label" => "Puntaje total", 'required' => false])
                 ->add('concepto', null, ["label" => "Concepto Previo"])
-                ->add('otorga', null, ["label" => "Otorga Beneficio?"])
-                ->add('ValorBeneficio', null, ["label" => "valor beneficio:", 'required' => false])
-                ->add('TiempoBeneficio', null, ["label" => "Tiempo del Beneficio"])
-                ->add('Acta', null, ["label" => "Numero de Acta:"])
-
+                ->add('conceptoFinal', null, ["label" => "Concepto Junta"])
+                ->add('cantidadSolicitada', null, ["label" => "Cantidad solicitada", 'required' => false])
+                ->add('cantidadAprobada', null, ["label" => "Cantidad Aprobada", 'required' => false])
+                ->add('programas', null, ["label" => "Programas", 'required' => false])
         ;
+    }
+
+    public function getExportFields() {
+        return array(
+            "Fecha de la Solicitud" => 'solicitudfecha',
+            "Cédula del Solicitante" => 'solicitudcedulasolicita',
+            "Nombre del Solicitante" => 'solicitudnombresolicita',
+            "Parentesco con el Solicitante" => 'idparentesco',
+            "Cédula Funcionario Policial" => 'solicitudcedulafuncionario',
+            "Grado Funcionario Policial" => 'idgrado',
+            "Dirección Funcionario" => 'solicituddireccionfuncionario',
+            "Teléfono Funcionario" => 'solicitudtelefonosfuncionario',
+            "Nombre del Funcionario" => 'solicitudnombrefuncionario',
+            "Antiguedad Funcionario" => 'antiguedad',
+            "Descripción de la Solicitud" => 'solicituddescripcion',
+            "Tipo de Solicitud" => 'idtiposolicitud',
+            "Estado Civil" => 'idestadocivil',
+            "Ingresos" => 'idingreso',
+            "Cantidad de Personas a Cargo" => 'idpersonacargo',
+            "Situación de Vivienda" => 'idsituacionvivienda',
+            "Motivo Deuda" => 'idmotivodeuda',
+            "Cantidad de beneficios recibidos por AOS - UNIDAD" => 'idcantidadesbeneficioinst',
+            "Afiliado a DIBIE?" => 'idafiliadodibie',
+            "Cantidad de Poblacion a Beneficiar" => 'idpoblacionbeneficia',
+            "Viabilidad Planeación" => 'idviabilidadplaneacion',
+            "Zona de Ubicacion" => 'idzonaubicacion',
+            "Concepto Visita Domiciliaria" => 'idconceptovisita',
+            "Seccional" => 'idseccional',
+            "Puntaje total" => 'totalPuntaje',
+            "Concepto Previo" => 'concepto',
+            "Concepto Junta" => 'conceptoFinal',
+            "Cantidad solicitada" => 'cantidadSolicitada',
+            "Cantidad Aprobada" => 'cantidadAprobada',
+        );
     }
 
     /**
@@ -142,7 +175,6 @@ class SolicitudesAdmin extends AbstractAdmin {
      */
     protected function configureShowFields(ShowMapper $showMapper) {
         $showMapper
-                ->add('id')
                 ->add('solicitudfecha', null, ["label" => "Fecha de la Solicitud"])
                 ->add('solicitudcedulasolicita', null, ["label" => "Cedula del Solicitante"])
                 ->add('solicitudnombresolicita', null, ["label" => "Nombre del Solicitante"])
@@ -168,12 +200,11 @@ class SolicitudesAdmin extends AbstractAdmin {
                 ->add('idconceptovisita', null, ["label" => "Concepto Visita Domiciliaria"])
                 ->add('idseccional', null, ["label" => "Seccional"])
                 ->add('totalPuntaje', null, ["label" => "Puntaje total", 'required' => false])
-                ->add('solicitudconceptopre', null, ["label" => "Concepto Previo"])
-                ->add('otorga', null, ["label" => "Otorga Beneficio?:"])
-                ->add('ValorBeneficio', null, ["label" => "valor beneficio:", 'required' => false])
-                ->add('TiempoBeneficio', null, ["label" => "Tiempo del Beneficio:"])
-                ->add('Acta', null, ["label" => "Numero de Acta:"])
-        ;
+                ->add('concepto', null, ["label" => "Concepto Previo"])
+                ->add('conceptoFinal', null, ["label" => "Concepto Junta"])
+                ->add('cantidadSolicitada', null, ["label" => "Cantidad solicitada", 'required' => false])
+                ->add('cantidadAprobada', null, ["label" => "Cantidad Aprobada", 'required' => false])
+                ->add('programas', null, ["label" => "Programas", 'required' => false]);
     }
 
 }
