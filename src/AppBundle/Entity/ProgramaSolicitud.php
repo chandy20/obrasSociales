@@ -18,7 +18,7 @@ class ProgramaSolicitud {
     }
     
     public function __toString() {
-        return "";
+        return $this->programa->getProgramanombre();
     }
 
     /**

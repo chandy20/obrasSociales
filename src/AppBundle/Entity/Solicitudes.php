@@ -98,6 +98,20 @@ class Solicitudes {
      * @ORM\Column(name="SolicitudDescripcion", type="text", nullable=false)
      */
     private $solicituddescripcion;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="cantidad_solicitada", type="integer", nullable=false)
+     */
+    private $cantidadSolicitada;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="cantidad_aprobada", type="integer", nullable=false)
+     */
+    private $cantidadAprobada;
 
     /**
      * @var \Ingresos
@@ -369,7 +383,7 @@ class Solicitudes {
     
     
     /**
-     * @var \antiguedad
+     * @var \concepto
      *
      * @ORM\ManyToOne(targetEntity="Concepto")
      * @ORM\JoinColumns({
@@ -377,6 +391,16 @@ class Solicitudes {
      * })
      */
     private $concepto;
+    
+    /**
+     * @var \concepto
+     *
+     * @ORM\ManyToOne(targetEntity="Concepto")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="concepto_final_id", referencedColumnName="id")
+     * })
+     */
+    private $conceptoFinal;
 
     /**
      * @var string
@@ -1296,5 +1320,77 @@ class Solicitudes {
     public function getConcepto()
     {
         return $this->concepto;
+    }
+
+    /**
+     * Set cantidadSolicitada
+     *
+     * @param integer $cantidadSolicitada
+     *
+     * @return Solicitudes
+     */
+    public function setCantidadSolicitada($cantidadSolicitada)
+    {
+        $this->cantidadSolicitada = $cantidadSolicitada;
+
+        return $this;
+    }
+
+    /**
+     * Get cantidadSolicitada
+     *
+     * @return integer
+     */
+    public function getCantidadSolicitada()
+    {
+        return $this->cantidadSolicitada;
+    }
+
+    /**
+     * Set cantidadAprobada
+     *
+     * @param integer $cantidadAprobada
+     *
+     * @return Solicitudes
+     */
+    public function setCantidadAprobada($cantidadAprobada)
+    {
+        $this->cantidadAprobada = $cantidadAprobada;
+
+        return $this;
+    }
+
+    /**
+     * Get cantidadAprobada
+     *
+     * @return integer
+     */
+    public function getCantidadAprobada()
+    {
+        return $this->cantidadAprobada;
+    }
+
+    /**
+     * Set conceptoFinal
+     *
+     * @param \AppBundle\Entity\Concepto $conceptoFinal
+     *
+     * @return Solicitudes
+     */
+    public function setConceptoFinal(\AppBundle\Entity\Concepto $conceptoFinal = null)
+    {
+        $this->conceptoFinal = $conceptoFinal;
+
+        return $this;
+    }
+
+    /**
+     * Get conceptoFinal
+     *
+     * @return \AppBundle\Entity\Concepto
+     */
+    public function getConceptoFinal()
+    {
+        return $this->conceptoFinal;
     }
 }

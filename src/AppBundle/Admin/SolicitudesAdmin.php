@@ -46,10 +46,10 @@ class SolicitudesAdmin extends AbstractAdmin {
                 ->add('idseccional', null, ["label" => "Seccional"])
                 ->add('totalPuntaje', null, ["label" => "Puntaje total", 'required' => false])
                 ->add('concepto', null, ["label" => "Concepto Previo"])
-                ->add('otorga', null, ["label" => "Otorga Beneficio?:"])
-                ->add('ValorBeneficio', null, ["label" => "valor beneficio:", 'required' => false])
-                ->add('TiempoBeneficio', null, ["label" => "Tiempo del Beneficio:"])
-                ->add('Acta', null, ["label" => "Numero de Acta:"])
+                ->add('conceptoFinal', null, ["label" => "Concepto Junta"])
+                ->add('otorga', null, ["label" => "Otorga Beneficio"])
+                ->add('cantidadSolicitada', null, ["label" => "Cantidad solicitada", 'required' => false])
+                ->add('cantidadAprobada', null, ["label" => "Cantidad Aprobada", 'required' => false])
         ;
     }
 
@@ -58,7 +58,6 @@ class SolicitudesAdmin extends AbstractAdmin {
      */
     protected function configureListFields(ListMapper $listMapper) {
         $listMapper
-                ->add('id')
                 ->add('solicitudfecha', null, ["label" => "Fecha de la Solicitud"])
                 ->add('solicitudcedulasolicita', null, ["label" => "Cedula del Solicitante"])
                 ->add('solicitudnombresolicita', null, ["label" => "Nombre del Solicitante"])
@@ -85,10 +84,10 @@ class SolicitudesAdmin extends AbstractAdmin {
                 ->add('idseccional', null, ["label" => "Seccional"])
                 ->add('totalPuntaje', null, ["label" => "Puntaje total", 'required' => false])
                 ->add('concepto', null, ["label" => "Concepto Previo"])
-                ->add('otorga', null, ["label" => "Otorga Beneficio?:"])
-                ->add('ValorBeneficio', null, ["label" => "valor beneficio:", 'required' => false])
-                ->add('TiempoBeneficio', null, ["label" => "Tiempo del Beneficio:"])
-                ->add('Acta', null, ["label" => "Numero de Acta:"])
+                ->add('conceptoFinal', null, ["label" => "Concepto Junta"])
+                ->add('cantidadSolicitada', null, ["label" => "Cantidad solicitada", 'required' => false])
+                ->add('cantidadAprobada', null, ["label" => "Cantidad Aprobada", 'required' => false])
+                ->add('programas', null, ["label" => "Programas", 'required' => false])
                 ->add('_action', null, array(
                     'actions' => array(
                         'show' => array(),

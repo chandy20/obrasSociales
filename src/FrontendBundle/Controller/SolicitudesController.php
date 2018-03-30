@@ -114,23 +114,26 @@ class SolicitudesController extends Controller {
 
 
             if ($puntaje >= 60) {
-                $concepto = $em->getRepository("AppBundle:Concepto")->findOneBy(["nombre" => "Pre aprovado"]);
+                $concepto = $em->getRepository("AppBundle:Concepto")->findOneBy(["id" => 2]);
             } else if ($puntaje <= 40) {
-                $concepto = $em->getRepository("AppBundle:Concepto")->findOneBy(["nombre" => "Rechazado"]);
+                $concepto = $em->getRepository("AppBundle:Concepto")->findOneBy(["id" => 4]);
             } else if ($puntaje <= 59 and $puntaje >= 45) {
-                $concepto = $em->getRepository("AppBundle:Concepto")->findOneBy(["nombre" => "Análisis junta"]);
+                $concepto = $em->getRepository("AppBundle:Concepto")->findOneBy(["id" => 3]);
             }
             $entity->setConcepto($concepto);
             $conceptoJunta = new Conceptosjunta();
             $conceptoJunta->setSolicitud($entity);
             $em->persist($conceptoJunta);
+            $cantidadSolicitada = 0;
             foreach ($entity->getProgramas() as $programaSolicitud) {
                 $programaConcepto = new ProgramaConcepto();
                 $programaConcepto->setConceptoJunta($conceptoJunta);
                 $programaConcepto->setPrograma($programaSolicitud->getPrograma());
                 $programaConcepto->setAprobado(false);
                 $em->persist($programaConcepto);
+                $cantidadSolicitada += $programaSolicitud->getPrograma()->getValorMes();
             }
+            $entity->setCantidadSolicitada($cantidadSolicitada);
             $em->persist($entity);
             $em->flush();
 

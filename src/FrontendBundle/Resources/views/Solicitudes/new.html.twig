@@ -16,7 +16,7 @@
             </div>
             {{ form_start(form) }}
             <div class="row">
-                <div class="f1 col-md-20 form-box">
+                <div class="f1 col-md-12 form-box">
                     <h3><font color="#054e96"> Formulario de Solicitudes</font></h3>
 
                     <div align="float:center"><img src="\web\bundles\frontend\images\logo.png" height="160" width="200"></div>
@@ -207,7 +207,7 @@
                             <div class=" col xs-12 col-md-12 error-form">  
                                 {{ form_errors(form.programas) }}
                             </div>
-                            <div class="col xs-12 col-md-12 error">  
+                            <div class="col xs-12 col-md-12 text-left">  
                                 {% for child in form.programas %}
                                     <div class="col-md-4">
                                         <label class="checkbox text-black">
