@@ -49,7 +49,7 @@ class SolicitudesType extends AbstractType {
                 ->add('solicitudcedulasolicita', null, [
                     'required' => false,
                     'constraints' => $constraint,
-                    "label" => "Cedula del Solicitante",
+                    "label" => "Cédula del Solicitante",
                     'attr' => array('class' => 'form-control ', 'onkeyup' => "soloNumeros(this)", 'placeholder' => "Documento de identidad")]
                 )
                 ->add('emailSolicitante', null, [
@@ -108,7 +108,7 @@ class SolicitudesType extends AbstractType {
                 )
                 ->add('solicituddireccionfuncionario', null, [
                     'required' => false,
-                    "label" => "Direccion Funcionario",
+                    "label" => "Dirección Funcionario",
                     'attr' => array('class' => 'form-control',
                         'placeholder' => "Digita Direccion del Funcionario")]
                 )
@@ -137,7 +137,7 @@ class SolicitudesType extends AbstractType {
                     'constraints' => $constraint,
                     "label" => "Descripción breve de la solicitud y de la situación económica",
                     'attr' => array('class' => 'form-control',
-                        'placeholder' => "Digita una descripción para su Solicitud")]
+                        'placeholder' => "Digite una descripción para su Solicitud")]
                 )
                 ->add('idestadocivil', null, [
                     "placeholder" => "Seleccione",
@@ -156,7 +156,7 @@ class SolicitudesType extends AbstractType {
                 )
                 ->add('idsituacionvivienda', null, [
                     "placeholder" => "Seleccione",
-                    "label" => "Situacion de Vivienda",
+                    "label" => "Situación de Vivienda",
                     'attr' => array('class' => 'form-control')]
                 )
                 ->add('idmotivodeuda', null, [

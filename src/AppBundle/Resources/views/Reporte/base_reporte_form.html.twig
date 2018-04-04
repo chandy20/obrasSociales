@@ -70,7 +70,7 @@
     <link rel="stylesheet" href="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/css/sweetalert.css">
     <script src="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/js/sweetalert.js"></script>
     <script src="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/js/serializeObject.js"></script>
-    <script src="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/js/loader.js"></script>
+    <script src="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/js/jscharts.js"></script>
     <form id="formulario_reporte"
           {% if sonata_admin.adminPool.getOption('form_type') == 'horizontal' %}class="form-horizontal"{% endif %}
           role="form"
@@ -328,7 +328,7 @@
 
 </form>
 <script>
-    $(function(){
+    $(function () {
         $("div.content-wrapper").addClass("col-md-10");
     })
     function marcarPestana(valor) {

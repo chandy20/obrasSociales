@@ -1,23 +1,42 @@
 {%if movimientos %}
+    <style>
+        .titulo{
+            height: 40px; 
+            background-color: #5AC7FF;
+        }
+        .elemento1{
+            background-color: gray;
+            height: 20px; 
+        }
+        .elemento2{
+            height: 20px; 
+            background-color: white;
+        }
+    </style>
     <div class="col-md-12">
         <br>
         <br>
         <div class="col-md-12 text-center">
-            <div class="col-md-3">Solicitante</div>
-            <div class="col-md-3">titular</div>
-            <div class="col-md-3">Seccional</div>
-            <div class="col-md-3">Beneficio entregado</div>
+            <div class="col-md-3 titulo">Solicitante</div>
+            <div class="col-md-3 titulo">titular</div>
+            <div class="col-md-3 titulo">Seccional</div>
+            <div class="col-md-3 titulo">Beneficio entregado</div>
+            {%set cuenta = 1%}
             {%for movimiento in movimientos%}
-                <div class="col-md-3">{{movimiento.concepto.solicitud.solicitudnombresolicita}}</div>
-                <div class="col-md-3">{{movimiento.concepto.solicitud.solicitudnombrefuncionario}}</div>
-                <div class="col-md-3">{{movimiento.seccional}}</div>
-                <div class="col-md-3">{{movimiento.valor}}</div>
+                <div class="col-md-3 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{movimiento.concepto.solicitud.solicitudnombresolicita}}</div>
+                <div class="col-md-3 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{movimiento.concepto.solicitud.solicitudnombrefuncionario}}</div>
+                <div class="col-md-3 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{movimiento.seccional}}</div>
+                <div class="col-md-3 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{movimiento.valor}}</div>
+                {%set cuenta = cuenta + 1%}
             {%endfor%}
         </div>
-        <br>
-        <br>
-        <br>
     </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 {%else%}
     <div>No se encontró información con los parametros de busqueda.</div>
 {%endif%}

@@ -1,21 +1,40 @@
 {%if datos %}
+    <style>
+        .titulo{
+            height: 40px; 
+            background-color: #5AC7FF;
+        }
+        .elemento1{
+            background-color: gray;
+            height: 20px; 
+        }
+        .elemento2{
+            height: 20px; 
+            background-color: white;
+        }
+    </style>
     <div class="col-md-12">
         <br>
         <br>
         <div class="col-md-12 text-center">
-            <div class="col-md-4">seccional</div>
-            <div class="col-md-4">Valor</div>
-            <div class="col-md-4">Beneficios entregados</div>
+            <div class="col-md-4 titulo">seccional</div>
+            <div class="col-md-4 titulo">Valor</div>
+            <div class="col-md-4 titulo">Beneficios entregados</div>
+            {%set cuenta = 1%}
             {%for key, dato in datos%}
-                <div class="col-md-4">{{key}}</div>
-                <div class="col-md-4">{{dato.valor}}</div>
-                <div class="col-md-4">{{dato.movimientos}}</div>
+                <div class="col-md-4 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{key}}</div>
+                <div class="col-md-4 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{dato.valor}}</div>
+                <div class="col-md-4 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{dato.movimientos}}</div>
+                {%set cuenta = cuenta + 1%}
             {%endfor%}
         </div>
-        <br>
-        <br>
-        <br>
     </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 {%else%}
     <div>No se encontró información con los parametros de busqueda.</div>
 {%endif%}

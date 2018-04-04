@@ -72,6 +72,13 @@ class ConceptosjuntaAdminController extends CRUDController {
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
                 $submittedObject = $form->getData();
+                $solicitud = $submittedObject->getSolicitud();
+                $solicitud->setCantidadAprobada($submittedObject->getConceptojuntavalortotalb());
+                $concepto = $this->em->getRepository("AppBundle:Concepto")->findOneById(4);
+                if ($submittedObject->getAprobado()) {
+                    $concepto = $this->em->getRepository("AppBundle:Concepto")->findOneById(1);
+                }
+                $solicitud->setConceptoFinal($concepto);
                 $this->admin->setSubject($submittedObject);
 
                 try {
@@ -429,13 +436,13 @@ class ConceptosjuntaAdminController extends CRUDController {
                     ->setParameter("seccional", $form->seccional4);
         }
         if ($form->programa2) {
-             $query->join("s.programas", "sp")
+            $query->join("s.programas", "sp")
                     ->join("sp.programa", "p")
                     ->andWhere("p.id = :programa")
                     ->setParameter("programa", $form->programa2);
         }
         $movimientos = $query->getQuery()->getResult();
-         $html = $this->renderView('AppBundle:Reporte:reporte_movimientos.html.twig', [
+        $html = $this->renderView('AppBundle:Reporte:reporte_movimientos.html.twig', [
             'movimientos' => $movimientos
         ]);
         return $html;

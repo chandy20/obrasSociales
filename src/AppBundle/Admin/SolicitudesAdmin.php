@@ -13,6 +13,7 @@ class SolicitudesAdmin extends AbstractAdmin {
     protected function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection) {
         $collection->remove('delete');
         $collection->remove('create');
+        $collection->remove('edit');
     }
 
     /**
@@ -85,7 +86,7 @@ class SolicitudesAdmin extends AbstractAdmin {
                 ->add('totalPuntaje', null, ["label" => "Puntaje total", 'required' => false])
                 ->add('concepto', null, ["label" => "Concepto Previo"])
                 ->add('conceptoFinal', null, ["label" => "Concepto Junta"])
-                ->add('cantidadSolicitada', null, ["label" => "Cantidad solicitada", 'required' => false])
+                ->add('cantidadSolicitada', null, ["label" => "Cantidad solicitada (Mes)", 'required' => false])
                 ->add('cantidadAprobada', null, ["label" => "Cantidad Aprobada", 'required' => false])
                 ->add('programas', null, ["label" => "Programas", 'required' => false])
                 ->add('_action', null, array(

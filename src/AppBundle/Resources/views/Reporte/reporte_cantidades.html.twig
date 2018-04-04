@@ -1,54 +1,91 @@
 {%if datos %}
-<br>
-<br>
-<div id="chart_div"></div>
-<div class="col-md-12">
-    <div class="col-md-2"></div>
-    <div class="col-md-8 text-center">
-        <div class="col-md-8">Programa</div>
-        <div class="col-md-4">Cantidad</div>
-        {%for key, dato in datos%}
-            <div class="col-md-8">{{key}}</div>
-            <div class="col-md-4">{{dato.total}}</div>
-        {%endfor%}
-    </div>
-    <div class="col-md-2"></div>
-</div>
-<script type="text/javascript">
-    google.charts.load('current', {'packages': ['corechart']});
-    google.charts.setOnLoadCallback(drawChart);
-    function drawChart() {
-        google.charts.load('current', {packages: ['corechart', 'bar']});
-        google.charts.setOnLoadCallback(drawBasic);
-        function drawBasic() {
-            var data = google.visualization.arrayToDataTable([                
-                                ['Programa', 'Cantidad', ],
-                    {%for k, dato in datos%}
-                        {% if k < datos|length%}
-                                ['{{k}}', {{dato.total}} ],
-                            {%else%}
-                                ['{{k}}', {{dato.total}} ]
-                            {%endif%}
-                    {%endfor%}
-                    ]);
-
-            var options = {
-                title: 'Cantidad',
-                chartArea: {width: '50%'},
-                hAxis: {
-                    title: 'Total',
-                    minValue: 0
-                },
-                vAxis: {
-                    title: 'Programa'
-                }
-            };
-            var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
-            chart.draw(data, options);
+    <style>
+        .titulo{
+            height: 40px; 
+            background-color: #5AC7FF;
         }
-    }
-</script>
+        .elemento1{
+            background-color: gray;
+            height: 20px; 
+        }
+        .elemento2{
+            height: 20px; 
+            background-color: white;
+        }
+    </style>
+    <div class="text-center" id="chart_div"></div>
+    <br>
+    <br>
+    <div class="col-md-12">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 text-center">
+            <div class="col-md-6 titulo">Seccional</div>
+            <div class="col-md-2 titulo">Radicadas</div>
+            <div class="col-md-2 titulo">Aprobadas</div>
+            <div class="col-md-2 titulo">Rechazadas</div>
+            {%set cuenta = 1%}
+            {%for key, dato in datos%}
+                <div class="col-md-8 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{key}}</div>
+                <div class="col-md-4 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{dato.total}}</div>
+                {%set cuenta = cuenta +1 %}
+            {%endfor%}
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <script type="text/javascript">
+        var myData = new Array(
+                ['Asia', 437, 520, 150],
+                ['Europe', 322, 390, 180],
+                ['North America', 233, 286, 350],
+                ['Latin America', 110, 162, 65],
+                ['Africa', 34, 49, 99],
+                ['Middle East', 20, 31, 40],
+                ['Aus/Oceania', 19, 22, 35]
+                );
+        var myChart = new JSChart('chart_div', 'bar');
+        myChart.setDataArray(myData);
+        myChart.setTitle('Cantidad de solicitudes por seccional');
+        myChart.setTitleColor('#3F779E');
+        myChart.setAxisNameX('');
+        myChart.setAxisNameY('');
+        myChart.setAxisNameFontSize(16);
+        myChart.setAxisNameColor('#999');
+        myChart.setAxisValuesAngle(30);
+        myChart.setAxisValuesColor('#777');
+        myChart.setAxisColor('#000000');
+        myChart.setAxisWidth(1);
+        myChart.setBarValuesColor('#2F6D99');
+        myChart.setAxisPaddingTop(60);
+        myChart.setAxisPaddingBottom(60);
+        myChart.setAxisPaddingLeft(45);
+        myChart.setTitleFontSize(11);
+        myChart.setBarColor('#3F779E', 1);
+        myChart.setBarColor('#036C2A', 2);
+        myChart.setBarColor('#FF0000', 3);
+        myChart.setBarBorderWidth(0);
+        myChart.setBarSpacingRatio(50);
+        myChart.setBarOpacity(0.9);
+        myChart.setFlagRadius(6);
+        myChart.setTooltipPosition('nw');
+        myChart.setTooltipOffset(3);
+        myChart.setLegendShow(true);
+        myChart.setLegendPosition('right top');
+        myChart.setLegendForBar(1, 'Radicadas');
+        myChart.setLegendForBar(2, 'Aprobadas');
+        myChart.setLegendForBar(3, 'Rechazadas');
+        myChart.setSize(616, 321);
+        myChart.setGridColor('#C6C6C6');
+        myChart.draw();
+        
+    </script>
+
 {%else%}
     <div>No se encontró información con los parametros de busqueda.</div>
 {%endif%}
-    
