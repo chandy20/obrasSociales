@@ -35,7 +35,7 @@ class FormularioReportesType extends AbstractType {
             'attr' => array('class' => 'form-control')
         ];
         $opcionesSeccional = [
-            'label' => "Seccional ",
+            'label' => "Seccional",
             'mapped' => false,
             'required' => false,
             'class' => 'AppBundle:Seccionales',
@@ -127,6 +127,7 @@ class FormularioReportesType extends AbstractType {
                 ])
                 ->add("tipoSolicitud", EntityType::class, [
                     'mapped' => false,
+                    'label'=> "Tipo de solicitud",
                     'required' => false,
                     'class' => 'AppBundle:Tipossolicitud',
                     'attr' => array(
@@ -139,6 +140,7 @@ class FormularioReportesType extends AbstractType {
                 ])
                 ->add("estadoCivil", EntityType::class, [
                     'mapped' => false,
+                    "label" => "Estado civil",
                     'required' => false,
                     'class' => 'AppBundle:Estadosciviles',
                     'attr' => array(
@@ -151,6 +153,7 @@ class FormularioReportesType extends AbstractType {
                 ])
                 ->add("ingreso", EntityType::class, [
                     'mapped' => false,
+                    'label'=> "Ingresos",
                     'required' => false,
                     'class' => 'AppBundle:Ingresos',
                     'attr' => array(
@@ -163,6 +166,7 @@ class FormularioReportesType extends AbstractType {
                 ])
                 ->add("personasCargo", EntityType::class, [
                     'mapped' => false,
+                    "label" => "Personas a cargo",
                     'required' => false,
                     'class' => 'AppBundle:Personascargo',
                     'attr' => array(
@@ -175,6 +179,7 @@ class FormularioReportesType extends AbstractType {
                 ])
                 ->add("situacionVivienda", EntityType::class, [
                     'mapped' => false,
+                    "label" => "Situación de la vivienda",
                     'required' => false,
                     'class' => 'AppBundle:Situacionesvivienda',
                     'attr' => array(
@@ -187,6 +192,7 @@ class FormularioReportesType extends AbstractType {
                 ])
                 ->add("motivoDeuda", EntityType::class, [
                     'mapped' => false,
+                    "label" => "Motivo de deuda",
                     'required' => false,
                     'class' => 'AppBundle:Motivosdeuda',
                     'attr' => array(
@@ -199,6 +205,7 @@ class FormularioReportesType extends AbstractType {
                 ])
                 ->add("cantidadBeneficio", EntityType::class, [
                     'mapped' => false,
+                    "label" => "Cantidad de beneficios",
                     'required' => false,
                     'class' => 'AppBundle:Cantidadesbeneficio',
                     'attr' => array(
@@ -211,6 +218,7 @@ class FormularioReportesType extends AbstractType {
                 ])
                 ->add("conceptoVisita", EntityType::class, [
                     'mapped' => false,
+                    "label" => "Concepto de visita",
                     'required' => false,
                     'class' => 'AppBundle:Conceptosvisita',
                     'attr' => array(
@@ -223,6 +231,7 @@ class FormularioReportesType extends AbstractType {
                 ])
                 ->add("afiliadoDibie", EntityType::class, [
                     'mapped' => false,
+                    "label" => "Afiliado a DIBIE",
                     'required' => false,
                     'class' => 'AppBundle:Afiliadodibie',
                     'attr' => array(
@@ -235,6 +244,7 @@ class FormularioReportesType extends AbstractType {
                 ])
                 ->add("poblacionBeneficiada", EntityType::class, [
                     'mapped' => false,
+                    "label" => "Población beneficiada",
                     'required' => false,
                     'class' => 'AppBundle:Poblacionbeneficia',
                     'attr' => array(
@@ -246,6 +256,7 @@ class FormularioReportesType extends AbstractType {
                     }
                 ])
                 ->add("viabilidadPlaneacion", EntityType::class, [
+                    "label"=> "Viabilidad planeación",
                     'mapped' => false,
                     'required' => false,
                     'class' => 'AppBundle:Viabilidadplaneacion',
@@ -259,6 +270,7 @@ class FormularioReportesType extends AbstractType {
                 ])
                 ->add("zonaUbicacion", EntityType::class, [
                     'mapped' => false,
+                    "label"=> "Zona de ubicación",
                     'required' => false,
                     'class' => 'AppBundle:Zonasubicacion',
                     'attr' => array(

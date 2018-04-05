@@ -72,6 +72,7 @@ class ConceptosjuntaAdminController extends CRUDController {
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
                 $submittedObject = $form->getData();
+                $submittedObject->setEditado(true);
                 $solicitud = $submittedObject->getSolicitud();
                 $solicitud->setCantidadAprobada($submittedObject->getConceptojuntavalortotalb());
                 $concepto = $this->em->getRepository("AppBundle:Concepto")->findOneById(4);
@@ -80,9 +81,15 @@ class ConceptosjuntaAdminController extends CRUDController {
                 }
                 $solicitud->setConceptoFinal($concepto);
                 $this->admin->setSubject($submittedObject);
-
                 try {
                     $existingObject = $this->admin->update($submittedObject);
+                    if ($existingObject->getAprobado()) {
+                        foreach ($form->get("programasConcepto")->getData() as $programa) {
+                            $programa->setAprobado(true);
+                            $this->em->persist($programa);
+                        }
+                    }
+                    $this->em->flush();
 
                     if ($this->isXmlHttpRequest()) {
                         return $this->renderJson([
@@ -335,13 +342,49 @@ class ConceptosjuntaAdminController extends CRUDController {
         $datos = [];
         foreach ($solicitudes as $solicitud) {
             foreach ($solicitud->getProgramas() as $programa) {
-                if (!array_key_exists($programa->getPrograma()->getProgramanombre(), $datos)) {
-                    $datos[$programa->getPrograma()->getProgramanombre()]["total"] = 1;
+                if (!array_key_exists($solicitud->getIdseccional()->getSeccionalnombre(), $datos)) {
+                    $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["total"] = 1;
+                    $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["aprobadas"] = 0;
+                    $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["rechazadas"] = 0;
+                } else if ($form->programa != "") {
+                    if ($programa->getPrograma()->getId() == $form->programa) {
+                        $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["total"] ++;
+                    }
                 } else {
-                    $datos[$programa->getPrograma()->getProgramanombre()]["total"] ++;
+                    $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["total"] ++;
                 }
             }
         }
+        $query->join("s.conceptoJunta", "cj")
+                ->andWhere("cj.editado = :editado");
+        $queryAprobadas = $query;
+        $queryRechazadas = $query;
+        $queryAprobadas->setParameter("editado", true);
+        $solicitudesAprobadas = $queryAprobadas->getQuery()->getResult();
+        foreach ($solicitudesAprobadas as $solicitud) {
+            foreach ($solicitud->getConceptoJunta() as $concepto) {
+                foreach ($concepto->getProgramasConcepto() as $programaConcepto) {
+                    if ($programaConcepto->getAprobado()) {
+                        if ($form->programa != "") {
+                            if ($programaConcepto->getPrograma()->getId() == $form->programa) {
+                                $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["aprobadas"] ++;
+                            }
+                        } else {
+                            $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["aprobadas"] ++;
+                        }
+                    } else {
+                        if ($form->programa != "") {
+                            if ($programaConcepto->getPrograma()->getId() == $form->programa) {
+                                $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["rechazadas"] ++;
+                            }
+                        } else {
+                            $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["rechazadas"] ++;
+                        }
+                    }
+                }
+            }
+        }
+
         $html = $this->renderView('AppBundle:Reporte:reporte_cantidades.html.twig', [
             'datos' => $datos
         ]);

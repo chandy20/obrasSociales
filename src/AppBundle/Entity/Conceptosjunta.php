@@ -70,7 +70,7 @@ class Conceptosjunta {
     /**
      * @var \Solicitudes
      *
-     * @ORM\ManyToOne(targetEntity="Solicitudes")
+     * @ORM\ManyToOne(targetEntity="Solicitudes", inversedBy="conceptoJunta")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="solicitud_id", referencedColumnName="id")
      * })

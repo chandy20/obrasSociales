@@ -13,6 +13,8 @@
             background-color: white;
         }
     </style>
+    <br>
+    <br>
     <div class="text-center" id="chart_div"></div>
     <br>
     <br>
@@ -24,11 +26,23 @@
             <div class="col-md-2 titulo">Aprobadas</div>
             <div class="col-md-2 titulo">Rechazadas</div>
             {%set cuenta = 1%}
+            {%set total = 0%}
+            {%set aprobadas = 0%}
+            {%set rechazadas = 0%}
             {%for key, dato in datos%}
-                <div class="col-md-8 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{key}}</div>
-                <div class="col-md-4 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{dato.total}}</div>
+                {%set total = total + dato.total%}
+                {%set aprobadas = aprobadas + dato.aprobadas%}
+                {%set rechazadas = rechazadas + dato.rechazadas%}
+                <div class="col-md-6 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{key}}</div>
+                <div class="col-md-2 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{dato.total}}</div>
+                <div class="col-md-2 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{dato.aprobadas}}</div>
+                <div class="col-md-2 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{dato.rechazadas}}</div>
                 {%set cuenta = cuenta +1 %}
             {%endfor%}
+            <div class="col-md-6 titulo">Total</div>
+            <div class="col-md-2 titulo">{{total}}</div>
+            <div class="col-md-2 titulo">{{aprobadas}}</div>
+            <div class="col-md-2 titulo">{{rechazadas}}</div>
         </div>
         <div class="col-md-2"></div>
     </div>
@@ -41,17 +55,17 @@
     <br>
     <script type="text/javascript">
         var myData = new Array(
-                ['Asia', 437, 520, 150],
-                ['Europe', 322, 390, 180],
-                ['North America', 233, 286, 350],
-                ['Latin America', 110, 162, 65],
-                ['Africa', 34, 49, 99],
-                ['Middle East', 20, 31, 40],
-                ['Aus/Oceania', 19, 22, 35]
+                {%for k, registro in datos%}
+                    {%if k == (datos|length -1)%}
+                        ['{{k}}', {{registro.total}}, {{registro.aprobadas}}, {{registro.rechazadas}}]
+                    {%else%}
+                        ['{{k}}', {{registro.total}}, {{registro.aprobadas}}, {{registro.rechazadas}}],
+                    {%endif%}
+                {%endfor%}
                 );
         var myChart = new JSChart('chart_div', 'bar');
         myChart.setDataArray(myData);
-        myChart.setTitle('Cantidad de solicitudes por seccional');
+        myChart.setTitle('Cantidad de programas solicitados por seccional');
         myChart.setTitleColor('#3F779E');
         myChart.setAxisNameX('');
         myChart.setAxisNameY('');

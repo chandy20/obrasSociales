@@ -408,6 +408,11 @@ class Solicitudes {
      * @ORM\Column(name="Acta", type="string", length=45, nullable=true)
      */
     private $Acta;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Conceptosjunta", mappedBy="solicitud" , cascade={"persist"})
+     */
+    private $conceptoJunta;
 
     /**
      * Get id
@@ -1392,5 +1397,39 @@ class Solicitudes {
     public function getConceptoFinal()
     {
         return $this->conceptoFinal;
+    }
+
+    /**
+     * Add conceptoJuntum
+     *
+     * @param \AppBundle\Entity\Conceptosjunta $conceptoJuntum
+     *
+     * @return Solicitudes
+     */
+    public function addConceptoJuntum(\AppBundle\Entity\Conceptosjunta $conceptoJuntum)
+    {
+        $this->conceptoJunta[] = $conceptoJuntum;
+
+        return $this;
+    }
+
+    /**
+     * Remove conceptoJuntum
+     *
+     * @param \AppBundle\Entity\Conceptosjunta $conceptoJuntum
+     */
+    public function removeConceptoJuntum(\AppBundle\Entity\Conceptosjunta $conceptoJuntum)
+    {
+        $this->conceptoJunta->removeElement($conceptoJuntum);
+    }
+
+    /**
+     * Get conceptoJunta
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getConceptoJunta()
+    {
+        return $this->conceptoJunta;
     }
 }
