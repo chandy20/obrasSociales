@@ -109,7 +109,7 @@ class Solicitudes {
     /**
      * @var integer
      *
-     * @ORM\Column(name="cantidad_aprobada", type="integer", nullable=false)
+     * @ORM\Column(name="cantidad_aprobada", type="integer", nullable=true)
      */
     private $cantidadAprobada;
 
