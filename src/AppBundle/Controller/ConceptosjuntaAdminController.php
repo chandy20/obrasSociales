@@ -405,14 +405,33 @@ class ConceptosjuntaAdminController extends CRUDController {
             $query->andWhere("s.solicitudcedulafuncionario = :documentoTitular")
                     ->setParameter("documentoTitular", $form->documentoTitular);
         }
+        if ($form->documentoTitular != "") {
+            $query->andWhere("s.solicitudcedulafuncionario = :documentoTitular")
+                    ->setParameter("documentoTitular", $form->documentoTitular);
+        }
+        if ($form->programa3 != "") {
+            $query->join("s.programas", "sp")
+                    ->join("sp.programa", "p")
+                    ->andWhere("p.id = :programa")
+                    ->setParameter("programa", $form->programa3);
+        }
         $solicitudes = $query->getQuery()->getResult();
         $datos = [];
         foreach ($solicitudes as $solicitud) {
+            foreach ($solicitud->getProgramas() as $programa) {
+                
+            }
             if (!array_key_exists($solicitud->getSolicitudnombrefuncionario(), $datos) && $solicitud->getNombreBeneficiarioFinal()) {
-                $datos[$solicitud->getSolicitudnombrefuncionario()]["beneficiarios"]["datos"]["nombre"][] = $solicitud->getDocumentoBeneficiarioFinal() . " - " . $solicitud->getNombreBeneficiarioFinal();
-                $datos[$solicitud->getSolicitudnombrefuncionario()]["beneficiarios"]["datos"]["seccional"][] = $solicitud->getIdseccional()->getSeccionalnombre();
+                if ($programa->getPrograma()->getId() == $form->programa) {
+                    $datos[$solicitud->getSolicitudnombrefuncionario()]["beneficiarios"]["datos"]["nombre"][] = $solicitud->getDocumentoBeneficiarioFinal() . " - " . $solicitud->getNombreBeneficiarioFinal();
+                    $datos[$solicitud->getSolicitudnombrefuncionario()]["beneficiarios"]["datos"]["seccional"][] = $solicitud->getIdseccional()->getSeccionalnombre();
+                } else {
+                    $datos[$solicitud->getSolicitudnombrefuncionario()]["beneficiarios"]["datos"]["nombre"][] = $solicitud->getDocumentoBeneficiarioFinal() . " - " . $solicitud->getNombreBeneficiarioFinal();
+                    $datos[$solicitud->getSolicitudnombrefuncionario()]["beneficiarios"]["datos"]["seccional"][] = $solicitud->getIdseccional()->getSeccionalnombre();
+                }
             }
         }
+//        var_dump($solicitudes,$datos);die;
         $html = $this->renderView('AppBundle:Reporte:reporte_inscritos.html.twig', [
             'datos' => $datos
         ]);
@@ -431,8 +450,15 @@ class ConceptosjuntaAdminController extends CRUDController {
             $query->andWhere("s.id = :seccional")
                     ->setParameter("seccional", $form->seccional3);
         }
+        if ($form->programa4 != "") {
+            $query->join("s.programas", "sp")
+                    ->join("sp.programa", "p")
+                    ->andWhere("p.id = :programa")
+                    ->setParameter("programa", $form->programa4);
+        }
         $movimientos = $query->getQuery()->getResult();
         $datos = [];
+        $totales = [];
         foreach ($movimientos as $movimiento) {
             if (!array_key_exists($movimiento->getSeccional()->getSeccionalnombre(), $datos)) {
                 $presupuestos = $this->em->getRepository("AppBundle:Presupuestos")->createQueryBuilder('p')
@@ -444,12 +470,16 @@ class ConceptosjuntaAdminController extends CRUDController {
                                 ->getQuery()->getResult();
                 $totalValor = 0;
                 foreach ($presupuestos as $presupuesto) {
-                    $totalValor += $presupuesto->getPresupuestomonto();
+                    if (!in_array($presupuesto->getIdarea()->getAreanombre(), $totales)) {
+                        $totales[$presupuesto->getIdarea()->getAreanombre()] = $presupuesto->getPresupuestomonto();
+                    }else{
+                        $totales[$presupuesto->getIdarea()->getAreanombre()] += $presupuesto->getPresupuestomonto();
+                    }
                 }
-                $datos[$movimiento->getSeccional()->getSeccionalnombre()]["valor"] = $totalValor;
-                $datos[$movimiento->getSeccional()->getSeccionalnombre()]["movimientos"] = $movimiento->getValor();
+                $datos[$movimiento->getSeccional()->getSeccionalnombre() . " " . $movimiento->getPresupuesto()->getIdarea()]["valor"] = $totales[$movimiento->getPresupuesto()->getIdarea()->getAreanombre()];
+                $datos[$movimiento->getSeccional()->getSeccionalnombre() . " " . $movimiento->getPresupuesto()->getIdarea()]["movimientos"] = $movimiento->getValor();
             } else {
-                $datos[$movimiento->getSeccional()->getSeccionalnombre()]["movimientos"] += $movimiento->getValor();
+                $datos[$movimiento->getSeccional()->getSeccionalnombre() . " " . $movimiento->getPresupuesto()->getIdarea()]["movimientos"] += $movimiento->getValor();
             }
         }
         $html = $this->renderView('AppBundle:Reporte:reporte_presupuesto.html.twig', [

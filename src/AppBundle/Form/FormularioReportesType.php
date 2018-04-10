@@ -283,6 +283,8 @@ class FormularioReportesType extends AbstractType {
                 ])
                 ->add("programa", EntityType::class, $opcionesPrograma)
                 ->add("programa2", EntityType::class, $opcionesPrograma)
+                ->add("programa3", EntityType::class, $opcionesPrograma)
+                ->add("programa4", EntityType::class, $opcionesPrograma)
         //dificultad
         ;
     }

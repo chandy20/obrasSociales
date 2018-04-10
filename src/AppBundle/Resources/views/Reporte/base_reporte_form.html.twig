@@ -78,8 +78,7 @@
           action="{% block sonata_form_action_url %}{{ admin.generateUrl(url, {'id': "reporte", 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}{% endblock %}"
           method="POST"
           {% if not sonata_admin.adminPool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
-    {% block sonata_form_attributes %}{% endblock %}
-    >
+    {% block sonata_form_attributes %}{% endblock %}>
     <div id="exTab2" class="container col-md-12">	
         <ul class="nav nav-tabs">
             <li class="active">
@@ -194,42 +193,52 @@
                 </div>
             </div>
             <div class="tab-pane" id="numero">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     {{ form_label(form.fechaInicial2) }}
                     {{ form_errors(form.fechaInicial2) }}
                     {{ form_widget(form.fechaInicial2) }}
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     {{ form_label(form.fechaFinal2) }}
                     {{ form_errors(form.fechaFinal2) }}
                     {{ form_widget(form.fechaFinal2) }}
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     {{ form_label(form.documentoSolicitante) }}
                     {{ form_errors(form.documentoSolicitante) }}
                     {{ form_widget(form.documentoSolicitante) }}
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     {{ form_label(form.documentoTitular) }}
                     {{ form_errors(form.documentoTitular) }}
                     {{ form_widget(form.documentoTitular) }}
                 </div>
+                <div class="col-md-4">
+                    {{ form_label(form.programa3) }}
+                    {{ form_errors(form.programa3) }}
+                    {{ form_widget(form.programa3) }}
+                </div>
             </div>
             <div class="tab-pane" id="presupuesto">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     {{ form_label(form.fechaInicial3) }}
                     {{ form_errors(form.fechaInicial3) }}
                     {{ form_widget(form.fechaInicial3) }}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     {{ form_label(form.fechaFinal3) }}
                     {{ form_errors(form.fechaFinal3) }}
                     {{ form_widget(form.fechaFinal3) }}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     {{ form_label(form.seccional3) }}
                     {{ form_errors(form.seccional3) }}
                     {{ form_widget(form.seccional3) }}
+                </div>
+                <div class="col-md-3">
+                    {{ form_label(form.programa4) }}
+                    {{ form_errors(form.programa4) }}
+                    {{ form_widget(form.programa4) }}
                 </div>
             </div>
             <div class="tab-pane" id="movimientos">

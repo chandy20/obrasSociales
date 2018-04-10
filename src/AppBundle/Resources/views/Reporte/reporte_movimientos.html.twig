@@ -17,16 +17,20 @@
         <br>
         <br>
         <div class="col-md-12 text-center">
-            <div class="col-md-3 titulo">Solicitante</div>
-            <div class="col-md-3 titulo">titular</div>
-            <div class="col-md-3 titulo">Seccional</div>
-            <div class="col-md-3 titulo">Beneficio entregado</div>
+            <div class="col-md-2 titulo">Solicitante</div>
+            <div class="col-md-3 titulo">Titular</div>
+            <div class="col-md-2 titulo">Seccional</div>
+            <div class="col-md-2 titulo">Área</div>
+            <div class="col-md-1 titulo">Meses</div>
+            <div class="col-md-2 titulo">Beneficio entregado</div>
             {%set cuenta = 1%}
             {%for movimiento in movimientos%}
-                <div class="col-md-3 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{movimiento.concepto.solicitud.solicitudnombresolicita}}</div>
+                <div class="col-md-2 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{movimiento.concepto.solicitud.solicitudnombresolicita}}</div>
                 <div class="col-md-3 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{movimiento.concepto.solicitud.solicitudnombrefuncionario}}</div>
-                <div class="col-md-3 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{movimiento.seccional}}</div>
-                <div class="col-md-3 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{movimiento.valor}}</div>
+                <div class="col-md-2 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{movimiento.seccional}}</div>
+                <div class="col-md-2 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{movimiento.presupuesto.idarea}}</div>
+                <div class="col-md-1 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{movimiento.concepto.conceptojuntatiempo}}</div>
+                <div class="col-md-2 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{movimiento.valor}}</div>
                 {%set cuenta = cuenta + 1%}
             {%endfor%}
         </div>
