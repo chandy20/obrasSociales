@@ -3,10 +3,9 @@
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
-class AppKernel extends Kernel
-{
-    public function registerBundles()
-    {
+class AppKernel extends Kernel {
+
+    public function registerBundles() {
         $bundles = array(
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\SecurityBundle\SecurityBundle(),
@@ -17,22 +16,20 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
-	        new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
-
-	    //Sonata Bundle
+            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            //Sonata Bundle
             new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
-
             //Storage & sonata admin
             new \Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
             new \Sonata\AdminBundle\SonataAdminBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Sonata\UserBundle\SonataUserBundle('FOSUserBundle'),
-
             new Application\Sonata\UserBundle\ApplicationSonataUserBundle(),
             new FrontendBundle\FrontendBundle(),
+            new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
@@ -45,8 +42,8 @@ class AppKernel extends Kernel
         return $bundles;
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
-    {
-        $loader->load($this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml');
+    public function registerContainerConfiguration(LoaderInterface $loader) {
+        $loader->load($this->getRootDir() . '/config/config_' . $this->getEnvironment() . '.yml');
     }
+
 }

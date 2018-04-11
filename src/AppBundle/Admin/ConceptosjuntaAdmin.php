@@ -26,6 +26,8 @@ class ConceptosjuntaAdmin extends AbstractAdmin {
         $collection->remove('create');
         $collection->add('reporte', 'reporte');
         $collection->add('dataReporte', 'dataReporte');
+        $collection->add('downloadArchivo',$this->getRouterIdParameter() . '/downloadArchivo');
+        $collection->add('downloadPDF',$this->getRouterIdParameter() . '/downloadPDF');
     }
 
     /**
@@ -55,6 +57,12 @@ class ConceptosjuntaAdmin extends AbstractAdmin {
                         'show' => array(),
                         'edit' => array(),
                         'delete' => array(),
+                        'archivo' => array(
+                            'template' => 'AppBundle:Solicitudes/btn:archivo.html.twig'
+                        ),
+                        'pdf' => array(
+                            'template' => 'AppBundle:Solicitudes/btn:pdf.html.twig'
+                        ),
                     ),
                 ))
         ;

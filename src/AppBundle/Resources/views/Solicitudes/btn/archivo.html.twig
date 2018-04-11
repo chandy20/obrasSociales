@@ -1,0 +1,6 @@
+{% if admin.hasAccess('list') and admin.hasRoute('list') %}
+        <a href="{{ admin.generateURL('downloadArchivo', {id: object.id}) }}" class="btn btn-sm btn-default edit_link" title="Documentación anexa">
+            <i class="fa fa-download" aria-hidden="true"></i>
+            Descargar archivo
+        </a>
+{% endif %}

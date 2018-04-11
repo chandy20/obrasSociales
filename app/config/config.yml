@@ -73,6 +73,20 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+    
+knp_snappy:
+    pdf:
+        enabled: true
+        binary: %kernel.root_dir%/../vendor/wemersonjanuario/wkhtmltopdf-windows/bin/64bit/wkhtmltopdf.exe
+        options:
+           page-size: A4
+           dpi: 300
+           image-quality: 80
+           margin-left: 15mm
+           margin-right: 15mm
+           margin-top: 15mm
+           margin-bottom: 15mm
+           user-style-sheet: %kernel.root_dir%/../web/assets/css/pdf.css
 
 sonata_admin:
     options:

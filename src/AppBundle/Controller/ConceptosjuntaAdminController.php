@@ -6,6 +6,7 @@ use AppBundle\Entity\Conceptosjunta;
 use AppBundle\Entity\Movimiento;
 use AppBundle\Form\FormularioReportesType;
 use DateTime;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
@@ -19,6 +20,7 @@ use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ConceptosjuntaAdminController extends CRUDController {
 
@@ -472,7 +474,7 @@ class ConceptosjuntaAdminController extends CRUDController {
                 foreach ($presupuestos as $presupuesto) {
                     if (!in_array($presupuesto->getIdarea()->getAreanombre(), $totales)) {
                         $totales[$presupuesto->getIdarea()->getAreanombre()] = $presupuesto->getPresupuestomonto();
-                    }else{
+                    } else {
                         $totales[$presupuesto->getIdarea()->getAreanombre()] += $presupuesto->getPresupuestomonto();
                     }
                 }
@@ -519,6 +521,34 @@ class ConceptosjuntaAdminController extends CRUDController {
             'movimientos' => $movimientos
         ]);
         return $html;
+    }
+
+    public function downloadArchivoAction($id) {
+        $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findOneById($id);
+        
+        $path = $this->get('kernel')->getRootDir() . "/../web/upload/";
+        $content = file_get_contents($path . $solicitud->getArchivo());
+
+        $response = new Response();
+
+        //set headers
+        $response->headers->set('Content-Type', 'mime/type');
+        $response->headers->set('Content-Disposition', 'attachment;filename="' . $solicitud->getArchivo());
+
+        $response->setContent($content);
+        return $response;
+    }
+    
+    public function downloadPDFAction($id){
+        $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findById($id);
+        $html = $this->renderView('AppBundle:Solicitudes:pdf.html.twig', array(
+            'solicitud'  => $solicitud
+        ));
+
+        return new PdfResponse(
+            $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+            'file.pdf'
+        );
     }
 
 }
