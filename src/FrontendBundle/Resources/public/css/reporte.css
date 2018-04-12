@@ -1,0 +1,15 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 12/04/2018, 01:26:52 PM
+    Author     : alexandercorrea
+*/
+.borde_azul{
+    border-style: solid;
+    border-width: 5px;
+    border-color: #00B5FF;
+    border-radius: 5px;
+}

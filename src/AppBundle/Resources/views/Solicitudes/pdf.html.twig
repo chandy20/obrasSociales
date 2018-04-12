@@ -1,4 +1,10 @@
-<div class="col-md-12">
-    <div class="col-md-8"><img src="{{app.request.getSchemeAndHttpHost()}}/bundles/frontend/images/logo_pdf.jpg"/></div>
-    <div class="col-md-4"><b>Fecha:</b>{{solicitud.solicitudfecha|date("Y-m-d")}}</div>
-</div>
+{% extends "::base.reporte.html.twig" %}
+{% block body %}
+    <div class="col-xs-12">
+        <div class="col-xs-8"><img src="{{app.request.getSchemeAndHttpHost()}}/bundles/frontend/images/logo_pdf.jpg"/></div>
+        <div class="col-xs-4"><b>Fecha:</b>{{solicitud.solicitudfecha|date("d/m/Y")}}</div>
+        <div class="col-xs-12 borde_azul">
+            sfsdfdsfdsf
+        </div>
+    </div>
+{% endblock %}

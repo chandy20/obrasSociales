@@ -525,7 +525,7 @@ class ConceptosjuntaAdminController extends CRUDController {
 
     public function downloadArchivoAction($id) {
         $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findOneById($id);
-        
+
         $path = $this->get('kernel')->getRootDir() . "/../web/upload/";
         $content = file_get_contents($path . $solicitud->getArchivo());
 
@@ -538,16 +538,18 @@ class ConceptosjuntaAdminController extends CRUDController {
         $response->setContent($content);
         return $response;
     }
-    
-    public function downloadPDFAction($id){
+
+    public function downloadPDFAction($id) {
         $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findOneById($id);
         $html = $this->renderView('AppBundle:Solicitudes:pdf.html.twig', array(
-            'solicitud'  => $solicitud
+            'solicitud' => $solicitud
         ));
-        
+        $session = $this->getRequest()->getSession();
+        $session->save();
         return new PdfResponse(
-            $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
-            'file.pdf'
+                $this->get('knp_snappy.pdf')->getOutputFromHtml($html, [
+                    'encoding' => 'utf-8',
+                ]), 'solicitud.pdf'
         );
     }
 
