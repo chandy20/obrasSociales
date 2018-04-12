@@ -540,11 +540,11 @@ class ConceptosjuntaAdminController extends CRUDController {
     }
     
     public function downloadPDFAction($id){
-        $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findById($id);
+        $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findOneById($id);
         $html = $this->renderView('AppBundle:Solicitudes:pdf.html.twig', array(
             'solicitud'  => $solicitud
         ));
-
+        
         return new PdfResponse(
             $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
             'file.pdf'

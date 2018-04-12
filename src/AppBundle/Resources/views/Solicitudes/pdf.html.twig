@@ -1,1 +1,4 @@
-{{dump(solicitud)}}
+<div class="col-md-12">
+    <div class="col-md-8"><img src="{{app.request.getSchemeAndHttpHost()}}/bundles/frontend/images/logo_pdf.jpg"/></div>
+    <div class="col-md-4"><b>Fecha:</b>{{solicitud.solicitudfecha|date("Y-m-d")}}</div>
+</div>
