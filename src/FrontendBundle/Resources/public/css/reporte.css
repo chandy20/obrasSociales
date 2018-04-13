@@ -9,7 +9,25 @@ and open the template in the editor.
 */
 .borde_azul{
     border-style: solid;
-    border-width: 5px;
+    border-width: 1px;
     border-color: #00B5FF;
-    border-radius: 5px;
+}
+.texto_azul{
+    color: #00B5FF;
+}
+.texto_titulo{
+    font-size: 20px;
+}
+
+.text-bottom{
+    display: table-cell;
+    vertical-align: bottom;
+}
+.foto{
+    width: 90px;
+    height: 120px;
+}
+
+.padding-espacio{
+    padding: 8px;
 }

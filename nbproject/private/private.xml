@@ -3,8 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/ch/proyectos/php/obrasSociales/src/AppBundle/Resources/views/Solicitudes/pdf.html.twig</file>
+            <file>file:/home/ch/proyectos/php/obrasSociales/app/Resources/views/base.html.twig</file>
             <file>file:/home/ch/proyectos/php/obrasSociales/app/config/config.yml</file>
+            <file>file:/home/ch/proyectos/php/obrasSociales/src/FrontendBundle/Resources/views/Default/index.html.twig</file>
+            <file>file:/home/ch/proyectos/php/obrasSociales/src/AppBundle/Controller/ConceptosjuntaAdminController.php</file>
+            <file>file:/home/ch/proyectos/php/obrasSociales/src/AppBundle/Entity/Solicitudes.php</file>
+            <file>file:/home/ch/proyectos/php/obrasSociales/src/AppBundle/Resources/views/Solicitudes/pdf.html.twig</file>
         </group>
     </open-files>
 </project-private>
