@@ -297,7 +297,7 @@ class Solicitudes {
 
     /**
      * @Assert\File(
-     *      maxSize="5242880",
+     *      maxSize="8388608",
      *      mimeTypes = {
      *          "image/png",
      *          "image/jpeg",

@@ -340,6 +340,13 @@ class ConceptosjuntaAdminController extends CRUDController {
                     ->andWhere("p.id = :programa")
                     ->setParameter("programa", $form->programa);
         }
+        if ($form->area != "") {
+            $query->join("s.programas", "sp")
+                    ->join("sp.programa", "p")
+                    ->join("p.idarea", "a")
+                    ->andWhere("a.idArea = :area")
+                    ->setParameter("area", $form->area);
+        }
         $solicitudes = $query->getQuery()->getResult();
         $datos = [];
         foreach ($solicitudes as $solicitud) {
