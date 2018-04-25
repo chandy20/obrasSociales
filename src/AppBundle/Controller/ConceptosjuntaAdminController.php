@@ -230,6 +230,7 @@ class ConceptosjuntaAdminController extends CRUDController {
 
     public function dataReporteAction(Request $request) {
         $form = (array) json_decode($request->request->get('form'));
+        
         $pestana = json_decode($request->request->get('pestana'));
         switch ($pestana) {
             case 1:
@@ -404,8 +405,8 @@ class ConceptosjuntaAdminController extends CRUDController {
     public function cargarDatosInscritos($form) {
         $query = $this->em->getRepository("AppBundle:Solicitudes")->createQueryBuilder('s')
                 ->where("s.solicitudfecha BETWEEN :inicio AND :fin")
-                ->setParameter("inicio", $form->fechaInicial)
-                ->setParameter("fin", $form->fechaFinal);
+                ->setParameter("inicio", $form->fechaInicial2)
+                ->setParameter("fin", $form->fechaFinal2);
         if ($form->documentoSolicitante != "") {
             $query->andWhere("s.solicitudcedulasolicita = :documento")
                     ->setParameter("documento", $form->documentoSolicitante);
@@ -423,6 +424,13 @@ class ConceptosjuntaAdminController extends CRUDController {
                     ->join("sp.programa", "p")
                     ->andWhere("p.id = :programa")
                     ->setParameter("programa", $form->programa3);
+        }
+        if ($form->area2 != "") {
+            $query->join("s.programas", "sp")
+                    ->join("sp.programa", "p")
+                    ->join("p.idarea", "a")
+                    ->andWhere("a.idArea = :area")
+                    ->setParameter("area", $form->area2);
         }
         $solicitudes = $query->getQuery()->getResult();
         $datos = [];

@@ -72,6 +72,19 @@ class FormularioReportesType extends AbstractType {
                                 ->orderBy("p.programanombre", "ASC");
             }
         ];
+        $opcionesArea = [
+            "label" => "Área",
+            'mapped' => false,
+            'required' => false,
+            'class' => 'AppBundle:Areas',
+            'attr' => array(
+                'class' => 'form-control',
+            ),
+            'query_builder' => function(EntityRepository $er) {
+                return $er->createQueryBuilder('a')
+                                ->orderBy("a.areanombre", "ASC");
+            }
+        ];
 
         $builder
                 ->add('fechaInicial', DateType::class, $opcionesFechaInicial)
@@ -127,7 +140,7 @@ class FormularioReportesType extends AbstractType {
                 ])
                 ->add("tipoSolicitud", EntityType::class, [
                     'mapped' => false,
-                    'label'=> "Tipo de solicitud",
+                    'label' => "Tipo de solicitud",
                     'required' => false,
                     'class' => 'AppBundle:Tipossolicitud',
                     'attr' => array(
@@ -153,7 +166,7 @@ class FormularioReportesType extends AbstractType {
                 ])
                 ->add("ingreso", EntityType::class, [
                     'mapped' => false,
-                    'label'=> "Ingresos",
+                    'label' => "Ingresos",
                     'required' => false,
                     'class' => 'AppBundle:Ingresos',
                     'attr' => array(
@@ -256,7 +269,7 @@ class FormularioReportesType extends AbstractType {
                     }
                 ])
                 ->add("viabilidadPlaneacion", EntityType::class, [
-                    "label"=> "Viabilidad planeación",
+                    "label" => "Viabilidad planeación",
                     'mapped' => false,
                     'required' => false,
                     'class' => 'AppBundle:Viabilidadplaneacion',
@@ -268,22 +281,11 @@ class FormularioReportesType extends AbstractType {
                                 ->orderBy("v.viabilidadplaneacionconcepto", "ASC");
                     }
                 ])
-                ->add("area", EntityType::class, [
-                    "label"=> "Área",
-                    'mapped' => false,
-                    'required' => false,
-                    'class' => 'AppBundle:Areas',
-                    'attr' => array(
-                        'class' => 'form-control',
-                    ),
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('a')
-                                ->orderBy("a.areanombre", "ASC");
-                    }
-                ])
+                ->add("area", EntityType::class, $opcionesArea)
+                ->add("area2", EntityType::class, $opcionesArea)
                 ->add("zonaUbicacion", EntityType::class, [
                     'mapped' => false,
-                    "label"=> "Zona de ubicación",
+                    "label" => "Zona de ubicación",
                     'required' => false,
                     'class' => 'AppBundle:Zonasubicacion',
                     'attr' => array(
