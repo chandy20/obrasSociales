@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="ingresos")
  * @ORM\Entity
  */
-class Ingresos
-{
+class Ingresos {
+
     /**
      * @var integer
      *
@@ -42,17 +42,16 @@ class Ingresos
      */
     private $ingresosestado;
 
-    public function __toString(){
-    return (string) $this->getIngresonombre();
-}
+    public function __toString() {
+        return (string) $this->getIngresonombre();
+    }
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -63,8 +62,7 @@ class Ingresos
      *
      * @return Ingresos
      */
-    public function setIngresonombre($ingresonombre)
-    {
+    public function setIngresonombre($ingresonombre) {
         $this->ingresonombre = $ingresonombre;
 
         return $this;
@@ -75,8 +73,11 @@ class Ingresos
      *
      * @return string
      */
-    public function getIngresonombre()
-    {
+    public function getIngresonombre() {
+        return $this->ingresonombre;
+    }
+
+    public function getNombre() {
         return $this->ingresonombre;
     }
 
@@ -87,8 +88,7 @@ class Ingresos
      *
      * @return Ingresos
      */
-    public function setIngresopuntaje($ingresopuntaje)
-    {
+    public function setIngresopuntaje($ingresopuntaje) {
         $this->ingresopuntaje = $ingresopuntaje;
 
         return $this;
@@ -99,8 +99,7 @@ class Ingresos
      *
      * @return integer
      */
-    public function getIngresopuntaje()
-    {
+    public function getIngresopuntaje() {
         return $this->ingresopuntaje;
     }
 
@@ -111,8 +110,7 @@ class Ingresos
      *
      * @return Ingresos
      */
-    public function setIngresosestado($ingresosestado)
-    {
+    public function setIngresosestado($ingresosestado) {
         $this->ingresosestado = $ingresosestado;
 
         return $this;
@@ -123,8 +121,8 @@ class Ingresos
      *
      * @return boolean
      */
-    public function getIngresosestado()
-    {
+    public function getIngresosestado() {
         return $this->ingresosestado;
     }
+
 }

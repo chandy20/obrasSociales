@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="estadosciviles")
  * @ORM\Entity
  */
-class Estadosciviles
-{
+class Estadosciviles {
+
     /**
      * @var integer
      *
@@ -28,17 +28,16 @@ class Estadosciviles
      */
     private $estadocivilnombre;
 
-    public function __toString(){
-    return (string) $this->getEstadocivilnombre();
-}
+    public function __toString() {
+        return (string) $this->getEstadocivilnombre();
+    }
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -49,8 +48,7 @@ class Estadosciviles
      *
      * @return Estadosciviles
      */
-    public function setEstadocivilnombre($estadocivilnombre)
-    {
+    public function setEstadocivilnombre($estadocivilnombre) {
         $this->estadocivilnombre = $estadocivilnombre;
 
         return $this;
@@ -61,10 +59,12 @@ class Estadosciviles
      *
      * @return string
      */
-    public function getEstadocivilnombre()
-    {
+    public function getEstadocivilnombre() {
         return $this->estadocivilnombre;
     }
 
-   
+    public function getNombre() {
+        return $this->estadocivilnombre;
+    }
+
 }

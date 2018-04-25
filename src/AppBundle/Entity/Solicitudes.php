@@ -121,7 +121,7 @@ class Solicitudes {
      *   @ORM\JoinColumn(name="idingreso", referencedColumnName="id")
      * })
      */
-    private $idingreso;
+    public $idingreso;
 
     /**
      * @var \Cantidadesbeneficio
@@ -141,7 +141,7 @@ class Solicitudes {
      *   @ORM\JoinColumn(name="idtiposolicitud", referencedColumnName="id")
      * })
      */
-    private $idtiposolicitud;
+    public $idtiposolicitud;
 
     /**
      * @var int
@@ -168,7 +168,7 @@ class Solicitudes {
      *   @ORM\JoinColumn(name="idparentesco", referencedColumnName="id")
      * })
      */
-    private $idparentesco;
+    public $idparentesco;
 
     /**
      * @var \Viabilidadplaneacion
@@ -218,7 +218,7 @@ class Solicitudes {
      *   @ORM\JoinColumn(name="idestadocivil", referencedColumnName="id")
      * })
      */
-    private $idestadocivil;
+    public $idestadocivil;
 
     /**
      * @var \Zonasubicacion
@@ -238,7 +238,7 @@ class Solicitudes {
      *   @ORM\JoinColumn(name="idGrado", referencedColumnName="id")
      * })
      */
-    private $idgrado;
+    public $idgrado;
 
     /**
      * @var \Motivosdeuda
@@ -248,7 +248,7 @@ class Solicitudes {
      *   @ORM\JoinColumn(name="idmotivodeuda", referencedColumnName="id")
      * })
      */
-    private $idmotivodeuda;
+    public $idmotivodeuda;
 
     /**
      * @var \Cantidadesbeneficioinst
@@ -268,7 +268,7 @@ class Solicitudes {
      *   @ORM\JoinColumn(name="idsituacionvivienda", referencedColumnName="id")
      * })
      */
-    private $idsituacionvivienda;
+    public $idsituacionvivienda;
 
     /**
      * @var \Personascargo
@@ -278,7 +278,7 @@ class Solicitudes {
      *   @ORM\JoinColumn(name="idpersonacargo", referencedColumnName="id")
      * })
      */
-    private $idpersonacargo;
+    public $idpersonacargo;
 
     /**
      * @var \unidad

@@ -66,4 +66,8 @@ public function __toString(){
     {
         return $this->gradonombre;
     }
+    public function getNombre()
+    {
+        return $this->gradonombre;
+    }
 }

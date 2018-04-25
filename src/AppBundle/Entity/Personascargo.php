@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="personascargo")
  * @ORM\Entity
  */
-class Personascargo
-{
+class Personascargo {
+
     /**
      * @var integer
      *
@@ -42,18 +42,16 @@ class Personascargo
      */
     private $personascargoestado;
 
-public function __toString(){
-    return (string) $this->getpersonacargonombre();
-}
-
+    public function __toString() {
+        return (string) $this->getpersonacargonombre();
+    }
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -64,8 +62,7 @@ public function __toString(){
      *
      * @return Personascargo
      */
-    public function setPersonacargonombre($personacargonombre)
-    {
+    public function setPersonacargonombre($personacargonombre) {
         $this->personacargonombre = $personacargonombre;
 
         return $this;
@@ -76,8 +73,11 @@ public function __toString(){
      *
      * @return string
      */
-    public function getPersonacargonombre()
-    {
+    public function getPersonacargonombre() {
+        return $this->personacargonombre;
+    }
+
+    public function getNombre() {
         return $this->personacargonombre;
     }
 
@@ -88,8 +88,7 @@ public function __toString(){
      *
      * @return Personascargo
      */
-    public function setPersonascargopuntaje($personascargopuntaje)
-    {
+    public function setPersonascargopuntaje($personascargopuntaje) {
         $this->personascargopuntaje = $personascargopuntaje;
 
         return $this;
@@ -100,8 +99,7 @@ public function __toString(){
      *
      * @return integer
      */
-    public function getPersonascargopuntaje()
-    {
+    public function getPersonascargopuntaje() {
         return $this->personascargopuntaje;
     }
 
@@ -112,8 +110,7 @@ public function __toString(){
      *
      * @return Personascargo
      */
-    public function setPersonascargoestado($personascargoestado)
-    {
+    public function setPersonascargoestado($personascargoestado) {
         $this->personascargoestado = $personascargoestado;
 
         return $this;
@@ -124,8 +121,8 @@ public function __toString(){
      *
      * @return boolean
      */
-    public function getPersonascargoestado()
-    {
+    public function getPersonascargoestado() {
         return $this->personascargoestado;
     }
+
 }

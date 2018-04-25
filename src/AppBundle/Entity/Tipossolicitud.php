@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="tipossolicitud")
  * @ORM\Entity
  */
-class Tipossolicitud
-{
+class Tipossolicitud {
+
     /**
      * @var integer
      *
@@ -28,17 +28,16 @@ class Tipossolicitud
      */
     private $tiposolicitudnombre;
 
- public function __toString(){
-    return (string) $this->getTiposolicitudnombre();
-}
+    public function __toString() {
+        return (string) $this->getTiposolicitudnombre();
+    }
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -49,8 +48,7 @@ class Tipossolicitud
      *
      * @return Tipossolicitud
      */
-    public function setTiposolicitudnombre($tiposolicitudnombre)
-    {
+    public function setTiposolicitudnombre($tiposolicitudnombre) {
         $this->tiposolicitudnombre = $tiposolicitudnombre;
 
         return $this;
@@ -61,8 +59,12 @@ class Tipossolicitud
      *
      * @return string
      */
-    public function getTiposolicitudnombre()
-    {
+    public function getTiposolicitudnombre() {
         return $this->tiposolicitudnombre;
     }
+
+    public function getNombre() {
+        return $this->tiposolicitudnombre;
+    }
+
 }

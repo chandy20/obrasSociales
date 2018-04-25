@@ -86,6 +86,111 @@ class FormularioReportesType extends AbstractType {
             }
         ];
 
+        $opcionesParentesco = [
+            'label' => "Parentesco",
+            'mapped' => false,
+            'required' => false,
+            'class' => 'AppBundle:Parentescos',
+            'attr' => array(
+                'class' => 'form-control',
+            ),
+            'query_builder' => function(EntityRepository $er) {
+                return $er->createQueryBuilder('p')
+                                ->orderBy("p.parentesconombre", "ASC");
+            }
+        ];
+
+        $opcionesGrado = [
+            'label' => "Grado",
+            'mapped' => false,
+            'required' => false,
+            'class' => 'AppBundle:Grados',
+            'attr' => array(
+                'class' => 'form-control',
+            ),
+            'query_builder' => function(EntityRepository $er) {
+                return $er->createQueryBuilder('g')
+                                ->orderBy("g.gradonombre", "ASC");
+            }
+        ];
+        $opcionesTipo = [
+            'mapped' => false,
+            'label' => "Tipo de solicitud",
+            'required' => false,
+            'class' => 'AppBundle:Tipossolicitud',
+            'attr' => array(
+                'class' => 'form-control',
+            ),
+            'query_builder' => function(EntityRepository $er) {
+                return $er->createQueryBuilder('t')
+                                ->orderBy("t.tiposolicitudnombre", "ASC");
+            }
+        ];
+        $opcionesEstado = [
+            'mapped' => false,
+            "label" => "Estado civil",
+            'required' => false,
+            'class' => 'AppBundle:Estadosciviles',
+            'attr' => array(
+                'class' => 'form-control',
+            ),
+            'query_builder' => function(EntityRepository $er) {
+                return $er->createQueryBuilder('e')
+                                ->orderBy("e.estadocivilnombre", "ASC");
+            }
+        ];
+        $opcionesIngresos = [
+            'mapped' => false,
+            'label' => "Ingresos",
+            'required' => false,
+            'class' => 'AppBundle:Ingresos',
+            'attr' => array(
+                'class' => 'form-control',
+            ),
+            'query_builder' => function(EntityRepository $er) {
+                return $er->createQueryBuilder('i')
+                                ->orderBy("i.ingresonombre", "ASC");
+            }
+        ];
+        $opcionesPersonas = [
+            'mapped' => false,
+            "label" => "Personas a cargo",
+            'required' => false,
+            'class' => 'AppBundle:Personascargo',
+            'attr' => array(
+                'class' => 'form-control',
+            ),
+            'query_builder' => function(EntityRepository $er) {
+                return $er->createQueryBuilder('p')
+                                ->orderBy("p.personacargonombre", "ASC");
+            }
+        ];
+        $opcionesSituacion = [
+            'mapped' => false,
+            "label" => "Situación de la vivienda",
+            'required' => false,
+            'class' => 'AppBundle:Situacionesvivienda',
+            'attr' => array(
+                'class' => 'form-control',
+            ),
+            'query_builder' => function(EntityRepository $er) {
+                return $er->createQueryBuilder('s')
+                                ->orderBy("s.situacionviviendanombre", "ASC");
+            }
+        ];
+        $opcionesMotivo = [
+            'mapped' => false,
+            "label" => "Motivo de deuda",
+            'required' => false,
+            'class' => 'AppBundle:Motivosdeuda',
+            'attr' => array(
+                'class' => 'form-control',
+            ),
+            'query_builder' => function(EntityRepository $er) {
+                return $er->createQueryBuilder('m')
+                                ->orderBy("m.motivodeudanombre", "ASC");
+            }
+        ];
         $builder
                 ->add('fechaInicial', DateType::class, $opcionesFechaInicial)
                 ->add('fechaFinal', DateType::class, $opcionesFechaFinal)
@@ -95,6 +200,22 @@ class FormularioReportesType extends AbstractType {
                 ->add('fechaFinal3', DateType::class, $opcionesFechaFinal)
                 ->add('fechaInicial4', DateType::class, $opcionesFechaInicial)
                 ->add('fechaFinal4', DateType::class, $opcionesFechaFinal)
+                ->add('fechaInicial5', DateType::class, $opcionesFechaInicial)
+                ->add('fechaFinal5', DateType::class, $opcionesFechaFinal)
+                ->add('fechaInicial6', DateType::class, $opcionesFechaInicial)
+                ->add('fechaFinal6', DateType::class, $opcionesFechaFinal)
+                ->add('fechaInicial7', DateType::class, $opcionesFechaInicial)
+                ->add('fechaFinal7', DateType::class, $opcionesFechaFinal)
+                ->add('fechaInicial8', DateType::class, $opcionesFechaInicial)
+                ->add('fechaFinal8', DateType::class, $opcionesFechaFinal)
+                ->add('fechaInicial9', DateType::class, $opcionesFechaInicial)
+                ->add('fechaFinal9', DateType::class, $opcionesFechaFinal)
+                ->add('fechaInicial10', DateType::class, $opcionesFechaInicial)
+                ->add('fechaFinal10', DateType::class, $opcionesFechaFinal)
+                ->add('fechaInicial11', DateType::class, $opcionesFechaInicial)
+                ->add('fechaFinal11', DateType::class, $opcionesFechaFinal)
+                ->add('fechaInicial12', DateType::class, $opcionesFechaInicial)
+                ->add('fechaFinal12', DateType::class, $opcionesFechaFinal)
                 ->add('documentoSolicitante', null, $opcionesDocumentoSolicitante)
                 ->add('documentoTitular', null, $opcionesDocumentoTitular)
                 ->add('documentoTitular2', null, $opcionesDocumentoTitular)
@@ -114,111 +235,25 @@ class FormularioReportesType extends AbstractType {
                 ->add("seccional", EntityType::class, $opcionesSeccional)
                 ->add("seccional3", EntityType::class, $opcionesSeccional)
                 ->add("seccional4", EntityType::class, $opcionesSeccional)
-                ->add("parentesco", EntityType::class, [
-                    'mapped' => false,
-                    'required' => false,
-                    'class' => 'AppBundle:Parentescos',
-                    'attr' => array(
-                        'class' => 'form-control',
-                    ),
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('p')
-                                ->orderBy("p.parentesconombre", "ASC");
-                    }
-                ])
-                ->add("grado", EntityType::class, [
-                    'mapped' => false,
-                    'required' => false,
-                    'class' => 'AppBundle:Grados',
-                    'attr' => array(
-                        'class' => 'form-control',
-                    ),
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('g')
-                                ->orderBy("g.gradonombre", "ASC");
-                    }
-                ])
-                ->add("tipoSolicitud", EntityType::class, [
-                    'mapped' => false,
-                    'label' => "Tipo de solicitud",
-                    'required' => false,
-                    'class' => 'AppBundle:Tipossolicitud',
-                    'attr' => array(
-                        'class' => 'form-control',
-                    ),
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('t')
-                                ->orderBy("t.tiposolicitudnombre", "ASC");
-                    }
-                ])
-                ->add("estadoCivil", EntityType::class, [
-                    'mapped' => false,
-                    "label" => "Estado civil",
-                    'required' => false,
-                    'class' => 'AppBundle:Estadosciviles',
-                    'attr' => array(
-                        'class' => 'form-control',
-                    ),
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('e')
-                                ->orderBy("e.estadocivilnombre", "ASC");
-                    }
-                ])
-                ->add("ingreso", EntityType::class, [
-                    'mapped' => false,
-                    'label' => "Ingresos",
-                    'required' => false,
-                    'class' => 'AppBundle:Ingresos',
-                    'attr' => array(
-                        'class' => 'form-control',
-                    ),
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('i')
-                                ->orderBy("i.ingresonombre", "ASC");
-                    }
-                ])
-                ->add("personasCargo", EntityType::class, [
-                    'mapped' => false,
-                    "label" => "Personas a cargo",
-                    'required' => false,
-                    'class' => 'AppBundle:Personascargo',
-                    'attr' => array(
-                        'class' => 'form-control',
-                    ),
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('p')
-                                ->orderBy("p.personacargonombre", "ASC");
-                    }
-                ])
-                ->add("situacionVivienda", EntityType::class, [
-                    'mapped' => false,
-                    "label" => "Situación de la vivienda",
-                    'required' => false,
-                    'class' => 'AppBundle:Situacionesvivienda',
-                    'attr' => array(
-                        'class' => 'form-control',
-                    ),
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('s')
-                                ->orderBy("s.situacionviviendanombre", "ASC");
-                    }
-                ])
-                ->add("motivoDeuda", EntityType::class, [
-                    'mapped' => false,
-                    "label" => "Motivo de deuda",
-                    'required' => false,
-                    'class' => 'AppBundle:Motivosdeuda',
-                    'attr' => array(
-                        'class' => 'form-control',
-                    ),
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('m')
-                                ->orderBy("m.motivodeudanombre", "ASC");
-                    }
-                ])
+                ->add("parentesco", EntityType::class, $opcionesParentesco)
+                ->add("parentesco2", EntityType::class, $opcionesParentesco)
+                ->add("grado", EntityType::class, $opcionesGrado)
+                ->add("grado2", EntityType::class, $opcionesGrado)
+                ->add("tipoSolicitud", EntityType::class, $opcionesTipo)
+                ->add("tipoSolicitud2", EntityType::class, $opcionesTipo)
+                ->add("estadoCivil", EntityType::class, $opcionesEstado)
+                ->add("estadoCivil2", EntityType::class, $opcionesEstado)
+                ->add("ingreso", EntityType::class, $opcionesIngresos)
+                ->add("ingreso2", EntityType::class, $opcionesIngresos)
+                ->add("personasCargo", EntityType::class, $opcionesPersonas)
+                ->add("personasCargo2", EntityType::class, $opcionesPersonas)
+                ->add("situacionVivienda", EntityType::class, $opcionesSituacion)
+                ->add("situacionVivienda2", EntityType::class, $opcionesSituacion)
+                ->add("motivoDeuda", EntityType::class, $opcionesMotivo)
+                ->add("motivoDeuda2", EntityType::class, $opcionesMotivo)
                 ->add("cantidadBeneficio", EntityType::class, [
                     'mapped' => false,
-                    "label" => "Cantidad de beneficios",
+                    "label" => "Cantidad de beneficios AOS",
                     'required' => false,
                     'class' => 'AppBundle:Cantidadesbeneficio',
                     'attr' => array(
@@ -299,7 +334,7 @@ class FormularioReportesType extends AbstractType {
                 ->add("programa", EntityType::class, $opcionesPrograma)
                 ->add("programa2", EntityType::class, $opcionesPrograma)
                 ->add("programa3", EntityType::class, $opcionesPrograma)
-                ->add("programa4", EntityType::class, $opcionesPrograma)
+                ->add("area3", EntityType::class, $opcionesArea)
         //dificultad
         ;
     }

@@ -230,7 +230,7 @@ class ConceptosjuntaAdminController extends CRUDController {
 
     public function dataReporteAction(Request $request) {
         $form = (array) json_decode($request->request->get('form'));
-        
+
         $pestana = json_decode($request->request->get('pestana'));
         switch ($pestana) {
             case 1:
@@ -245,9 +245,61 @@ class ConceptosjuntaAdminController extends CRUDController {
             case 4:
                 $html = $this->cargarDatosMovimientos($form["formulario_reportes"]);
                 break;
+            default:
+                $html = $this->cargarDatosGeneral($form["formulario_reportes"], $pestana);
+                break;
         }
         $respuesta['html'] = $html;
         return new JsonResponse($respuesta);
+    }
+
+    public function cargarDatosGeneral($form, $pestana) {
+        $parametros = $this->obtenerDatos($form, $pestana);
+        $query = $this->em->getRepository("AppBundle:Solicitudes")->createQueryBuilder('s')
+                ->where("s.solicitudfecha BETWEEN :inicio AND :fin")
+                ->setParameter("inicio", $parametros["inicio"])
+                ->setParameter("fin", $parametros['fin']);
+        if ($parametros["extra"]) {
+            $query->andWhere($parametros["campo"] . "= :" . $parametros["alias"])
+                    ->setParameter($parametros["alias"], $parametros["valor"]);
+        }
+        $solicitudes = $query->getQuery()->getResult();
+        $datos = [];
+        foreach ($solicitudes as $solicitud) {
+            $padre = $solicitud->{$parametros['ordenamiento']};
+            foreach ($solicitud->getProgramas() as $programa) {
+                if (!array_key_exists($padre->getNombre(), $datos)) {
+                    $datos[$padre->getNombre()]["total"] = 1;
+                    $datos[$padre->getNombre()]["aprobadas"] = 0;
+                    $datos[$padre->getNombre()]["rechazadas"] = 0;
+                } else {
+                    $datos[$padre->getNombre()]["total"] ++;
+                }
+            }
+        }
+        $query->join("s.conceptoJunta", "cj")
+                ->andWhere("cj.editado = :editado");
+        $queryAprobadas = $query;
+        $queryAprobadas->setParameter("editado", true);
+        $solicitudesAprobadas = $queryAprobadas->getQuery()->getResult();
+        foreach ($solicitudesAprobadas as $solicitud) {
+            $padre = $solicitud->{$parametros['ordenamiento']};
+            foreach ($solicitud->getConceptoJunta() as $concepto) {
+                foreach ($concepto->getProgramasConcepto() as $programaConcepto) {
+                    if ($programaConcepto->getAprobado()) {
+                        $datos[$padre->getNombre()]["aprobadas"] ++;
+                    } else {
+                        $datos[$padre->getNombre()]["rechazadas"] ++;
+                    }
+                }
+            }
+        }
+        var_dump($datos);die;
+        $html = $this->renderView('AppBundle:Reporte:reporte_general.html.twig', [
+            'datos' => $datos
+        ]);
+
+        return $html;
     }
 
     public function cargarDatosCantidades($form) {
@@ -368,7 +420,6 @@ class ConceptosjuntaAdminController extends CRUDController {
         $query->join("s.conceptoJunta", "cj")
                 ->andWhere("cj.editado = :editado");
         $queryAprobadas = $query;
-        $queryRechazadas = $query;
         $queryAprobadas->setParameter("editado", true);
         $solicitudesAprobadas = $queryAprobadas->getQuery()->getResult();
         foreach ($solicitudesAprobadas as $solicitud) {
@@ -448,7 +499,6 @@ class ConceptosjuntaAdminController extends CRUDController {
                 }
             }
         }
-//        var_dump($solicitudes,$datos);die;
         $html = $this->renderView('AppBundle:Reporte:reporte_inscritos.html.twig', [
             'datos' => $datos
         ]);
@@ -467,11 +517,12 @@ class ConceptosjuntaAdminController extends CRUDController {
             $query->andWhere("s.id = :seccional")
                     ->setParameter("seccional", $form->seccional3);
         }
-        if ($form->programa4 != "") {
-            $query->join("s.programas", "sp")
+        if ($form->area3 != "") {
+            $query->join("so.programas", "sp")
                     ->join("sp.programa", "p")
-                    ->andWhere("p.id = :programa")
-                    ->setParameter("programa", $form->programa4);
+                    ->join("p.idarea", "a")
+                    ->andWhere("a.idArea = :area")
+                    ->setParameter("area", $form->area3);
         }
         $movimientos = $query->getQuery()->getResult();
         $datos = [];
@@ -479,18 +530,25 @@ class ConceptosjuntaAdminController extends CRUDController {
         foreach ($movimientos as $movimiento) {
             if (!array_key_exists($movimiento->getSeccional()->getSeccionalnombre(), $datos)) {
                 $presupuestos = $this->em->getRepository("AppBundle:Presupuestos")->createQueryBuilder('p')
-                                ->where("p.desde <= :inicio OR p.hasta >= :fin")
-                                ->andWhere("p.seccional = :seccional")
-                                ->setParameter("inicio", $form->fechaInicial3)
-                                ->setParameter("fin", $form->fechaFinal3)
-                                ->setParameter("seccional", $movimiento->getSeccional())
-                                ->getQuery()->getResult();
+                        ->where("p.desde <= :inicio OR p.hasta >= :fin")
+                        ->andWhere("p.seccional = :seccional")
+                        ->setParameter("inicio", $form->fechaInicial3)
+                        ->setParameter("fin", $form->fechaFinal3)
+                        ->setParameter("seccional", $movimiento->getSeccional());
+                if ($form->area3) {
+                    $presupuestos->join("p.idarea", "a")
+                            ->andWhere("a.idArea = :area")
+                            ->setParameter("area", $form->area3);
+                }
+                $presupuestos = $presupuestos->getQuery()->getResult();
                 $totalValor = 0;
-                foreach ($presupuestos as $presupuesto) {
-                    if (!in_array($presupuesto->getIdarea()->getAreanombre(), $totales)) {
-                        $totales[$presupuesto->getIdarea()->getAreanombre()] = $presupuesto->getPresupuestomonto();
-                    } else {
-                        $totales[$presupuesto->getIdarea()->getAreanombre()] += $presupuesto->getPresupuestomonto();
+                if ($presupuestos) {
+                    foreach ($presupuestos as $presupuesto) {
+                        if (!in_array($presupuesto->getIdarea()->getAreanombre(), $totales)) {
+                            $totales[$presupuesto->getIdarea()->getAreanombre()] = $presupuesto->getPresupuestomonto();
+                        } else {
+                            $totales[$presupuesto->getIdarea()->getAreanombre()] += $presupuesto->getPresupuestomonto();
+                        }
                     }
                 }
                 $datos[$movimiento->getSeccional()->getSeccionalnombre() . " " . $movimiento->getPresupuesto()->getIdarea()]["valor"] = $totales[$movimiento->getPresupuesto()->getIdarea()->getAreanombre()];
@@ -566,6 +624,102 @@ class ConceptosjuntaAdminController extends CRUDController {
                     'encoding' => 'utf-8',
                 ]), 'solicitud.pdf'
         );
+    }
+
+    public function obtenerDatos($form, $pestana) {
+        $datos = [];
+        $datos["extra"] = 0;
+        switch ($pestana) {
+            case 5:
+                $datos["inicio"] = $form->fechaInicial5;
+                $datos["fin"] = $form->fechaFinal5;
+                $datos["ordenamiento"] = "idparentesco";
+                if ($form->parentesco2) {
+                    $datos["extra"] = 1;
+                    $datos["campo"] = "s.idparentesco";
+                    $datos["alias"] = "parentesco";
+                    $datos["valor"] = $form->parentesco2;
+                }
+                break;
+            case 6:
+                $datos["inicio"] = $form->fechaInicial6;
+                $datos["fin"] = $form->fechaFinal6;
+                $datos["ordenamiento"] = "idgrado";
+                if ($form->grado2) {
+                    $datos["extra"] = 1;
+                    $datos["campo"] = "s.idgrado";
+                    $datos["alias"] = "grado";
+                    $datos["valor"] = $form->grado2;
+                }
+                break;
+            case 7:
+                $datos["inicio"] = $form->fechaInicial7;
+                $datos["fin"] = $form->fechaFinal7;
+                $datos["ordenamiento"] = "idestadocivil";
+                if ($form->estadoCivil2) {
+                    $datos["extra"] = 1;
+                    $datos["campo"] = "s.idestadocivil";
+                    $datos["alias"] = "estado";
+                    $datos["valor"] = $form->estadoCivil2;
+                }
+                break;
+            case 8:
+                $datos["inicio"] = $form->fechaInicial8;
+                $datos["fin"] = $form->fechaFinal8;
+                $datos["ordenamiento"] = "idingreso";
+                if ($form->ingreso2) {
+                    $datos["extra"] = 1;
+                    $datos["campo"] = "s.idingreso";
+                    $datos["alias"] = "ingresos";
+                    $datos["valor"] = $form->ingreso2;
+                }
+                break;
+            case 9:
+                $datos["inicio"] = $form->fechaInicial9;
+                $datos["fin"] = $form->fechaFinal9;
+                $datos["ordenamiento"] = "idpersonacargo";
+                if ($form->personasCargo2) {
+                    $datos["extra"] = 1;
+                    $datos["campo"] = "s.idpersonacargo";
+                    $datos["alias"] = "personas";
+                    $datos["valor"] = $form->personasCargo2;
+                }
+                break;
+            case 10:
+                $datos["inicio"] = $form->fechaInicial10;
+                $datos["fin"] = $form->fechaFinal10;
+                $datos["ordenamiento"] = "idsituacionvivienda";
+                if ($form->situacionVivienda2) {
+                    $datos["extra"] = 1;
+                    $datos["campo"] = "s.idsituacionvivienda";
+                    $datos["alias"] = "situacion";
+                    $datos["valor"] = $form->situacionVivienda2;
+                }
+                break;
+            case 11:
+                $datos["inicio"] = $form->fechaInicial11;
+                $datos["fin"] = $form->fechaFinal11;
+                $datos["ordenamiento"] = "getIdmotivodeuda()";
+                if ($form->motivoDeuda2) {
+                    $datos["extra"] = 1;
+                    $datos["campo"] = "s.idmotivodeuda";
+                    $datos["alias"] = "motivo";
+                    $datos["valor"] = $form->motivoDeuda2;
+                }
+                break;
+            case 12:
+                $datos["inicio"] = $form->fechaInicial12;
+                $datos["fin"] = $form->fechaFinal12;
+                $datos["ordenamiento"] = "idtiposolicitud";
+                if ($form->tipoSolicitud2) {
+                    $datos["extra"] = 1;
+                    $datos["campo"] = "s.idtiposolicitud";
+                    $datos["alias"] = "tipo";
+                    $datos["valor"] = $form->tipoSolicitud2;
+                }
+                break;
+        }
+        return $datos;
     }
 
 }

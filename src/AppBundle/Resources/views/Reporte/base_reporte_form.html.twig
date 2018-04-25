@@ -93,6 +93,30 @@
             <li>
                 <a href="#movimientos" onclick="marcarPestana(4)" data-toggle="tab">Movimientos financieros</a>
             </li>
+            <li>
+                <a href="#parentesco" onclick="marcarPestana(5)" data-toggle="tab">Parentesco</a>
+            </li>
+            <li>
+                <a href="#grado" onclick="marcarPestana(6)" data-toggle="tab">Grado</a>
+            </li>
+            <li>
+                <a href="#civil" onclick="marcarPestana(7)" data-toggle="tab">Estado civil</a>
+            </li>
+            <li>
+                <a href="#ingresos" onclick="marcarPestana(8)" data-toggle="tab">Ingresos</a>
+            </li>
+            <li>
+                <a href="#personas" onclick="marcarPestana(9)" data-toggle="tab">Personas a cargo</a>
+            </li>
+            <li>
+                <a href="#situacion" onclick="marcarPestana(10)" data-toggle="tab">Situación de vivienda</a>
+            </li>
+            <li>
+                <a href="#motivo" onclick="marcarPestana(11)" data-toggle="tab">Motivo de deunda</a>
+            </li>
+            <li>
+                <a href="#tipo" onclick="marcarPestana(12)" data-toggle="tab">Tipo de solicitud</a>
+            </li>
         </ul>
         <div class="tab-content ">
             <div class="tab-pane active" id="cantidades">
@@ -246,9 +270,9 @@
                     {{ form_widget(form.seccional3) }}
                 </div>
                 <div class="col-md-3">
-                    {{ form_label(form.programa4) }}
-                    {{ form_errors(form.programa4) }}
-                    {{ form_widget(form.programa4) }}
+                    {{ form_label(form.area3) }}
+                    {{ form_errors(form.area3) }}
+                    {{ form_widget(form.area3) }}
                 </div>
             </div>
             <div class="tab-pane" id="movimientos">
@@ -283,6 +307,143 @@
                     {{ form_widget(form.programa2) }}
                 </div>
             </div>
+            <div class="tab-pane" id="parentesco">
+                <div class="col-md-4">
+                    {{ form_label(form.fechaInicial5) }}
+                    {{ form_errors(form.fechaInicial5) }}
+                    {{ form_widget(form.fechaInicial5) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_label(form.fechaFinal5) }}
+                    {{ form_errors(form.fechaFinal5) }}
+                    {{ form_widget(form.fechaFinal5) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_label(form.parentesco2) }}
+                    {{ form_errors(form.parentesco2) }}
+                    {{ form_widget(form.parentesco2) }}
+                </div>
+            </div>
+            <div class="tab-pane" id="grado">
+                <div class="col-md-4">
+                    {{ form_label(form.fechaInicial6) }}
+                    {{ form_errors(form.fechaInicial6) }}
+                    {{ form_widget(form.fechaInicial6) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_label(form.fechaFinal6) }}
+                    {{ form_errors(form.fechaFinal6) }}
+                    {{ form_widget(form.fechaFinal6) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_label(form.grado2) }}
+                    {{ form_errors(form.grado2) }}
+                    {{ form_widget(form.grado2) }}
+                </div>
+            </div>
+            <div class="tab-pane" id="civil">
+                <div class="col-md-4">
+                    {{ form_label(form.fechaInicial7) }}
+                    {{ form_errors(form.fechaInicial7) }}
+                    {{ form_widget(form.fechaInicial7) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_label(form.fechaFinal7) }}
+                    {{ form_errors(form.fechaFinal7) }}
+                    {{ form_widget(form.fechaFinal7) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_label(form.estadoCivil2) }}
+                    {{ form_errors(form.estadoCivil2) }}
+                    {{ form_widget(form.estadoCivil2) }}
+                </div>
+            </div>
+            <div class="tab-pane" id="ingresos">
+                <div class="col-md-4">
+                    {{ form_label(form.fechaInicial8) }}
+                    {{ form_errors(form.fechaInicial8) }}
+                    {{ form_widget(form.fechaInicial8) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_label(form.fechaFinal8) }}
+                    {{ form_errors(form.fechaFinal8) }}
+                    {{ form_widget(form.fechaFinal8) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_label(form.ingreso2) }}
+                    {{ form_errors(form.ingreso2) }}
+                    {{ form_widget(form.ingreso2) }}
+                </div>
+            </div>
+            <div class="tab-pane" id="personas">
+                <div class="col-md-4">
+                    {{ form_label(form.fechaInicial9) }}
+                    {{ form_errors(form.fechaInicial9) }}
+                    {{ form_widget(form.fechaInicial9) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_label(form.fechaFinal9) }}
+                    {{ form_errors(form.fechaFinal9) }}
+                    {{ form_widget(form.fechaFinal9) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_label(form.personasCargo2) }}
+                    {{ form_errors(form.personasCargo2) }}
+                    {{ form_widget(form.personasCargo2) }}
+                </div>
+            </div>
+            <div class="tab-pane" id="situacion">
+                <div class="col-md-4">
+                    {{ form_label(form.fechaInicial10) }}
+                    {{ form_errors(form.fechaInicial10) }}
+                    {{ form_widget(form.fechaInicial10) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_label(form.fechaFinal10) }}
+                    {{ form_errors(form.fechaFinal10) }}
+                    {{ form_widget(form.fechaFinal10) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_label(form.situacionVivienda2) }}
+                    {{ form_errors(form.situacionVivienda2) }}
+                    {{ form_widget(form.situacionVivienda2) }}
+                </div>
+            </div>
+            <div class="tab-pane" id="motivo">
+                <div class="col-md-4">
+                    {{ form_label(form.fechaInicial11) }}
+                    {{ form_errors(form.fechaInicial11) }}
+                    {{ form_widget(form.fechaInicial11) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_label(form.fechaFinal11) }}
+                    {{ form_errors(form.fechaFinal11) }}
+                    {{ form_widget(form.fechaFinal11) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_label(form.motivoDeuda2) }}
+                    {{ form_errors(form.motivoDeuda2) }}
+                    {{ form_widget(form.motivoDeuda2) }}
+                </div>
+            </div>
+            <div class="tab-pane" id="tipo">
+                <div class="col-md-4">
+                    {{ form_label(form.fechaInicial12) }}
+                    {{ form_errors(form.fechaInicial12) }}
+                    {{ form_widget(form.fechaInicial12) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_label(form.fechaFinal12) }}
+                    {{ form_errors(form.fechaFinal12) }}
+                    {{ form_widget(form.fechaFinal12) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_label(form.tipoSolicitud2) }}
+                    {{ form_errors(form.tipoSolicitud2) }}
+                    {{ form_widget(form.tipoSolicitud2) }}
+                </div>
+            </div>
+
         </div>
         {{ include('SonataAdminBundle:Helper:render_form_dismissable_errors.html.twig') }}
 

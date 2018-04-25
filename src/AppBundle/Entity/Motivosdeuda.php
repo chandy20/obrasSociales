@@ -77,6 +77,10 @@ class Motivosdeuda {
         return $this->motivodeudanombre;
     }
 
+    public function getNombre() {
+        return $this->motivodeudanombre;
+    }
+
     /**
      * Set motivodeudapuntaje
      *

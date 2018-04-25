@@ -62,5 +62,8 @@ class Parentescos {
     public function getParentesconombre() {
         return $this->parentesconombre;
     }
+    public function getNombre() {
+        return $this->parentesconombre;
+    }
 
 }

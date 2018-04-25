@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="situacionesvivienda")
  * @ORM\Entity
  */
-class Situacionesvivienda
-{
+class Situacionesvivienda {
+
     /**
      * @var integer
      *
@@ -42,18 +42,16 @@ class Situacionesvivienda
      */
     private $situacionesviviendaestado;
 
-public function __toString(){
-    return (string) $this->getsituacionviviendanombre();
-}
-
+    public function __toString() {
+        return (string) $this->getsituacionviviendanombre();
+    }
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -64,8 +62,7 @@ public function __toString(){
      *
      * @return Situacionesvivienda
      */
-    public function setSituacionviviendanombre($situacionviviendanombre)
-    {
+    public function setSituacionviviendanombre($situacionviviendanombre) {
         $this->situacionviviendanombre = $situacionviviendanombre;
 
         return $this;
@@ -76,8 +73,11 @@ public function __toString(){
      *
      * @return string
      */
-    public function getSituacionviviendanombre()
-    {
+    public function getSituacionviviendanombre() {
+        return $this->situacionviviendanombre;
+    }
+
+    public function getNombre() {
         return $this->situacionviviendanombre;
     }
 
@@ -88,8 +88,7 @@ public function __toString(){
      *
      * @return Situacionesvivienda
      */
-    public function setSituacionesviviendapuntaje($situacionesviviendapuntaje)
-    {
+    public function setSituacionesviviendapuntaje($situacionesviviendapuntaje) {
         $this->situacionesviviendapuntaje = $situacionesviviendapuntaje;
 
         return $this;
@@ -100,8 +99,7 @@ public function __toString(){
      *
      * @return integer
      */
-    public function getSituacionesviviendapuntaje()
-    {
+    public function getSituacionesviviendapuntaje() {
         return $this->situacionesviviendapuntaje;
     }
 
@@ -112,8 +110,7 @@ public function __toString(){
      *
      * @return Situacionesvivienda
      */
-    public function setSituacionesviviendaestado($situacionesviviendaestado)
-    {
+    public function setSituacionesviviendaestado($situacionesviviendaestado) {
         $this->situacionesviviendaestado = $situacionesviviendaestado;
 
         return $this;
@@ -124,8 +121,8 @@ public function __toString(){
      *
      * @return boolean
      */
-    public function getSituacionesviviendaestado()
-    {
+    public function getSituacionesviviendaestado() {
         return $this->situacionesviviendaestado;
     }
+
 }
