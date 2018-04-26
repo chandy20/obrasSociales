@@ -277,9 +277,9 @@ class ConceptosjuntaAdminController extends CRUDController {
                 }
             }
         }
-        $query->join("s.conceptoJunta", "cj")
-                ->andWhere("cj.editado = :editado");
         $queryAprobadas = $query;
+        $queryAprobadas->join("s.conceptoJunta", "cj")
+                ->andWhere("cj.editado = :editado");
         $queryAprobadas->setParameter("editado", true);
         $solicitudesAprobadas = $queryAprobadas->getQuery()->getResult();
         foreach ($solicitudesAprobadas as $solicitud) {
@@ -294,9 +294,10 @@ class ConceptosjuntaAdminController extends CRUDController {
                 }
             }
         }
-        var_dump($datos);die;
+       
         $html = $this->renderView('AppBundle:Reporte:reporte_general.html.twig', [
-            'datos' => $datos
+            'datos' => $datos,
+            'columna'=> $parametros["columna"]
         ]);
 
         return $html;
@@ -634,6 +635,7 @@ class ConceptosjuntaAdminController extends CRUDController {
                 $datos["inicio"] = $form->fechaInicial5;
                 $datos["fin"] = $form->fechaFinal5;
                 $datos["ordenamiento"] = "idparentesco";
+                $datos["columna"] = "Parentesco";
                 if ($form->parentesco2) {
                     $datos["extra"] = 1;
                     $datos["campo"] = "s.idparentesco";
@@ -645,6 +647,7 @@ class ConceptosjuntaAdminController extends CRUDController {
                 $datos["inicio"] = $form->fechaInicial6;
                 $datos["fin"] = $form->fechaFinal6;
                 $datos["ordenamiento"] = "idgrado";
+                $datos["columna"] = "Grado";
                 if ($form->grado2) {
                     $datos["extra"] = 1;
                     $datos["campo"] = "s.idgrado";
@@ -656,6 +659,7 @@ class ConceptosjuntaAdminController extends CRUDController {
                 $datos["inicio"] = $form->fechaInicial7;
                 $datos["fin"] = $form->fechaFinal7;
                 $datos["ordenamiento"] = "idestadocivil";
+                $datos["columna"] = "Estado civil";
                 if ($form->estadoCivil2) {
                     $datos["extra"] = 1;
                     $datos["campo"] = "s.idestadocivil";
@@ -667,6 +671,7 @@ class ConceptosjuntaAdminController extends CRUDController {
                 $datos["inicio"] = $form->fechaInicial8;
                 $datos["fin"] = $form->fechaFinal8;
                 $datos["ordenamiento"] = "idingreso";
+                $datos["columna"] = "Estado civil";
                 if ($form->ingreso2) {
                     $datos["extra"] = 1;
                     $datos["campo"] = "s.idingreso";
@@ -678,6 +683,7 @@ class ConceptosjuntaAdminController extends CRUDController {
                 $datos["inicio"] = $form->fechaInicial9;
                 $datos["fin"] = $form->fechaFinal9;
                 $datos["ordenamiento"] = "idpersonacargo";
+                $datos["columna"] = "Personas a cargo";
                 if ($form->personasCargo2) {
                     $datos["extra"] = 1;
                     $datos["campo"] = "s.idpersonacargo";
@@ -689,6 +695,7 @@ class ConceptosjuntaAdminController extends CRUDController {
                 $datos["inicio"] = $form->fechaInicial10;
                 $datos["fin"] = $form->fechaFinal10;
                 $datos["ordenamiento"] = "idsituacionvivienda";
+                $datos["columna"] = "Situación de la vivienda";
                 if ($form->situacionVivienda2) {
                     $datos["extra"] = 1;
                     $datos["campo"] = "s.idsituacionvivienda";
@@ -699,7 +706,8 @@ class ConceptosjuntaAdminController extends CRUDController {
             case 11:
                 $datos["inicio"] = $form->fechaInicial11;
                 $datos["fin"] = $form->fechaFinal11;
-                $datos["ordenamiento"] = "getIdmotivodeuda()";
+                $datos["ordenamiento"] = "idmotivodeuda";
+                $datos["columna"] = "Motivo de la deuda";
                 if ($form->motivoDeuda2) {
                     $datos["extra"] = 1;
                     $datos["campo"] = "s.idmotivodeuda";
@@ -711,6 +719,7 @@ class ConceptosjuntaAdminController extends CRUDController {
                 $datos["inicio"] = $form->fechaInicial12;
                 $datos["fin"] = $form->fechaFinal12;
                 $datos["ordenamiento"] = "idtiposolicitud";
+                $datos["columna"] = "Tipo de solicitud";
                 if ($form->tipoSolicitud2) {
                     $datos["extra"] = 1;
                     $datos["campo"] = "s.idtiposolicitud";

@@ -1,0 +1,105 @@
+{%if datos %}
+    <style>
+        .titulo{
+            height: 40px; 
+            background-color: #5AC7FF;
+        }
+        .elemento1{
+            background-color: gray;
+            height: 20px; 
+        }
+        .elemento2{
+            height: 20px; 
+            background-color: white;
+        }
+    </style>
+    <br>
+    <br>
+    <div class="text-center" id="chart_div"></div>
+    <br>
+    <br>
+    <div class="col-md-12">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 text-center">
+            <div class="col-md-6 titulo">{{columna}}</div>
+            <div class="col-md-2 titulo">Radicadas</div>
+            <div class="col-md-2 titulo">Aprobadas</div>
+            <div class="col-md-2 titulo">Rechazadas</div>
+            {%set cuenta = 1%}
+            {%set total = 0%}
+            {%set aprobadas = 0%}
+            {%set rechazadas = 0%}
+            {%for key, dato in datos%}
+                {%set total = total + dato.total%}
+                {%set aprobadas = aprobadas + dato.aprobadas%}
+                {%set rechazadas = rechazadas + dato.rechazadas%}
+                <div class="col-md-6 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{key}}</div>
+                <div class="col-md-2 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{dato.total}}</div>
+                <div class="col-md-2 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{dato.aprobadas}}</div>
+                <div class="col-md-2 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{dato.rechazadas}}</div>
+                {%set cuenta = cuenta +1 %}
+            {%endfor%}
+            <div class="col-md-6 titulo">Total</div>
+            <div class="col-md-2 titulo">{{total}}</div>
+            <div class="col-md-2 titulo">{{aprobadas}}</div>
+            <div class="col-md-2 titulo">{{rechazadas}}</div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <script type="text/javascript">
+        var myData = new Array(
+                {%for k, registro in datos%}
+                    {%if k == (datos|length -1)%}
+                        ['{{k}}', {{registro.total}}, {{registro.aprobadas}}, {{registro.rechazadas}}]
+                    {%else%}
+                        ['{{k}}', {{registro.total}}, {{registro.aprobadas}}, {{registro.rechazadas}}],
+                    {%endif%}
+                {%endfor%}
+                );
+        var myChart = new JSChart('chart_div', 'bar');
+        myChart.setDataArray(myData);
+        myChart.setTitle('Cantidad de programas solicitados por {{columna}}');
+        myChart.setTitleColor('#3F779E');
+        myChart.setAxisNameX('');
+        myChart.setAxisNameY('');
+        myChart.setAxisNameFontSize(16);
+        myChart.setAxisNameColor('#999');
+        myChart.setAxisValuesAngle(30);
+        myChart.setAxisValuesColor('#777');
+        myChart.setAxisColor('#000000');
+        myChart.setAxisWidth(1);
+        myChart.setBarValuesColor('#2F6D99');
+        myChart.setAxisPaddingTop(60);
+        myChart.setAxisPaddingBottom(60);
+        myChart.setAxisPaddingLeft(45);
+        myChart.setTitleFontSize(11);
+        myChart.setBarColor('#3F779E', 1);
+        myChart.setBarColor('#036C2A', 2);
+        myChart.setBarColor('#FF0000', 3);
+        myChart.setBarBorderWidth(0);
+        myChart.setBarSpacingRatio(50);
+        myChart.setBarOpacity(0.9);
+        myChart.setFlagRadius(6);
+        myChart.setTooltipPosition('nw');
+        myChart.setTooltipOffset(3);
+        myChart.setLegendShow(true);
+        myChart.setLegendPosition('right top');
+        myChart.setLegendForBar(1, 'Radicadas');
+        myChart.setLegendForBar(2, 'Aprobadas');
+        myChart.setLegendForBar(3, 'Rechazadas');
+        myChart.setSize(616, 321);
+        myChart.setGridColor('#C6C6C6');
+        myChart.draw();
+        
+    </script>
+
+{%else%}
+    <div>No se encontró información con los parametros de busqueda.</div>
+{%endif%}
