@@ -35,7 +35,7 @@ class Solicitudes {
      * @ORM\Column(name="SolicitudCedulaSolicita", type="string", length=45, nullable=false)
      */
     private $solicitudcedulasolicita;
-    
+
     /**
      * @var string
      *
@@ -98,14 +98,14 @@ class Solicitudes {
      * @ORM\Column(name="SolicitudDescripcion", type="text", nullable=false)
      */
     private $solicituddescripcion;
-    
+
     /**
      * @var integer
      *
      * @ORM\Column(name="cantidad_solicitada", type="integer", nullable=false)
      */
     private $cantidadSolicitada;
-    
+
     /**
      * @var integer
      *
@@ -309,8 +309,7 @@ class Solicitudes {
      * )
      */
     private $curriculum;
-    
-    
+
     /**
      * @Assert\File(
      *      maxSize="5242880",
@@ -332,7 +331,7 @@ class Solicitudes {
      * @ORM\Column(name="archivo", type="string", length=3000, nullable=true)
      */
     private $archivo;
-    
+
     /**
      * @var string
      *
@@ -380,8 +379,7 @@ class Solicitudes {
      * })
      */
     private $antiguedad;
-    
-    
+
     /**
      * @var \concepto
      *
@@ -391,7 +389,7 @@ class Solicitudes {
      * })
      */
     private $concepto;
-    
+
     /**
      * @var \concepto
      *
@@ -408,7 +406,7 @@ class Solicitudes {
      * @ORM\Column(name="Acta", type="string", length=45, nullable=true)
      */
     private $Acta;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Conceptosjunta", mappedBy="solicitud" , cascade={"persist"})
      */
@@ -960,6 +958,7 @@ class Solicitudes {
 
         return $this;
     }
+
     public function getFotoFile() {
         return $this->fotoFile;
     }
@@ -1206,7 +1205,6 @@ class Solicitudes {
         return $this->programas;
     }
 
-
     /**
      * Set documentoBeneficiarioFinal
      *
@@ -1214,8 +1212,7 @@ class Solicitudes {
      *
      * @return Solicitudes
      */
-    public function setDocumentoBeneficiarioFinal($documentoBeneficiarioFinal)
-    {
+    public function setDocumentoBeneficiarioFinal($documentoBeneficiarioFinal) {
         $this->documentoBeneficiarioFinal = $documentoBeneficiarioFinal;
 
         return $this;
@@ -1226,8 +1223,7 @@ class Solicitudes {
      *
      * @return string
      */
-    public function getDocumentoBeneficiarioFinal()
-    {
+    public function getDocumentoBeneficiarioFinal() {
         return $this->documentoBeneficiarioFinal;
     }
 
@@ -1238,8 +1234,7 @@ class Solicitudes {
      *
      * @return Solicitudes
      */
-    public function setNombreBeneficiarioFinal($nombreBeneficiarioFinal)
-    {
+    public function setNombreBeneficiarioFinal($nombreBeneficiarioFinal) {
         $this->nombreBeneficiarioFinal = $nombreBeneficiarioFinal;
 
         return $this;
@@ -1250,8 +1245,7 @@ class Solicitudes {
      *
      * @return string
      */
-    public function getNombreBeneficiarioFinal()
-    {
+    public function getNombreBeneficiarioFinal() {
         return $this->nombreBeneficiarioFinal;
     }
 
@@ -1262,8 +1256,7 @@ class Solicitudes {
      *
      * @return Solicitudes
      */
-    public function setFoto($foto)
-    {
+    public function setFoto($foto) {
         $this->foto = $foto;
 
         return $this;
@@ -1274,8 +1267,7 @@ class Solicitudes {
      *
      * @return string
      */
-    public function getFoto()
-    {
+    public function getFoto() {
         return $this->foto;
     }
 
@@ -1286,8 +1278,7 @@ class Solicitudes {
      *
      * @return Solicitudes
      */
-    public function setEmailSolicitante($emailSolicitante)
-    {
+    public function setEmailSolicitante($emailSolicitante) {
         $this->emailSolicitante = $emailSolicitante;
 
         return $this;
@@ -1298,8 +1289,7 @@ class Solicitudes {
      *
      * @return string
      */
-    public function getEmailSolicitante()
-    {
+    public function getEmailSolicitante() {
         return $this->emailSolicitante;
     }
 
@@ -1310,8 +1300,7 @@ class Solicitudes {
      *
      * @return Solicitudes
      */
-    public function setConcepto(\AppBundle\Entity\Concepto $concepto = null)
-    {
+    public function setConcepto(\AppBundle\Entity\Concepto $concepto = null) {
         $this->concepto = $concepto;
 
         return $this;
@@ -1322,8 +1311,7 @@ class Solicitudes {
      *
      * @return \AppBundle\Entity\Concepto
      */
-    public function getConcepto()
-    {
+    public function getConcepto() {
         return $this->concepto;
     }
 
@@ -1334,8 +1322,7 @@ class Solicitudes {
      *
      * @return Solicitudes
      */
-    public function setCantidadSolicitada($cantidadSolicitada)
-    {
+    public function setCantidadSolicitada($cantidadSolicitada) {
         $this->cantidadSolicitada = $cantidadSolicitada;
 
         return $this;
@@ -1346,8 +1333,7 @@ class Solicitudes {
      *
      * @return integer
      */
-    public function getCantidadSolicitada()
-    {
+    public function getCantidadSolicitada() {
         return $this->cantidadSolicitada;
     }
 
@@ -1358,8 +1344,7 @@ class Solicitudes {
      *
      * @return Solicitudes
      */
-    public function setCantidadAprobada($cantidadAprobada)
-    {
+    public function setCantidadAprobada($cantidadAprobada) {
         $this->cantidadAprobada = $cantidadAprobada;
 
         return $this;
@@ -1370,8 +1355,7 @@ class Solicitudes {
      *
      * @return integer
      */
-    public function getCantidadAprobada()
-    {
+    public function getCantidadAprobada() {
         return $this->cantidadAprobada;
     }
 
@@ -1382,8 +1366,7 @@ class Solicitudes {
      *
      * @return Solicitudes
      */
-    public function setConceptoFinal(\AppBundle\Entity\Concepto $conceptoFinal = null)
-    {
+    public function setConceptoFinal(\AppBundle\Entity\Concepto $conceptoFinal = null) {
         $this->conceptoFinal = $conceptoFinal;
 
         return $this;
@@ -1394,8 +1377,7 @@ class Solicitudes {
      *
      * @return \AppBundle\Entity\Concepto
      */
-    public function getConceptoFinal()
-    {
+    public function getConceptoFinal() {
         return $this->conceptoFinal;
     }
 
@@ -1406,8 +1388,7 @@ class Solicitudes {
      *
      * @return Solicitudes
      */
-    public function addConceptoJuntum(\AppBundle\Entity\Conceptosjunta $conceptoJuntum)
-    {
+    public function addConceptoJuntum(\AppBundle\Entity\Conceptosjunta $conceptoJuntum) {
         $this->conceptoJunta[] = $conceptoJuntum;
 
         return $this;
@@ -1418,8 +1399,7 @@ class Solicitudes {
      *
      * @param \AppBundle\Entity\Conceptosjunta $conceptoJuntum
      */
-    public function removeConceptoJuntum(\AppBundle\Entity\Conceptosjunta $conceptoJuntum)
-    {
+    public function removeConceptoJuntum(\AppBundle\Entity\Conceptosjunta $conceptoJuntum) {
         $this->conceptoJunta->removeElement($conceptoJuntum);
     }
 
@@ -1428,8 +1408,17 @@ class Solicitudes {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getConceptoJunta()
-    {
+    public function getConceptoJunta() {
         return $this->conceptoJunta;
     }
+
+    protected $programasArray;
+
+    public function getProgramasArray() {
+        foreach ($this->getProgramas() as $prog) {
+            $this->programasArray .= $prog->getPrograma()->getProgramanombre() . "<br>";
+        }
+        return $this->programasArray;
+    }
+
 }

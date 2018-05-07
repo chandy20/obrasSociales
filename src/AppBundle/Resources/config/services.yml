@@ -128,7 +128,7 @@ services:
         class: AppBundle\Admin\ViabilidadplaneacionAdmin
         arguments: [~, AppBundle\Entity\Viabilidadplaneacion, AppBundle:ViabilidadplaneacionAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: institucional, label: Viabilidad planeación }
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Viabilidad planeación }
         public: true
 
     app.admin.zonasubicacion:
@@ -142,7 +142,7 @@ services:
         class: AppBundle\Admin\AfiliadodibieAdmin
         arguments: [~, AppBundle\Entity\Afiliadodibie, AppBundle:AfiliadodibieAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: familiar, label: Afiliado dibie }
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Afiliado dibie }
         public: true
 
     app.admin.unidad:
@@ -163,12 +163,12 @@ services:
         class: AppBundle\Admin\puntajeAdmin
         arguments: [~, AppBundle\Entity\puntaje, AppBundle:puntajeAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Datos, label: Puntaje }
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Puntaje }
         public: true
 
     app.admin.otorga:
         class: AppBundle\Admin\otorgaAdmin
         arguments: [~, AppBundle\Entity\otorga, AppBundle:otorgaAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Datos, label: Otorga }
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Otorga }
         public: true

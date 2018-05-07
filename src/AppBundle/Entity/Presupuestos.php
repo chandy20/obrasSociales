@@ -42,6 +42,13 @@ class Presupuestos {
     /**
      * @var \Date
      *
+     * @ORM\Column(name="fechaCreacion", type="date", nullable= true)
+     */
+    private $fechaCreacion;
+    
+    /**
+     * @var \Date
+     *
      * @ORM\Column(name="desde", type="date", nullable= true)
      */
     private $desde;
@@ -221,5 +228,29 @@ class Presupuestos {
     public function getSeccional()
     {
         return $this->seccional;
+    }
+
+    /**
+     * Set fechaCreacion
+     *
+     * @param \DateTime $fechaCreacion
+     *
+     * @return Presupuestos
+     */
+    public function setFechaCreacion($fechaCreacion)
+    {
+        $this->fechaCreacion = $fechaCreacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCreacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaCreacion()
+    {
+        return $this->fechaCreacion;
     }
 }

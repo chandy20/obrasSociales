@@ -23,34 +23,23 @@ class SolicitudesAdmin extends AbstractAdmin {
         $datagridMapper
                 ->add('solicitudfecha', null, ["label" => "Fecha de la Solicitud"])
                 ->add('solicitudcedulasolicita', null, ["label" => "Cedula del Solicitante"])
-                ->add('solicitudnombresolicita', null, ["label" => "Nombre del Solicitante"])
                 ->add('idparentesco', null, ["label" => "Parentesco con el Solicitante"])
                 ->add('solicitudcedulafuncionario', null, ["label" => "Cedula Funcionario Policial"])
                 ->add('idgrado', null, ["label" => "Grado Funcionario Policial"])
-                ->add('solicituddireccionfuncionario', null, ["label" => "Direccion Funcionario"])
-                ->add('solicitudtelefonosfuncionario', null, ["label" => "Telefono Funcionario"])
-                ->add('solicitudnombrefuncionario', null, ["label" => "Nombre del Funcionario"])
-                ->add('antiguedad', null, ["label" => "Antiguedad Funcionario:"])
-                ->add('solicituddescripcion', null, ["label" => "Descripcion de la Solicitud"])
+                ->add('antiguedad', null, ["label" => "Antiguedad Funcionario"])
                 ->add('idtiposolicitud', null, ["label" => "Tipo de Solicitud"])
                 ->add('idestadocivil', null, ["label" => "Estado Civil"])
                 ->add('idingreso', null, ["label" => "Ingresos"])
-                ->add('idpersonacargo', null, ["label" => "Cantidad de Personas a Cargo"])
                 ->add('idsituacionvivienda', null, ["label" => "Situacion de Vivienda"])
                 ->add('idmotivodeuda', null, ["label" => "Motivo Deuda"])
-                ->add('idcantidadesbeneficioinst', null, ["label" => "Cantidad de beneficios recibidos por AOS - UNIDAD"])
                 ->add('idafiliadodibie', null, ["label" => "Afiliado a DIBIE?"])
-                ->add('idpoblacionbeneficia', null, ["label" => "Cantidad de Poblacion a Beneficiar"])
                 ->add('idviabilidadplaneacion', null, ["label" => "Viabilidad Planeacion"])
-                ->add('idzonaubicacion', null, ["label" => "Zona de Ubicacion"])
-                ->add('idconceptovisita', null, ["label" => "Concepto Visita Domiciliaria"])
                 ->add('idseccional', null, ["label" => "Seccional"])
-                ->add('totalPuntaje', null, ["label" => "Puntaje total", 'required' => false])
+                ->add('totalPuntaje', null, ["label" => "Puntaje total"])
                 ->add('concepto', null, ["label" => "Concepto Previo"])
                 ->add('conceptoFinal', null, ["label" => "Concepto Junta"])
                 ->add('otorga', null, ["label" => "Otorga Beneficio"])
-                ->add('cantidadSolicitada', null, ["label" => "Cantidad solicitada", 'required' => false])
-                ->add('cantidadAprobada', null, ["label" => "Cantidad Aprobada", 'required' => false])
+                ->add('programas', null, ["label" => "Programa"])
         ;
     }
 
@@ -168,6 +157,7 @@ class SolicitudesAdmin extends AbstractAdmin {
             "Concepto Junta" => 'conceptoFinal',
             "Cantidad solicitada" => 'cantidadSolicitada',
             "Cantidad Aprobada" => 'cantidadAprobada',
+            "Programas" => 'programasArray',
         );
     }
 
@@ -206,6 +196,15 @@ class SolicitudesAdmin extends AbstractAdmin {
                 ->add('cantidadSolicitada', null, ["label" => "Cantidad solicitada", 'required' => false])
                 ->add('cantidadAprobada', null, ["label" => "Cantidad Aprobada", 'required' => false])
                 ->add('programas', null, ["label" => "Programas", 'required' => false]);
+    }
+    
+    public function getTemplate($name) {
+        switch ($name) {
+            case 'show':
+                return 'AppBundle:Solicitudes:base_show.html.twig';
+            default:
+                return parent::getTemplate($name);
+        }
     }
 
 }

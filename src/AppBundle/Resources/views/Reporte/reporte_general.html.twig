@@ -54,50 +54,55 @@
     <br>
     <br>
     <script type="text/javascript">
+        function decodeEntities(encodedString) {
+            var textArea = document.createElement('textarea');
+            textArea.innerHTML = encodedString;
+            return textArea.value;
+        }
         var myData = new Array(
-                {%for k, registro in datos%}
-                    {%if k == (datos|length -1)%}
-                        ['{{k}}', {{registro.total}}, {{registro.aprobadas}}, {{registro.rechazadas}}]
-                    {%else%}
-                        ['{{k}}', {{registro.total}}, {{registro.aprobadas}}, {{registro.rechazadas}}],
-                    {%endif%}
-                {%endfor%}
-                );
-        var myChart = new JSChart('chart_div', 'bar');
-        myChart.setDataArray(myData);
-        myChart.setTitle('Cantidad de programas solicitados por {{columna}}');
-        myChart.setTitleColor('#3F779E');
-        myChart.setAxisNameX('');
-        myChart.setAxisNameY('');
-        myChart.setAxisNameFontSize(16);
-        myChart.setAxisNameColor('#999');
-        myChart.setAxisValuesAngle(30);
-        myChart.setAxisValuesColor('#777');
-        myChart.setAxisColor('#000000');
-        myChart.setAxisWidth(1);
-        myChart.setBarValuesColor('#2F6D99');
-        myChart.setAxisPaddingTop(60);
-        myChart.setAxisPaddingBottom(60);
-        myChart.setAxisPaddingLeft(45);
-        myChart.setTitleFontSize(11);
-        myChart.setBarColor('#3F779E', 1);
-        myChart.setBarColor('#036C2A', 2);
-        myChart.setBarColor('#FF0000', 3);
-        myChart.setBarBorderWidth(0);
-        myChart.setBarSpacingRatio(50);
-        myChart.setBarOpacity(0.9);
-        myChart.setFlagRadius(6);
-        myChart.setTooltipPosition('nw');
-        myChart.setTooltipOffset(3);
-        myChart.setLegendShow(true);
-        myChart.setLegendPosition('right top');
-        myChart.setLegendForBar(1, 'Radicadas');
-        myChart.setLegendForBar(2, 'Aprobadas');
-        myChart.setLegendForBar(3, 'Rechazadas');
-        myChart.setSize(616, 321);
-        myChart.setGridColor('#C6C6C6');
-        myChart.draw();
-        
+        {%for k, registro in datos%}
+            {%if k == (datos|length -1)%}
+                        [decodeEntities('{{k}}'), {{registro.total}}, {{registro.aprobadas}}, {{registro.rechazadas}}]
+            {%else%}
+                [decodeEntities('{{k}}'), {{registro.total}}, {{registro.aprobadas}}, {{registro.rechazadas}}],
+            {%endif%}
+        {%endfor%}
+                    );
+            var myChart = new JSChart('chart_div', 'bar');
+            myChart.setDataArray(myData);
+            myChart.setTitle('Cantidad de programas solicitados por {{columna}}');
+            myChart.setTitleColor('#3F779E');
+            myChart.setAxisNameX('');
+            myChart.setAxisNameY('');
+            myChart.setAxisNameFontSize(16);
+            myChart.setAxisNameColor('#999');
+            myChart.setAxisValuesAngle(30);
+            myChart.setAxisValuesColor('#777');
+            myChart.setAxisColor('#000000');
+            myChart.setAxisWidth(1);
+            myChart.setBarValuesColor('#2F6D99');
+            myChart.setAxisPaddingTop(60);
+            myChart.setAxisPaddingBottom(60);
+            myChart.setAxisPaddingLeft(45);
+            myChart.setTitleFontSize(11);
+            myChart.setBarColor('#3F779E', 1);
+            myChart.setBarColor('#036C2A', 2);
+            myChart.setBarColor('#FF0000', 3);
+            myChart.setBarBorderWidth(0);
+            myChart.setBarSpacingRatio(50);
+            myChart.setBarOpacity(0.9);
+            myChart.setFlagRadius(6);
+            myChart.setTooltipPosition('nw');
+            myChart.setTooltipOffset(3);
+            myChart.setLegendShow(true);
+            myChart.setLegendPosition('right top');
+            myChart.setLegendForBar(1, 'Radicadas');
+            myChart.setLegendForBar(2, 'Aprobadas');
+            myChart.setLegendForBar(3, 'Rechazadas');
+            myChart.setSize(616, 321);
+            myChart.setGridColor('#C6C6C6');
+            myChart.draw();
+
     </script>
 
 {%else%}

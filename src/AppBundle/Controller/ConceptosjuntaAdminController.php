@@ -269,11 +269,11 @@ class ConceptosjuntaAdminController extends CRUDController {
             $padre = $solicitud->{$parametros['ordenamiento']};
             foreach ($solicitud->getProgramas() as $programa) {
                 if (!array_key_exists($padre->getNombre(), $datos)) {
-                    $datos[$padre->getNombre()]["total"] = 1;
-                    $datos[$padre->getNombre()]["aprobadas"] = 0;
-                    $datos[$padre->getNombre()]["rechazadas"] = 0;
+                    $datos['"'.$padre->getNombre().'"']["total"] = 1;
+                    $datos['"'.$padre->getNombre().'"']["aprobadas"] = 0;
+                    $datos['"'.$padre->getNombre().'"']["rechazadas"] = 0;
                 } else {
-                    $datos[$padre->getNombre()]["total"] ++;
+                    $datos['"'.$padre->getNombre().'"']["total"] ++;
                 }
             }
         }
@@ -287,17 +287,17 @@ class ConceptosjuntaAdminController extends CRUDController {
             foreach ($solicitud->getConceptoJunta() as $concepto) {
                 foreach ($concepto->getProgramasConcepto() as $programaConcepto) {
                     if ($programaConcepto->getAprobado()) {
-                        $datos[$padre->getNombre()]["aprobadas"] ++;
+                        $datos['"'.$padre->getNombre().'"']["aprobadas"] ++;
                     } else {
-                        $datos[$padre->getNombre()]["rechazadas"] ++;
+                        $datos['"'.$padre->getNombre().'"']["rechazadas"] ++;
                     }
                 }
             }
         }
-       
+
         $html = $this->renderView('AppBundle:Reporte:reporte_general.html.twig', [
             'datos' => $datos,
-            'columna'=> $parametros["columna"]
+            'columna' => $parametros["columna"]
         ]);
 
         return $html;
@@ -570,8 +570,8 @@ class ConceptosjuntaAdminController extends CRUDController {
                 ->join("m.concepto", "c")
                 ->join("c.solicitud", "so")
                 ->where("so.solicitudfecha BETWEEN :inicio AND :fin")
-                ->setParameter("inicio", $form->fechaInicial3)
-                ->setParameter("fin", $form->fechaFinal3);
+                ->setParameter("inicio", $form->fechaInicial4)
+                ->setParameter("fin", $form->fechaFinal4);
         if ($form->documentoSolicitante2) {
             $query->andWhere("so.solicitudcedulasolicita = :cedula")
                     ->setParameter("cedula", $form->documentoSolicitante2);
@@ -581,11 +581,11 @@ class ConceptosjuntaAdminController extends CRUDController {
                     ->setParameter("cedulaTitular", $form->documentoTitular2);
         }
         if ($form->seccional4) {
-            $query->andWhere("s.idseccional = :seccional")
+            $query->andWhere("s.id = :seccional")
                     ->setParameter("seccional", $form->seccional4);
         }
         if ($form->programa2) {
-            $query->join("s.programas", "sp")
+            $query->join("so.programas", "sp")
                     ->join("sp.programa", "p")
                     ->andWhere("p.id = :programa")
                     ->setParameter("programa", $form->programa2);

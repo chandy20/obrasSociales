@@ -44,6 +44,7 @@ class PresupuestosAdmin extends AbstractAdmin {
                 ->add('saldo', null, ["label" => "Saldo"])
                 ->add('desde', null, ["label" => "Desde"])
                 ->add('hasta', null, ["label" => "Hasta"])
+                ->add('fechaCreacion', null, ["label" => "Fecha de creación"])
                 ->add('_action', null, array(
                     'actions' => array(
                         'show' => array(),
@@ -96,7 +97,9 @@ class PresupuestosAdmin extends AbstractAdmin {
     
     public function prePersist($object) {
         parent::prePersist($object);
+        $hoy = new \DateTime();
         $object->setSaldo($object->getPresupuestomonto());
+        $object->setFechaCreacion($hoy);
     }
 
 }
