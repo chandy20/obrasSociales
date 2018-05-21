@@ -39,7 +39,7 @@ class SolicitudesAdmin extends AbstractAdmin {
                 ->add('concepto', null, ["label" => "Concepto Previo"])
                 ->add('conceptoFinal', null, ["label" => "Concepto Junta"])
                 ->add('otorga', null, ["label" => "Otorga Beneficio"])
-                ->add('programas', null, ["label" => "Programa"])
+                ->add('programas.programa', null, ["label" => "Programa"])
         ;
     }
 

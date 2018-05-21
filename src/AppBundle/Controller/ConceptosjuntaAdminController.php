@@ -25,10 +25,11 @@ use Symfony\Component\HttpFoundation\Response;
 class ConceptosjuntaAdminController extends CRUDController {
 
     protected $em;
+    public $presupuesto;
 
     public function setContainer(ContainerInterface $container = null) {
         parent::setContainer($container);
-
+        $this->presupuesto = [];
         $this->em = $container->get("doctrine")->getManager();
     }
 
@@ -91,7 +92,7 @@ class ConceptosjuntaAdminController extends CRUDController {
                             $this->em->persist($programa);
                         }
                     }
-                    $this->em->flush();
+//                    $this->em->flush();
 
                     if ($this->isXmlHttpRequest()) {
                         return $this->renderJson([
@@ -100,7 +101,13 @@ class ConceptosjuntaAdminController extends CRUDController {
                                     'objectName' => $this->escapeHtml($this->admin->toString($existingObject)),
                                         ], 200, []);
                     }
-
+                    foreach ($this->presupuesto as $presupuesto) {
+                        if (intval($presupuesto->getSaldo()) < 1000001) {
+                            $this->addFlash(
+                                    'sonata_flash_error', "El saldo del presupuesto de la seccional " . $presupuesto->getSeccional()->getSeccionalnombre() . " del área " . $presupuesto->getIdarea()->getAreanombre() . " es de " . $presupuesto->getSaldo()
+                            );
+                        }
+                    }
                     $this->addFlash(
                             'sonata_flash_success', $this->trans(
                                     'flash_edit_success', ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))], 'SonataAdminBundle'
@@ -212,6 +219,9 @@ class ConceptosjuntaAdminController extends CRUDController {
                     }
                 }
             }
+            if (!in_array($presupuesto, $this->presupuesto)) {
+                $this->presupuesto[] = $presupuesto;
+            }
         }
         $concepto->setConceptojuntavalortotalb($totalBeneficio);
         $this->em->persist($concepto);
@@ -265,15 +275,16 @@ class ConceptosjuntaAdminController extends CRUDController {
         }
         $solicitudes = $query->getQuery()->getResult();
         $datos = [];
+
         foreach ($solicitudes as $solicitud) {
             $padre = $solicitud->{$parametros['ordenamiento']};
             foreach ($solicitud->getProgramas() as $programa) {
-                if (!array_key_exists($padre->getNombre(), $datos)) {
-                    $datos['"'.$padre->getNombre().'"']["total"] = 1;
-                    $datos['"'.$padre->getNombre().'"']["aprobadas"] = 0;
-                    $datos['"'.$padre->getNombre().'"']["rechazadas"] = 0;
+                if (!array_key_exists('"' . $padre->getNombre() . '"', $datos)) {
+                    $datos['"' . $padre->getNombre() . '"']["total"] = 1;
+                    $datos['"' . $padre->getNombre() . '"']["aprobadas"] = 0;
+                    $datos['"' . $padre->getNombre() . '"']["rechazadas"] = 0;
                 } else {
-                    $datos['"'.$padre->getNombre().'"']["total"] ++;
+                    $datos['"' . $padre->getNombre() . '"']["total"] ++;
                 }
             }
         }
@@ -287,9 +298,9 @@ class ConceptosjuntaAdminController extends CRUDController {
             foreach ($solicitud->getConceptoJunta() as $concepto) {
                 foreach ($concepto->getProgramasConcepto() as $programaConcepto) {
                     if ($programaConcepto->getAprobado()) {
-                        $datos['"'.$padre->getNombre().'"']["aprobadas"] ++;
-                    } else {
-                        $datos['"'.$padre->getNombre().'"']["rechazadas"] ++;
+                        $datos['"' . $padre->getNombre() . '"']["aprobadas"] ++;
+                    } else if (!$programaConcepto->getAprobado()) {
+                        $datos['"' . $padre->getNombre() . '"']["rechazadas"] ++;
                     }
                 }
             }
@@ -599,8 +610,7 @@ class ConceptosjuntaAdminController extends CRUDController {
 
     public function downloadArchivoAction($id) {
         $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findOneById($id);
-
-        $path = $this->get('kernel')->getRootDir() . "/../web/upload/";
+        $path = "/home/obrasso1/public_html/web/upload/";
         $content = file_get_contents($path . $solicitud->getArchivo());
 
         $response = new Response();

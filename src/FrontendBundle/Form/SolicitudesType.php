@@ -31,7 +31,7 @@ class SolicitudesType extends AbstractType {
                     'format' => 'yyyy-MM-dd',
                     'empty_value' => "",
                     'data' => $hoy,
-                    'attr' => array('class' => 'form-control')
+                    'attr' => array('class' => 'form-control', 'readonly'=> true)
                 ))
                 ->add('idseccional', null, [
                     'constraints' => $constraint,

@@ -39,6 +39,7 @@ class ConceptosjuntaAdmin extends AbstractAdmin {
                 ->add('solicitud.concepto', null, ["label" => "Concepto previo"])
                 ->add('solicitud.solicitudnombresolicita', null, ["label" => "Solicitante"])
                 ->add('solicitud.solicitudcedulasolicita', null, ["label" => "Documento"])
+                ->add('solicitud.programas.programa', null, ["label" => "Programas"])
         ;
     }
 

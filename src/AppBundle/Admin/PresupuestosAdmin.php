@@ -17,6 +17,7 @@ class PresupuestosAdmin extends AbstractAdmin {
     protected function configureRoutes(RouteCollection $collection) {
         $collection->remove('delete');
         $collection->remove('show');
+        $collection->remove('edit');
     }
 
     /**
