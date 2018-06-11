@@ -278,13 +278,15 @@ class ConceptosjuntaAdminController extends CRUDController {
 
         foreach ($solicitudes as $solicitud) {
             $padre = $solicitud->{$parametros['ordenamiento']};
-            foreach ($solicitud->getProgramas() as $programa) {
-                if (!array_key_exists('"' . $padre->getNombre() . '"', $datos)) {
-                    $datos['"' . $padre->getNombre() . '"']["total"] = 1;
-                    $datos['"' . $padre->getNombre() . '"']["aprobadas"] = 0;
-                    $datos['"' . $padre->getNombre() . '"']["rechazadas"] = 0;
-                } else {
-                    $datos['"' . $padre->getNombre() . '"']["total"] ++;
+            if ($padre != null) {
+                foreach ($solicitud->getProgramas() as $programa) {
+                    if (!array_key_exists('"' . $padre->getNombre() . '"', $datos)) {
+                        $datos['"' . $padre->getNombre() . '"']["total"] = 1;
+                        $datos['"' . $padre->getNombre() . '"']["aprobadas"] = 0;
+                        $datos['"' . $padre->getNombre() . '"']["rechazadas"] = 0;
+                    } else {
+                        $datos['"' . $padre->getNombre() . '"']["total"] ++;
+                    }
                 }
             }
         }

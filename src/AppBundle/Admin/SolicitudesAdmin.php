@@ -21,7 +21,7 @@ class SolicitudesAdmin extends AbstractAdmin {
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
         $datagridMapper
-                ->add('solicitudfecha', null, ["label" => "Fecha de la Solicitud"])
+                ->add('solicitudfecha', 'doctrine_orm_date', array('input_type' => 'date', "label" => "Fecha de la Solicitud"))
                 ->add('solicitudcedulasolicita', null, ["label" => "Cedula del Solicitante"])
                 ->add('idparentesco', null, ["label" => "Parentesco con el Solicitante"])
                 ->add('solicitudcedulafuncionario', null, ["label" => "Cedula Funcionario Policial"])
@@ -39,7 +39,7 @@ class SolicitudesAdmin extends AbstractAdmin {
                 ->add('concepto', null, ["label" => "Concepto Previo"])
                 ->add('conceptoFinal', null, ["label" => "Concepto Junta"])
                 ->add('otorga', null, ["label" => "Otorga Beneficio"])
-                ->add('programas.programa', null, ["label" => "Programa"])
+                ->add('programas.programa.idarea', null, ["label" => "Área"])
         ;
     }
 

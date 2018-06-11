@@ -2,7 +2,6 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Entity\Movimiento;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -26,8 +25,8 @@ class ConceptosjuntaAdmin extends AbstractAdmin {
         $collection->remove('create');
         $collection->add('reporte', 'reporte');
         $collection->add('dataReporte', 'dataReporte');
-        $collection->add('downloadArchivo',$this->getRouterIdParameter() . '/downloadArchivo');
-        $collection->add('downloadPDF',$this->getRouterIdParameter() . '/downloadPDF');
+        $collection->add('downloadArchivo', $this->getRouterIdParameter() . '/downloadArchivo');
+        $collection->add('downloadPDF', $this->getRouterIdParameter() . '/downloadPDF');
     }
 
     /**
@@ -35,11 +34,11 @@ class ConceptosjuntaAdmin extends AbstractAdmin {
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
         $datagridMapper
-                ->add('solicitud.solicitudfecha', null, ["label" => "Fecha"])
+                ->add('solicitud.solicitudfecha', 'doctrine_orm_date', array('input_type' => 'date', "label" => "Fecha de la Solicitud"))
                 ->add('solicitud.concepto', null, ["label" => "Concepto previo"])
                 ->add('solicitud.solicitudnombresolicita', null, ["label" => "Solicitante"])
                 ->add('solicitud.solicitudcedulasolicita', null, ["label" => "Documento"])
-                ->add('solicitud.programas.programa', null, ["label" => "Programas"])
+                ->add('solicitud.programas.programa.idarea', null, ["label" => "Área"])
         ;
     }
 
