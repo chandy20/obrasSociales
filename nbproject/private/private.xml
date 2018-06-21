@@ -2,6 +2,17 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/home/ch/proyectos/php/obrasSociales/vendor/sonata-project/admin-bundle/src/Resources/translations/SonataAdminBundle.es.xliff</file>
+            <file>file:/home/ch/proyectos/php/obrasSociales/src/Application/Sonata/UserBundle/Entity/User.php</file>
+            <file>file:/home/ch/proyectos/php/obrasSociales/src/AppBundle/Resources/translations/messages.es.xliff</file>
+            <file>file:/home/ch/proyectos/php/obrasSociales/src/AppBundle/Admin/UserAdmin.php</file>
+            <file>file:/home/ch/proyectos/php/obrasSociales/src/AppBundle/Resources/config/services.yml</file>
+            <file>file:/home/ch/proyectos/php/obrasSociales/src/FrontendBundle/Resources/translations/messages.fr.xlf</file>
+            <file>file:/home/ch/proyectos/php/obrasSociales/vendor/sensio/generator-bundle/Sensio/Bundle/GeneratorBundle/Resources/skeleton/bundle/messages.fr.xlf</file>
+            <file>file:/home/ch/proyectos/php/obrasSociales/app/config/config.yml</file>
+            <file>file:/home/ch/proyectos/php/obrasSociales/src/Application/Sonata/UserBundle/Resources/config/doctrine/User.orm.xml</file>
+            <file>file:/home/ch/proyectos/php/obrasSociales/vendor/sonata-project/admin-bundle/src/Resources/translations/SonataAdminBundle.ar.xliff</file>
+        </group>
     </open-files>
 </project-private>

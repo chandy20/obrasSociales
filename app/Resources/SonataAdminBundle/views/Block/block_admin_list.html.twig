@@ -29,22 +29,24 @@ file that was distributed with this source code.
                             {% for admin in group.items %}
                                 {% if admin.dashboardActions|length > 0 %}
                                     <tr>
-                                        <td class="sonata-ba-list-label" width="40%">
-                                            {{ admin.label|trans({}, admin.translationdomain) }}
-                                        </td>
-                                        <td>
-                                            <div class="btn-group">
-                                                {% for action in admin.dashboardActions %}
-                                                    {% include action.template|default('@SonataAdmin/CRUD/dashboard__action.html.twig') with {'action': action} %}
-                                                {% endfor %}
-                                                {%if admin.baseControllerName == "AppBundle:ConceptosjuntaAdmin"%}
-                                                    <a class="btn btn-link btn-flat" href="{{path('admin_app_conceptosjunta_reporte')}}">
-                                                        <i class="fa fa-pie-chart" aria-hidden="true"></i>
-                                                        Reportes
-                                                    </a>
-                                                {%endif%}
-                                            </div>
-                                        </td>
+                                        {%if admin.baseControllerName != "AppBundle:PresupuestosAdmin" or is_granted("ROLE_CONSULTOR") == false %}
+                                            <td class="sonata-ba-list-label" width="40%">
+                                                {{ admin.label|trans({}, admin.translationdomain) }}
+                                            </td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    {% for action in admin.dashboardActions %}
+                                                        {% include action.template|default('@SonataAdmin/CRUD/dashboard__action.html.twig') with {'action': action} %}
+                                                    {% endfor %}
+                                                    {%if admin.baseControllerName == "AppBundle:SolicitudesAdmin"%}
+                                                        <a class="btn btn-link btn-flat" href="{{path('admin_app_conceptosjunta_reporte')}}">
+                                                            <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                                                            Reportes
+                                                        </a>
+                                                    {%endif%}
+                                                </div>
+                                            </td>
+                                        {%endif%}
                                     </tr>
                                 {% endif %}
                             {% endfor %}

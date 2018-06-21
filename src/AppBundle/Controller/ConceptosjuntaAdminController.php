@@ -273,6 +273,12 @@ class ConceptosjuntaAdminController extends CRUDController {
             $query->andWhere($parametros["campo"] . "= :" . $parametros["alias"])
                     ->setParameter($parametros["alias"], $parametros["valor"]);
         }
+        $user = $this->getUser();
+        if ($user->hasRole('ROLE_CONSULTOR')) {
+            $query->join("s.idseccional", "se")
+                    ->andWhere("se.id = :seccional")
+                    ->setParameter("seccional", $user->getSeccional());
+        }
         $solicitudes = $query->getQuery()->getResult();
         $datos = [];
 
@@ -321,6 +327,12 @@ class ConceptosjuntaAdminController extends CRUDController {
                 ->where("s.solicitudfecha BETWEEN :inicio AND :fin")
                 ->setParameter("inicio", $form->fechaInicial)
                 ->setParameter("fin", $form->fechaFinal);
+        $user = $this->getUser();
+        if ($user->hasRole('ROLE_CONSULTOR')) {
+            $query->join("s.idseccional", "se")
+                    ->andWhere("se.id = :seccional")
+                    ->setParameter("seccional", $user->getSeccional());
+        }
         if ($form->seccional != "") {
             $query->join("s.idseccional", "se")
                     ->andWhere("se.id = :seccional")
@@ -472,6 +484,14 @@ class ConceptosjuntaAdminController extends CRUDController {
                 ->where("s.solicitudfecha BETWEEN :inicio AND :fin")
                 ->setParameter("inicio", $form->fechaInicial2)
                 ->setParameter("fin", $form->fechaFinal2);
+
+        $user = $this->getUser();
+        if ($user->hasRole('ROLE_CONSULTOR')) {
+            $query->join("s.idseccional", "se")
+                    ->andWhere("se.id = :seccional")
+                    ->setParameter("seccional", $user->getSeccional());
+        }
+
         if ($form->documentoSolicitante != "") {
             $query->andWhere("s.solicitudcedulasolicita = :documento")
                     ->setParameter("documento", $form->documentoSolicitante);
@@ -527,6 +547,14 @@ class ConceptosjuntaAdminController extends CRUDController {
                 ->where("so.solicitudfecha BETWEEN :inicio AND :fin")
                 ->setParameter("inicio", $form->fechaInicial3)
                 ->setParameter("fin", $form->fechaFinal3);
+
+        $user = $this->getUser();
+        if ($user->hasRole('ROLE_CONSULTOR')) {
+            $query->join("s.idseccional", "se")
+                    ->andWhere("se.id = :seccional")
+                    ->setParameter("seccional", $user->getSeccional());
+        }
+
         if ($form->seccional3) {
             $query->andWhere("s.id = :seccional")
                     ->setParameter("seccional", $form->seccional3);
@@ -592,6 +620,12 @@ class ConceptosjuntaAdminController extends CRUDController {
         if ($form->documentoTitular2) {
             $query->andWhere("so.solicitudcedulafuncionario = :cedulaTitular")
                     ->setParameter("cedulaTitular", $form->documentoTitular2);
+        }
+        $user = $this->getUser();
+        if ($user->hasRole('ROLE_CONSULTOR')) {
+            $query->join("s.idseccional", "se")
+                    ->andWhere("se.id = :seccional")
+                    ->setParameter("seccional", $user->getSeccional());
         }
         if ($form->seccional4) {
             $query->andWhere("s.id = :seccional")

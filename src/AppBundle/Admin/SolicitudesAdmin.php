@@ -9,6 +9,19 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 class SolicitudesAdmin extends AbstractAdmin {
+    
+    public function createQuery($context = 'list') {
+
+        $query = parent::createQuery($context);
+        $em = $this->getConfigurationPool()->getContainer()->get("doctrine")->getEntityManager();
+
+        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+        if ($user->hasRole('ROLE_CONSULTOR')) {
+            $query->where($query->getRootAliases()[0] . ".idseccional = :seccional")
+                    ->setParameter("seccional", $user->getSeccional());
+        }
+        return $query;
+    }
 
     protected function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection) {
         $collection->remove('delete');

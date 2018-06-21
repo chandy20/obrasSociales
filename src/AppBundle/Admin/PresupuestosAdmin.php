@@ -13,7 +13,20 @@ use Symfony\Component\Translation\Translator;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class PresupuestosAdmin extends AbstractAdmin {
+    
+    
+    public function createQuery($context = 'list') {
+        $query = parent::createQuery($context);
+        $em = $this->getConfigurationPool()->getContainer()->get("doctrine")->getEntityManager();
 
+        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+        if ($user->hasRole('ROLE_CONSULTOR')) {
+            $query->where($query->getRootAliases()[0].".seccional = :seccional")
+                    ->setParameter("seccional", $user->getSeccional());
+        }
+        return $query;
+    }
+    
     protected function configureRoutes(RouteCollection $collection) {
         $collection->remove('delete');
         $collection->remove('show');

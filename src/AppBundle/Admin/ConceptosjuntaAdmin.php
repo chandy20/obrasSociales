@@ -15,6 +15,19 @@ class ConceptosjuntaAdmin extends AbstractAdmin {
 
     protected $em;
 
+    public function createQuery($context = 'list') {
+        $query = parent::createQuery($context);
+        $em = $this->getConfigurationPool()->getContainer()->get("doctrine")->getEntityManager();
+
+        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+        if ($user->hasRole('ROLE_CONSULTOR')) {
+            $query->join($query->getRootAliases()[0] . ".solicitud", "s")
+                    ->where("s.idseccional = :seccional")
+                    ->setParameter("seccional", $user->getSeccional());
+        }
+        return $query;
+    }
+
     public function setConfigurationPool(Pool $configurationPool) {
         parent::setConfigurationPool($configurationPool);
         $this->em = $this->getConfigurationPool()->getContainer()->get("doctrine")->getManager();
@@ -51,21 +64,25 @@ class ConceptosjuntaAdmin extends AbstractAdmin {
                 ->add('solicitud.concepto', null, ["label" => "Concepto previo"])
                 ->add('solicitud.solicitudnombresolicita', null, ["label" => "Solicitante"])
                 ->add('solicitud.solicitudcedulasolicita', null, ["label" => "Documento"])
-                ->add('aprobado', null, ["label" => "¿Aprobado?"])
-                ->add('_action', null, array(
-                    'actions' => array(
-                        'show' => array(),
-                        'edit' => array(),
-                        'delete' => array(),
-                        'archivo' => array(
-                            'template' => 'AppBundle:Solicitudes/btn:archivo.html.twig'
+                ->add('aprobado', null, ["label" => "¿Aprobado?"]);
+        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+        if ($user->hasRole("ROLE_ADMIN") || $user->hasRole("ROLE_SUPER_ADMIN")) {
+            $listMapper
+                    ->add('_action', null, array(
+                        'actions' => array(
+                            'show' => array(),
+                            'edit' => array(),
+                            'delete' => array(),
+                            'archivo' => array(
+                                'template' => 'AppBundle:Solicitudes/btn:archivo.html.twig'
+                            ),
+//                            'pdf' => array(
+//                                'template' => 'AppBundle:Solicitudes/btn:pdf.html.twig'
+//                            ),
                         ),
-                        'pdf' => array(
-                            'template' => 'AppBundle:Solicitudes/btn:pdf.html.twig'
-                        ),
-                    ),
-                ))
-        ;
+                    ))
+            ;
+        }
     }
 
     /**

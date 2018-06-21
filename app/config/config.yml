@@ -98,28 +98,33 @@ sonata_admin:
         groups:
             
             Solicitudes:
-                roles: [ IS_AUTHENTICATED_ANONYMOUSLY ]
+                roles: [ ROLE_CONSULTOR, ROLE_SUPER_ADMIN ]
                 label: 'Solicitudes'
+                
+            Usuario:
+                roles: [ ROLE_SUPER_ADMIN ]
+                label: 'Usuarios'
             Datos:
-                roles: [ IS_AUTHENTICATED_ANONYMOUSLY ]
+                roles: [ ROLE_SUPER_ADMIN ]
                 label: 'Datos'
             funcionario:
-                roles: [ IS_AUTHENTICATED_ANONYMOUSLY]
+                roles: [ ROLE_SUPER_ADMIN]
                 label: 'Funcionario'
             
             familiar:
-                roles: [ IS_AUTHENTICATED_ANONYMOUSLY ]
+                roles: [ ROLE_SUPER_ADMIN ]
                 label: 'Familiar'
             institucional:
-                roles: [ IS_AUTHENTICATED_ANONYMOUSLY ]
+                roles: [ ROLE_SUPER_ADMIN ]
                 label: 'Institucional'
             auditoria:
-                roles: [ IS_AUTHENTICATED_ANONYMOUSLY ]
+                roles: [ ROLE_SUPER_ADMIN, ROLE_CONSULTOR ]
                 label: 'Auditoría'
 
            
                 
         blocks:
+            - { position: left,  type: sonata.admin.block.admin_list, settings: { groups: [Usuario] } }
             - { position: left,  type: sonata.admin.block.admin_list, settings: { groups: [Solicitudes] } }
             - { position: left,  type: sonata.admin.block.admin_list, settings: { groups: [Datos] } }
             - { position: left,  type: sonata.admin.block.admin_list, settings: { groups: [funcionario] } }

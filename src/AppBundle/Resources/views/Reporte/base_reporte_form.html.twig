@@ -130,11 +130,13 @@
                     {{ form_errors(form.fechaFinal) }}
                     {{ form_widget(form.fechaFinal) }}
                 </div>
-                <div class="col-md-3">
-                    {{ form_label(form.seccional) }}
-                    {{ form_errors(form.seccional) }}
-                    {{ form_widget(form.seccional) }}
-                </div>
+                {% if is_granted("ROLE_ADMIN") %}
+                    <div class="col-md-3">
+                        {{ form_label(form.seccional) }}
+                        {{ form_errors(form.seccional) }}
+                        {{ form_widget(form.seccional) }}
+                    </div>
+                {% endif %}
                 <div class="col-md-3">
                     {{ form_label(form.concepto) }}
                     {{ form_errors(form.concepto) }}
@@ -264,11 +266,13 @@
                     {{ form_errors(form.fechaFinal3) }}
                     {{ form_widget(form.fechaFinal3) }}
                 </div>
-                <div class="col-md-3">
-                    {{ form_label(form.seccional3) }}
-                    {{ form_errors(form.seccional3) }}
-                    {{ form_widget(form.seccional3) }}
-                </div>
+                {% if is_granted("ROLE_ADMIN") %}
+                    <div class="col-md-3">
+                        {{ form_label(form.seccional3) }}
+                        {{ form_errors(form.seccional3) }}
+                        {{ form_widget(form.seccional3) }}
+                    </div>
+                {%endif%}
                 <div class="col-md-3">
                     {{ form_label(form.area3) }}
                     {{ form_errors(form.area3) }}
@@ -296,11 +300,13 @@
                     {{ form_errors(form.documentoTitular2) }}
                     {{ form_widget(form.documentoTitular2) }}
                 </div>
-                <div class="col-md-4">
-                    {{ form_label(form.seccional4) }}
-                    {{ form_errors(form.seccional4) }}
-                    {{ form_widget(form.seccional4) }}
-                </div>
+                {% if is_granted("ROLE_ADMIN") %}
+                    <div class="col-md-4">
+                        {{ form_label(form.seccional4) }}
+                        {{ form_errors(form.seccional4) }}
+                        {{ form_widget(form.seccional4) }}
+                    </div>
+                {%endif%}
                 <div class="col-md-4">
                     {{ form_label(form.programa2) }}
                     {{ form_errors(form.programa2) }}
@@ -494,7 +500,9 @@
                 <br />
             </div>
         </div>
-        {{ form_rest(form) }}
+        <div style="display:none">
+            {{ form_rest(form) }}
+        </div>
         <input type="hidden" id="pestanaActiva" value="1">
         <div class="col-md-12">
             <div class="col-md-12" id="datosConsulta"></div>

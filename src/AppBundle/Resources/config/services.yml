@@ -172,3 +172,10 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: admin, label: Otorga }
         public: true
+
+    app.admin.user:
+        class: AppBundle\Admin\UserAdmin
+        arguments: [~, Application\Sonata\UserBundle\Entity\User, AppBundle:UserAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Usuario, label: Usuario }
+        public: true
