@@ -81,6 +81,8 @@ class ConceptosjuntaAdminController extends CRUDController {
                 $concepto = $this->em->getRepository("AppBundle:Concepto")->findOneById(4);
                 if ($submittedObject->getAprobado()) {
                     $concepto = $this->em->getRepository("AppBundle:Concepto")->findOneById(1);
+                } else {
+                    $submittedObject->setAprobado(false);
                 }
                 $solicitud->setConceptoFinal($concepto);
                 $this->admin->setSubject($submittedObject);
@@ -101,11 +103,13 @@ class ConceptosjuntaAdminController extends CRUDController {
                                     'objectName' => $this->escapeHtml($this->admin->toString($existingObject)),
                                         ], 200, []);
                     }
-                    foreach ($this->presupuesto as $presupuesto) {
-                        if (intval($presupuesto->getSaldo()) < 1000001) {
-                            $this->addFlash(
-                                    'sonata_flash_error', "El saldo del presupuesto de la seccional " . $presupuesto->getSeccional()->getSeccionalnombre() . " del área " . $presupuesto->getIdarea()->getAreanombre() . " es de " . $presupuesto->getSaldo()
-                            );
+                    if ($submittedObject->getAprobado()) {
+                        foreach ($this->presupuesto as $presupuesto) {
+                            if (intval($presupuesto->getSaldo()) < 1000001) {
+                                $this->addFlash(
+                                        'sonata_flash_error', "El saldo del presupuesto de la seccional " . $presupuesto->getSeccional()->getSeccionalnombre() . " del área " . $presupuesto->getIdarea()->getAreanombre() . " es de " . $presupuesto->getSaldo()
+                                );
+                            }
                         }
                     }
                     $this->addFlash(
@@ -178,53 +182,56 @@ class ConceptosjuntaAdminController extends CRUDController {
     }
 
     function validar(Conceptosjunta $concepto, $form) {
-        $hoy = new DateTime();
-        $totalBeneficio = 0;
-        foreach ($concepto->getProgramasConcepto() as $programaConcepto) {
-            $presupuesto = $this->em->getRepository("AppBundle:Presupuestos")->createQueryBuilder('p')
-                            ->where("p.seccional = :seccional")
-                            ->andWhere(":hoy BETWEEN p.desde AND p.hasta")
-                            ->andWhere("p.idarea = :area")
-                            ->setParameter("seccional", $concepto->getSolicitud()->getIdseccional())
-                            ->setParameter("area", $programaConcepto->getPrograma()->getIdarea())
-                            ->setParameter("hoy", $hoy)->getQuery()->getResult();
-            if (!$presupuesto) {
-                $form->addError(new FormError("No existe presupuesto vigente disponible para la seccional selecional " . $concepto->getSolicitud()->getIdseccional()->getSeccionalnombre() . " para el area de " . $programaConcepto->getPrograma()->getIdarea()));
-            } else {
-                $presupuesto = $presupuesto[0];
-                $totalMovimiento = $programaConcepto->getPrograma()->getValorMes() * $concepto->getConceptojuntatiempo();
-                $totalBeneficio += $totalMovimiento;
-                $movimiento = $this->em->getRepository("AppBundle:Movimiento")->createQueryBuilder('m')
-                                ->where("m.seccional = :seccional")
-                                ->andWhere("m.concepto = :concepto")
-                                ->andWhere("m.valor = :valor")
-                                ->andWhere("m.presupuesto = :presupuesto")
+        if ($concepto->getAprobado()) {
+            $hoy = new DateTime();
+            $totalBeneficio = 0;
+            foreach ($concepto->getProgramasConcepto() as $programaConcepto) {
+                $presupuesto = $this->em->getRepository("AppBundle:Presupuestos")->createQueryBuilder('p')
+                                ->where("p.seccional = :seccional")
+                                ->andWhere(":hoy BETWEEN p.desde AND p.hasta")
+                                ->andWhere("p.idarea = :area")
                                 ->setParameter("seccional", $concepto->getSolicitud()->getIdseccional())
-                                ->setParameter("concepto", $concepto)
-                                ->setParameter("valor", $totalMovimiento)
-                                ->setParameter("presupuesto", $presupuesto)->getQuery()->getResult();
-                if (!$movimiento) {
-                    if ($presupuesto->getSaldo() < $totalMovimiento) {
-                        $form->addError(new FormError("El saldo del presupuesto de la seccional " . $concepto->getSolicitud()->getIdseccional()->getSeccionalnombre() . " para el area de " . $programaConcepto->getPrograma()->getIdarea() . ", es inferior al monto de la transacción."));
-                    } else {
-                        $presupuesto->setSaldo($presupuesto->getSaldo() - $totalMovimiento);
-                        $movimiento = new Movimiento();
-                        $movimiento->setValor($totalMovimiento);
-                        $movimiento->setTipo("Débito");
-                        $movimiento->setSeccional($concepto->getSolicitud()->getIdseccional());
-                        $movimiento->setPresupuesto($presupuesto);
-                        $movimiento->setConcepto($concepto);
-                        $this->em->persist($presupuesto);
-                        $this->em->persist($movimiento);
+                                ->setParameter("area", $programaConcepto->getPrograma()->getIdarea())
+                                ->setParameter("hoy", $hoy)->getQuery()->getResult();
+                if (!$presupuesto) {
+                    $form->addError(new FormError("No existe presupuesto vigente disponible para la seccional selecional " . $concepto->getSolicitud()->getIdseccional()->getSeccionalnombre() . " para el area de " . $programaConcepto->getPrograma()->getIdarea()));
+                } else {
+                    $presupuesto = $presupuesto[0];
+                    $totalMovimiento = $programaConcepto->getPrograma()->getValorMes() * $concepto->getConceptojuntatiempo();
+                    $totalBeneficio += $totalMovimiento;
+                    $movimiento = $this->em->getRepository("AppBundle:Movimiento")->createQueryBuilder('m')
+                                    ->where("m.seccional = :seccional")
+                                    ->andWhere("m.concepto = :concepto")
+                                    ->andWhere("m.valor = :valor")
+                                    ->andWhere("m.presupuesto = :presupuesto")
+                                    ->setParameter("seccional", $concepto->getSolicitud()->getIdseccional())
+                                    ->setParameter("concepto", $concepto)
+                                    ->setParameter("valor", $totalMovimiento)
+                                    ->setParameter("presupuesto", $presupuesto)->getQuery()->getResult();
+                    if (!$movimiento) {
+                        if ($presupuesto->getSaldo() < $totalMovimiento) {
+                            $form->addError(new FormError("El saldo del presupuesto de la seccional " . $concepto->getSolicitud()->getIdseccional()->getSeccionalnombre() . " para el area de " . $programaConcepto->getPrograma()->getIdarea() . ", es inferior al monto de la transacción."));
+                        } else {
+                            $presupuesto->setSaldo($presupuesto->getSaldo() - $totalMovimiento);
+                            $movimiento = new Movimiento();
+                            $movimiento->setValor($totalMovimiento);
+                            $movimiento->setTipo("Débito");
+                            $movimiento->setSeccional($concepto->getSolicitud()->getIdseccional());
+                            $movimiento->setPresupuesto($presupuesto);
+                            $movimiento->setConcepto($concepto);
+                            $this->em->persist($presupuesto);
+                            $this->em->persist($movimiento);
+                        }
                     }
                 }
+                if (!in_array($presupuesto, $this->presupuesto)) {
+                    $this->presupuesto[] = $presupuesto;
+                }
             }
-            if (!in_array($presupuesto, $this->presupuesto)) {
-                $this->presupuesto[] = $presupuesto;
-            }
+            $concepto->setConceptojuntavalortotalb($totalBeneficio);
+
+            $this->em->persist($concepto);
         }
-        $concepto->setConceptojuntavalortotalb($totalBeneficio);
-        $this->em->persist($concepto);
     }
 
     public function reporteAction() {

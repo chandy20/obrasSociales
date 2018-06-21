@@ -1,0 +1,9 @@
+<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectid="{{object.id}}">
+    {%if object.aprobado %}
+        <span class="label label-success">sí</span>
+    {%elseif object.aprobado is null%}
+        <span class="label label-warning">pendiente</span>
+    {%else%}
+        <span class="label label-danger">no</span>
+    {%endif%}
+</td>

@@ -64,7 +64,13 @@ class ConceptosjuntaAdmin extends AbstractAdmin {
                 ->add('solicitud.concepto', null, ["label" => "Concepto previo"])
                 ->add('solicitud.solicitudnombresolicita', null, ["label" => "Solicitante"])
                 ->add('solicitud.solicitudcedulasolicita', null, ["label" => "Documento"])
-                ->add('aprobado', null, ["label" => "¿Aprobado?"]);
+                ->add('conceptosjuntadesc', null, ["label" => "Descripcion Junta"])
+                ->add('conceptosjuntanumacta', null, ["label" => "Número Acta Aprobación"])
+                ->add('aprobado', null, [
+                    'template' => 'AppBundle:ConceptoJunta:aprobado.html.twig',
+                    'label' => '¿Aprobado?'
+                ])
+        ;
         $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
         if ($user->hasRole("ROLE_ADMIN") || $user->hasRole("ROLE_SUPER_ADMIN")) {
             $listMapper
@@ -93,7 +99,7 @@ class ConceptosjuntaAdmin extends AbstractAdmin {
                 ->add('programasConcepto', null, ["label" => "programas"])
                 ->add('conceptojuntatiempo', null, ["label" => "Tiempo del Beneficio (Meses)"])
                 ->add('conceptosjuntadesc', null, ["label" => "Descripcion Junta"])
-                ->add('conceptosjuntanumacta', null, ["label" => "Numero Acta Aprobación"])
+                ->add('conceptosjuntanumacta', null, ["label" => "Número Acta Aprobación"])
                 ->add('aprobado', null, ["label" => "¿Aprueba solicitud?"])
         ;
     }
@@ -109,13 +115,13 @@ class ConceptosjuntaAdmin extends AbstractAdmin {
                 ->add('conceptojuntavalortotalb', null, ["label" => "Valor Total del Beneficio"])
                 ->add('conceptosjuntadesc', null, ["label" => "Descripcion Junta"])
                 ->add('conceptosjuntaotorgada', null, ["label" => "Otorga Beneficio?"])
-                ->add('conceptosjuntanumacta', null, ["label" => "Numero Acta Aprobacion"])
+                ->add('conceptosjuntanumacta', null, ["label" => "Número Acta Aprobacion"])
         ;
     }
 
     public function validate(ErrorElement $errorElement, $object) {
         parent::validate($errorElement, $object);
-        if (!$object->getConceptojuntatiempo()) {
+        if (!$object->getConceptojuntatiempo() && $object->getConceptojuntatiempo()< 0) {
             return $errorElement
                             ->with("conceptojuntatiempo")
                             ->addViolation('Este valor no debería estar vacío')
