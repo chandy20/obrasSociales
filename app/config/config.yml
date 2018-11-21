@@ -40,6 +40,8 @@ framework:
 
 # Twig Configuration
 twig:
+    form_themes:
+        - '@SonataCore/Form/datepicker.html.twig'
     globals:
         kernelRootDir: "%kernel.root_dir%"
     debug:            "%kernel.debug%"

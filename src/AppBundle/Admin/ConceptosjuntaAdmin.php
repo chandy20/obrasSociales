@@ -47,7 +47,15 @@ class ConceptosjuntaAdmin extends AbstractAdmin {
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
         $datagridMapper
-                ->add('solicitud.solicitudfecha', 'doctrine_orm_date', array('input_type' => 'date', "label" => "Fecha de la Solicitud"))
+                ->add('solicitud.solicitudfecha', 'doctrine_orm_date_range', [
+                    "label" => "Fecha de la Solicitud",
+                    'field_type' => 'sonata_type_date_range_picker',
+                    'field_options' => [
+                        'field_options' => [
+                            'format' => 'yyyy-MM-dd'
+                        ],
+                    ]
+                ])
                 ->add('solicitud.concepto', null, ["label" => "Concepto previo"])
                 ->add('solicitud.solicitudnombresolicita', null, ["label" => "Solicitante"])
                 ->add('solicitud.solicitudcedulasolicita', null, ["label" => "Documento"])
