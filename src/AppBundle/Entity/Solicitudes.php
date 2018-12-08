@@ -16,7 +16,7 @@ class Solicitudes {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=true)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -25,21 +25,21 @@ class Solicitudes {
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="SolicitudFecha", type="date", nullable=false)
+     * @ORM\Column(name="SolicitudFecha", type="date", nullable=true)
      */
     private $solicitudfecha;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="SolicitudCedulaSolicita", type="string", length=45, nullable=false)
+     * @ORM\Column(name="SolicitudCedulaSolicita", type="string", length=45, nullable=true)
      */
     private $solicitudcedulasolicita;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="emailSolicitante", type="string", length=45, nullable=false)
+     * @ORM\Column(name="emailSolicitante", type="string", length=45, nullable=true)
      */
     private $emailSolicitante;
 
@@ -67,42 +67,42 @@ class Solicitudes {
     /**
      * @var string
      *
-     * @ORM\Column(name="SolicitudCedulaFuncionario", type="string", length=45, nullable=false)
+     * @ORM\Column(name="SolicitudCedulaFuncionario", type="string", length=45, nullable=true)
      */
     private $solicitudcedulafuncionario;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="SolicitudDireccionFuncionario", type="string", length=350, nullable=false)
+     * @ORM\Column(name="SolicitudDireccionFuncionario", type="string", length=350, nullable=true)
      */
     private $solicituddireccionfuncionario;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="SolicitudTelefonosFuncionario", type="string", length=45, nullable=false)
+     * @ORM\Column(name="SolicitudTelefonosFuncionario", type="string", length=45, nullable=true)
      */
     private $solicitudtelefonosfuncionario;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="SolicitudNombreFuncionario", type="string", length=450, nullable=false)
+     * @ORM\Column(name="SolicitudNombreFuncionario", type="string", length=450, nullable=true)
      */
     private $solicitudnombrefuncionario;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="SolicitudDescripcion", type="text", nullable=false)
+     * @ORM\Column(name="SolicitudDescripcion", type="text", nullable=true)
      */
     private $solicituddescripcion;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="cantidad_solicitada", type="integer", nullable=false)
+     * @ORM\Column(name="cantidad_solicitada", type="integer", nullable=true)
      */
     private $cantidadSolicitada;
 

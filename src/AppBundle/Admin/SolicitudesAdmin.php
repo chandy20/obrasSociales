@@ -27,6 +27,7 @@ class SolicitudesAdmin extends AbstractAdmin {
         $collection->remove('delete');
         $collection->remove('create');
         $collection->remove('edit');
+        $collection->add('importar','importar');
     }
 
     /**
@@ -223,9 +224,14 @@ class SolicitudesAdmin extends AbstractAdmin {
         switch ($name) {
             case 'show':
                 return 'AppBundle:Solicitudes:base_show.html.twig';
+                break;
+            case "importar";
+                return 'AppBundle:Solicitudes:importar.datos.html.twig';
+                break;
             default:
                 return parent::getTemplate($name);
         }
     }
+
 
 }
