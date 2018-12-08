@@ -37,7 +37,7 @@ class ProgramaSolicitud {
     private $programa;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Solicitudes", inversedBy="programas")
+     * @ORM\ManyToOne(targetEntity="Solicitudes", inversedBy="programas", cascade={"persist"})
      * @ORM\JoinColumn(name="solicitud_id", referencedColumnName="id")
      */
     private $solicitud;

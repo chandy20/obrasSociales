@@ -2,11 +2,18 @@
 
 namespace AppBundle\Admin;
 
+use DateTime;
+use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SolicitudesAdmin extends AbstractAdmin {
 
@@ -23,10 +30,8 @@ class SolicitudesAdmin extends AbstractAdmin {
         return $query;
     }
 
-    protected function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection) {
+    protected function configureRoutes(RouteCollection $collection) {
         $collection->remove('delete');
-        $collection->remove('create');
-        $collection->remove('edit');
     }
 
     /**
@@ -113,37 +118,197 @@ class SolicitudesAdmin extends AbstractAdmin {
      * @param FormMapper $formMapper
      */
     protected function configureFormFields(FormMapper $formMapper) {
+        $constraint = array(new NotBlank());
+        $constraintEmail = array(new NotBlank(), new Email());
+        $hoy = new DateTime();
         $formMapper
-                ->add('solicitudfecha', null, ["label" => "Fecha de la Solicitud"])
-                ->add('solicitudcedulasolicita', null, ["label" => "Cedula del Solicitante"])
-                ->add('solicitudnombresolicita', null, ["label" => "Nombre del Solicitante"])
-                ->add('idparentesco', null, ["label" => "Parentesco con el Solicitante"])
-                ->add('solicitudcedulafuncionario', null, ["label" => "Cedula Funcionario Policial"])
-                ->add('idgrado', null, ["label" => "Grado Funcionario Policial"])
-                ->add('solicituddireccionfuncionario', null, ["label" => "Direccion Funcionario"])
-                ->add('solicitudtelefonosfuncionario', null, ["label" => "Telefono Funcionario"])
-                ->add('solicitudnombrefuncionario', null, ["label" => "Nombre del Funcionario"])
-                ->add('antiguedad', null, ["label" => "Antiguedad Funcionario:"])
-                ->add('solicituddescripcion', null, ["label" => "Descripcion de la Solicitud"])
-                ->add('idtiposolicitud', null, ["label" => "Tipo de Solicitud"])
-                ->add('idestadocivil', null, ["label" => "Estado Civil"])
-                ->add('idingreso', null, ["label" => "Ingresos"])
-                ->add('idpersonacargo', null, ["label" => "Cantidad de Personas a Cargo"])
-                ->add('idsituacionvivienda', null, ["label" => "Situacion de Vivienda"])
-                ->add('idmotivodeuda', null, ["label" => "Motivo Deuda"])
-                ->add('idcantidadesbeneficioinst', null, ["label" => "Cantidad de beneficios recibidos por AOS - UNIDAD"])
-                ->add('idafiliadodibie', null, ["label" => "Afiliado a DIBIE?"])
-                ->add('idpoblacionbeneficia', null, ["label" => "Cantidad de Poblacion a Beneficiar"])
-                ->add('idviabilidadplaneacion', null, ["label" => "Viabilidad Planeacion"])
-                ->add('idzonaubicacion', null, ["label" => "Zona de Ubicacion"])
-                ->add('idconceptovisita', null, ["label" => "Concepto Visita Domiciliaria"])
-                ->add('idseccional', null, ["label" => "Seccional"])
-                ->add('totalPuntaje', null, ["label" => "Puntaje total", 'required' => false])
-                ->add('concepto', null, ["label" => "Concepto Previo"])
-                ->add('conceptoFinal', null, ["label" => "Concepto Junta"])
-                ->add('cantidadSolicitada', null, ["label" => "Cantidad solicitada", 'required' => false])
-                ->add('cantidadAprobada', null, ["label" => "Cantidad Aprobada", 'required' => false])
-                ->add('programas', null, ["label" => "Programas", 'required' => false])
+                ->add('solicitudfecha', DateType::class, array(
+                    'widget' => 'single_text',
+                    'constraints' => $constraint,
+                    "label" => "Fecha",
+                    'format' => 'yyyy-MM-dd',
+                    'empty_value' => "",
+                    'data' => $hoy,
+                    'attr' => array('class' => 'form-control', 'readonly' => true)
+                ))
+                ->add('idseccional', null, [
+                    'constraints' => $constraint,
+                    "placeholder" => "Seleccione",
+                    "label" => "Seccional",
+                    'attr' => array('class' => 'form-control')]
+                )
+                ->add('idtiposolicitud', null, [
+                    'constraints' => $constraint,
+                    "placeholder" => "Seleccione",
+                    "label" => "Tipo de Solicitud",
+                    'attr' =>
+                    [
+                        'onchange' => 'mostrarFormulario()',
+                        'class' => 'tipo_solicitud',
+                    ]
+                ])
+                ->add('solicitudcedulasolicita', null, [
+                    'required' => false,
+                    'constraints' => $constraint,
+                    "label" => "Cédula del Solicitante",
+                    'attr' => array('class' => 'form-control ', 'onkeyup' => "soloNumeros(this)", 'placeholder' => "Documento de identidad")]
+                )
+                ->add('emailSolicitante', null, [
+                    'required' => false,
+                    'constraints' => $constraintEmail,
+                    "label" => "Correo Electrónico",
+                    'attr' => array('class' => 'form-control ', 'placeholder' => "Correo electrónico")]
+                )
+                ->add('documentoBeneficiarioFinal', null, [
+                    "label" => "Documento del beneficiario final",
+                    'required' => false,
+                    'attr' => array('onkeyup' => "soloNumeros(this)",
+                        'class' => 'form-control ',
+                        'placeholder' => "Documento de identidad")]
+                )
+                ->add('nombreBeneficiarioFinal', null, [
+                    'required' => false,
+                    "label" => "Nombre  del beneficiario final",
+                    'attr' => array('class' => 'form-control ', 'placeholder' => "Nombre beneficiario")]
+                )
+                ->add('solicitudnombresolicita', null, [
+                    'required' => false,
+                    'constraints' => $constraint,
+                    "label" => "Nombres y Apellidos del Solicitante",
+                    'attr' => array('class' => 'form-control', 'placeholder' => "Digita Nombres y Apellidos del Solicitante")]
+                )
+                ->add('antiguedad', null, [
+                    "placeholder" => "Seleccione",
+                    "label" => "Antigüedad Funcionario",
+                    'attr' => array('class' => 'form-control')]
+                )
+                ->add('idparentesco', null, [
+                    "placeholder" => "Seleccione",
+                    "label" => "Parentesco con el Solicitante",
+                    'attr' => array('class' => 'form-control')]
+                )
+                ->add('solicitudcedulafuncionario', null, [
+                    'required' => false,
+                    "label" => "Cédula Funcionario Policial",
+                    'attr' => array('onkeyup' => "soloNumeros(this)", 'class' => 'form-control', 'placeholder' => "Digita Cedula Funcionario Policial")]
+                )
+                ->add('idgrado', null, [
+                    "placeholder" => "Seleccione",
+                    "label" => "Grado Funcionario Policial",
+                    'attr' => array('class' => 'form-control')]
+                )
+                ->add('unidad', null, [
+                    "placeholder" => "Seleccione",
+                    "label" => "unidad", 'attr' => array('class' => 'form-control')]
+                )
+                ->add('solicitudnombrefuncionario', null, [
+                    'required' => false,
+                    "label" => "Nombre del Funcionario Policial",
+                    'attr' => array('class' => 'form-control',
+                        'placeholder' => "Digita Nombre Completo del Funcionario")]
+                )
+                ->add('solicituddireccionfuncionario', null, [
+                    'required' => false,
+                    "label" => "Dirección Funcionario",
+                    'attr' => array('class' => 'form-control',
+                        'placeholder' => "Digita Direccion del Funcionario")]
+                )
+                ->add('solicitudtelefonosfuncionario', null, [
+                    'required' => false,
+                    "label" => "Teléfono Funcionario",
+                    'attr' => array('onkeyup' => "soloNumeros(this)",
+                        'class' => 'form-control',
+                        'placeholder' => "Digita Telefono del Funcionario")]
+                )
+                ->add('programas', null, [
+                    'class' => "AppBundle:Programas",
+                    'label' => "Seleccione los programas para los cuales necesita asistencia",
+                    'constraints' => $constraint,
+                    'query_builder' => function(EntityRepository $repository) {
+                        return $repository->createQueryBuilder('p')->orderBy('p.programanombre', 'ASC');
+                    },
+                    "placeholder" => "Seleccione",
+                    'required' => false,
+                    "mapped" => false,
+                    "multiple" => true,
+                    "expanded" => true]
+                )
+                ->add('solicituddescripcion', null, [
+                    'required' => false,
+                    'constraints' => $constraint,
+                    "label" => "Descripción breve de la solicitud y de la situación económica",
+                    'attr' => array('class' => 'form-control',
+                        'placeholder' => "Digite una descripción para su Solicitud")]
+                )
+                ->add('idestadocivil', null, [
+                    "placeholder" => "Seleccione",
+                    "label" => "Estado Civil",
+                    'attr' => array('class' => 'form-control')]
+                )
+                ->add('idingreso', null, [
+                    "placeholder" => "Seleccione",
+                    "label" => "Ingresos",
+                    'attr' => array('class' => 'form-control')]
+                )
+                ->add('idpersonacargo', null, [
+                    "placeholder" => "Seleccione",
+                    "label" => "Personas a Cargo",
+                    'attr' => array('class' => 'form-control')]
+                )
+                ->add('idsituacionvivienda', null, [
+                    "placeholder" => "Seleccione",
+                    "label" => "Situación de Vivienda",
+                    'attr' => array('class' => 'form-control')]
+                )
+                ->add('idmotivodeuda', null, [
+                    "placeholder" => "Seleccione",
+                    "label" => "Dificultad",
+                    'attr' => array('class' => 'form-control')]
+                )
+                ->add('cantidadesbeneficio', null, [
+                    "placeholder" => "Seleccione",
+                    "label" => "Cantidad Beneficios Recibidos AOS",
+                    'attr' => array('class' => 'form-control',
+                        'placeholder' => "Digita la cantidad de Beneficios Recibidos")]
+                )
+                ->add('idconceptovisita', null, [
+                    "placeholder" => "Seleccione",
+                    "label" => "Concepto Visita Domiciliaria",
+                    'attr' => array('class' => 'form-control')]
+                )
+                ->add('idafiliadodibie', null, [
+                    "placeholder" => "Seleccione",
+                    "label" => "Afiliado a DIBIE?",
+                    'attr' => array('class' => 'form-control')]
+                )
+                ->add('idpoblacionbeneficia', null, [
+                    "placeholder" => "Seleccione",
+                    "label" => "Cantidad de Poblacion a Beneficiar",
+                    'attr' => array('class' => 'form-control')]
+                )
+                ->add('idviabilidadplaneacion', null, [
+                    "placeholder" => "Seleccione",
+                    "label" => "Viabilidad Planeación",
+                    'attr' => array('class' => 'form-control')]
+                )
+                ->add('idzonaubicacion', null, [
+                    "placeholder" => "Seleccione",
+                    "label" => "Zona de Ubicación",
+                    'attr' => array('class' => 'form-control')]
+                )
+                ->add('idcantidadesbeneficioinst', null, [
+                    "placeholder" => "Seleccione",
+                    "label" => "Cantidad Beneficios Institucionales",
+                    'attr' => array('class' => 'form-control')]
+                )
+                ->add('curriculum', FileType::class, [
+                    'label' => 'Documentación anexa',
+                    'required' => false]
+                )
+                ->add('fotoFile', FileType::class, [
+                    'label' => 'Adjunte fotografía 3*4',
+                    'required' => false]
+                )
         ;
     }
 
@@ -223,6 +388,10 @@ class SolicitudesAdmin extends AbstractAdmin {
         switch ($name) {
             case 'show':
                 return 'AppBundle:Solicitudes:base_show.html.twig';
+                break;
+            case 'edit':
+                return 'AppBundle:Solicitudes:base_edit.html.twig';
+                break;
             default:
                 return parent::getTemplate($name);
         }

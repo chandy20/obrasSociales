@@ -13,6 +13,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Solicitudes {
 
+    public function __toString() {
+        return $this->getId() ? $this->getId() . "" : "";
+    }
+
     /**
      * @var integer
      *
