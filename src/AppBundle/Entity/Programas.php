@@ -224,7 +224,7 @@ class Programas {
      *
      * @return Programas
      */
-    public function setPrograma(\AppBundle\Entity\Programa $programa = null)
+    public function setPrograma(\AppBundle\Entity\Programas $programa = null)
     {
         $this->programa = $programa;
 
