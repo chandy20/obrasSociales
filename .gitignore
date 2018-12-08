@@ -21,6 +21,7 @@ RawBlameHistory
 /app/logs/*
 !app/cache/.gitkeep
 !app/logs/.gitkeep
+/.idea/*
 
 # Email spool folder
 /app/spool/*
@@ -47,7 +48,7 @@ RawBlameHistory
 
 # Assets and user uploads
 /web/bundles/
-/web/uploads/
+/web/upload/
 
 # PHPUnit
 /app/phpunit.xml

@@ -1,0 +1,6 @@
+label:
+  send: Enviar
+  file: Archivo
+  importar: Importar solicitudes
+  download:
+    template: Descargar plantilla

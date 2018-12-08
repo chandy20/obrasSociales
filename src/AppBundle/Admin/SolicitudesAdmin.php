@@ -388,10 +388,10 @@ class SolicitudesAdmin extends AbstractAdmin {
         switch ($name) {
             case 'show':
                 return 'AppBundle:Solicitudes:base_show.html.twig';
-                break;
+            case "importar";
+                return 'AppBundle:Solicitudes:importar.datos.html.twig';
             case 'edit':
                 return 'AppBundle:Solicitudes:base_edit.html.twig';
-                break;
             default:
                 return parent::getTemplate($name);
         }

@@ -46,6 +46,16 @@ class Programas {
     private $idarea;
 
     /**
+     * @var \Programa
+     *
+     * @ORM\ManyToOne(targetEntity="Programas")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="programa_id", referencedColumnName="id")
+     * })
+     */
+    private $programa;
+
+    /**
      * @ORM\OneToMany(targetEntity="ProgramaSolicitud", mappedBy="programa" , cascade={"persist"})
      */
     private $solicitudes;
@@ -205,5 +215,29 @@ class Programas {
     public function getProgramasConcepto()
     {
         return $this->programasConcepto;
+    }
+
+    /**
+     * Set programa
+     *
+     * @param \AppBundle\Entity\Programa $programa
+     *
+     * @return Programas
+     */
+    public function setPrograma(\AppBundle\Entity\Programa $programa = null)
+    {
+        $this->programa = $programa;
+
+        return $this;
+    }
+
+    /**
+     * Get programa
+     *
+     * @return \AppBundle\Entity\Programa
+     */
+    public function getPrograma()
+    {
+        return $this->programa;
     }
 }
