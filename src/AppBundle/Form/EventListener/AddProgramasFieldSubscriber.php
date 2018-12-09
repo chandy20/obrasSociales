@@ -31,6 +31,7 @@ class AddProgramasFieldSubscriber implements EventSubscriberInterface {
                 $qb = $repository->createQueryBuilder('p')
                         ->join('p.programa', 'pp')
                         ->where('pp.id = :padre')
+                        ->andwhere('p.idarea is null')
                         ->orderBy("pp.programanombre", 'DESC')
                         ->setParameter('padre', $padre)
                 ;

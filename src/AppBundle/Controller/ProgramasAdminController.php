@@ -12,7 +12,14 @@ class ProgramasAdminController extends CRUDController {
         $area = $request->request->get('area_id');
         $area = $area != "" ? $area : 0;
         $em = $this->container->get('doctrine')->getManager();
-        $programas = $em->getRepository('AppBundle:Programas')->findBy(array('idarea' => $area), array('programanombre' => 'ASC'));
+        $qb = $em->getRepository('AppBundle:Programas')->createQueryBuilder('p')
+                ->innerJoin('p.idarea', 'a')
+                ->where('a.idArea = :area')
+                ->andwhere('p.programa is null')
+                ->orderBy("p.programanombre", 'DESC')
+                ->setParameter('area', $area);
+        $query = $qb->getQuery();
+        $programas = $query->getResult();
         $respuesta = array();
         foreach ($programas as $programa) {
             array_push($respuesta, array('id' => $programa->getId(), 'nombre' => $programa->getProgramanombre()));

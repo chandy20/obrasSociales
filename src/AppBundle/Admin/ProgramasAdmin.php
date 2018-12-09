@@ -2,13 +2,15 @@
 
 namespace AppBundle\Admin;
 
-use Doctrine\ORM\EntityRepository;
+use AppBundle\Form\EventListener\Programa\AddAreaFieldSubscriber;
+use AppBundle\Form\EventListener\Programa\AddProgramasFieldSubscriber;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ProgramasAdmin extends AbstractAdmin {
 
@@ -54,13 +56,13 @@ class ProgramasAdmin extends AbstractAdmin {
         $formMapper
                 ->add('programanombre', null, ["label" => "Nombre"])
                 ->add('valorMes', null, ["label" => "Valor unidad"])
-                ->add('idarea', null, ["label" => "Area"])
-                ->add('programa', null, [
-                    "label" => "Programa",
-                    'query_builder' => function(EntityRepository $repository) {
-                        return $repository->createQueryBuilder('p')->where('p.programa is null')->orderBy('p.programanombre', 'ASC');
-                    },
+                ->add('idarea', EntityType::class, [
+                    "class" => "AppBundle:Areas"
                 ])
+                ->add('programa', null, ["label" => "programa"])
+                ->getFormBuilder()
+                ->addEventSubscriber(new AddAreaFieldSubscriber())
+                ->addEventSubscriber(new AddProgramasFieldSubscriber())
         ;
     }
 
