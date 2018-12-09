@@ -6,7 +6,7 @@ $(function () {
 })
 
 function mostrarFormulario() {
-    var tipo_solicitud = $("#frontendbundle_solicitudes_idtiposolicitud").val();
+    var tipo_solicitud = $("select.tipo_solicitud").val();
     if (tipo_solicitud != "") {
         if (tipo_solicitud == 1) {
             $(".institucional").fadeOut();

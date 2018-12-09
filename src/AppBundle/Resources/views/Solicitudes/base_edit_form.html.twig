@@ -1,0 +1,312 @@
+{% block form %}
+
+    <script src="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/js/funcionesComunes.js"></script>
+    {% import "@SonataAdmin/CRUD/base_edit_form_macro.html.twig" as form_helper %}
+    {{ sonata_block_render_event('sonata.admin.edit.form.top', { 'admin': admin, 'object': object }) }}
+
+    {# NEXT_MAJOR: remove default filter #}
+    {% set url = objectId|default(admin.id(object)) is not null ? 'edit' : 'create' %}
+
+    {% if not admin.hasRoute(url)%}
+        <div>
+            {{ "form_not_available"|trans({}, "SonataAdminBundle") }}
+        </div>
+    {% else %}
+        <form
+            {% if sonata_admin.adminPool.getOption('form_type') == 'horizontal' %}class="form-horizontal"{% endif %}
+            role="form"
+            {# NEXT_MAJOR: remove default filter #}
+            action="{% block sonata_form_action_url %}{{ admin.generateUrl(url, {'id': objectId|default(admin.id(object)), 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}{% endblock %}"
+            {% if form.vars.multipart %} enctype="multipart/form-data"{% endif %}
+            method="POST"
+            {% if not sonata_admin.adminPool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+        {% block sonata_form_attributes %}{% endblock %}
+        >
+
+        {{ include('@SonataAdmin/Helper/render_form_dismissable_errors.html.twig') }}
+
+        <div class="nav-tabs-custom">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab_s5c0c201f55662_1">
+                    <div class="box-body  container-fluid">
+                        <div class="sonata-ba-collapsed-fields">
+                            <div class="row">
+                                <h3><font color="#054e96"> Formulario de Solicitudes</font></h3>
+
+                                <div align="float:center"><img src="\web\bundles\frontend\images\logo.png" height="160" width="200"></div>
+                                <p><font color="#054e96"><b>Asociación Obras Sociales en Beneficio de la Policia Nacional</b></font></p>
+                                <hr style="border-color:grey;"/>
+
+
+                                <div class="col-md-12">
+                                    <div class="col-md-6" >
+                                        <div class="col-md-12 form-group" >
+                                            {{ form_row(form.solicitudfecha) }}
+                                        </div>
+                                        <div class="col-md-12 has-error" >
+                                            {{ form_errors(form.solicitudfecha) }}
+                                        </div>
+                                        <div class="col-md-12" >
+                                            {{ form_widget(form.solicitudfecha) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="col-md-12 form-group">
+                                            {{ form_row(form.idseccional) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="col-md-12 form-group">
+                                            {{ form_row(form.idtiposolicitud) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="col-md-12 form-group">
+                                            {{ form_row(form.solicitudcedulasolicita) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="col-md-12 form-group">
+                                            {{ form_row(form.solicitudnombresolicita) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="col-md-12 form-group">
+                                            {{ form_row(form.emailSolicitante) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 funcionario">
+                                    <div class="col-md-12">
+                                        <hr style="border-color:white;">
+                                        <hr style="border-color:white;">
+                                        <hr style="border-color:white;">
+                                        <h4><b>INFORMACION FUNCIONARIO POLICIAL</b></h4>
+                                        <hr style="border-color:white">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="col-md-4" >
+                                            <div class="col-md-12 form-group" >
+                                                {{ form_row(form.solicitudcedulafuncionario) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="col-md-12 form-group" >
+                                                {{ form_row(form.idgrado) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="col-md-12 form-group" >
+                                                {{ form_row(form.unidad) }}
+                                            </div>
+                                            <hr style="border-color:white;">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.solicitudnombrefuncionario) }}
+                                            </div>
+                                            <hr style="border-color:white;">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.solicituddireccionfuncionario) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.solicitudtelefonosfuncionario) }}
+                                            </div>    
+                                        </div>    
+                                        <div class="col-md-4">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.antiguedad) }}
+                                            </div>  
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-12">  
+                                        <hr style="border-color:white;">
+                                        <hr style="border-color:white;">
+                                        <hr style="border-color:white;">         
+                                        <h4><b>DESCRIPCION DE LA SOLICITUD</b></h4>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="col-md-12 form-group">  
+                                            {{ form_row(form.solicituddescripcion) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="col xs-12 col-md-12 form-group">  
+                                            {{ form_row(form.programas) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 familiar">
+                                        <div class="col-md-12">
+                                            <div>
+                                                <hr style="border-color:white;">
+                                                <hr style="border-color:white;">
+                                                <h4><b>INFORMACION FAMILIAR Y PERSONAL</b></h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.idparentesco) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.idestadocivil) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.idingreso) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.idpersonacargo) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.idsituacionvivienda) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.idmotivodeuda) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.cantidadesbeneficio) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.idconceptovisita) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.idafiliadodibie) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.documentoBeneficiarioFinal) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.nombreBeneficiarioFinal) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.fotoFile) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="institucional">
+                                        <div class="col-md-12">
+                                            <div >
+                                                <hr style="border-color:white;">
+                                                <hr style="border-color:blue;">
+                                                <h4><b>INFORMACION INSTITUCIONAL</b></h4></div></div>
+
+                                        <div class="col-md-6">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.idpoblacionbeneficia) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.idviabilidadplaneacion) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.idzonaubicacion) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="col-md-12 form-group">
+                                                {{ form_row(form.idcantidadesbeneficioinst) }}
+                                            </div>
+                                            <hr style="border-color:white;">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <br/>
+                                <br/>
+                                <div class="col-md-12 text-left">
+                                    <div class="col-md-12 form-group">
+                                        {{ form_row(form.curriculum) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form_rest(form) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% block formactions %}
+            <div class="sonata-ba-form-actions well well-small form-actions">
+                {% block sonata_form_actions %}
+                    {% if app.request.isxmlhttprequest %}
+                        {# NEXT_MAJOR: remove default filter #}
+                        {% if objectId|default(admin.id(object)) is not null %}
+                            <button type="submit" class="btn btn-success" name="btn_update"><i class="fa fa-save" aria-hidden="true"></i> {{ 'btn_update'|trans({}, 'SonataAdminBundle') }}</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-success" name="btn_create"><i class="fa fa-plus-circle" aria-hidden="true"></i> {{ 'btn_create'|trans({}, 'SonataAdminBundle') }}</button>
+                        {% endif %}
+                    {% else %}
+                        {% if admin.supportsPreviewMode %}
+                            <button class="btn btn-info persist-preview" name="btn_preview" type="submit">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                {{ 'btn_preview'|trans({}, 'SonataAdminBundle') }}
+                            </button>
+                        {% endif %}
+                        {# NEXT_MAJOR: remove default filter #}
+                        {% if objectId|default(admin.id(object)) is not null %}
+                            <button type="submit" class="btn btn-success" name="btn_update_and_edit"><i class="fa fa-save" aria-hidden="true"></i> {{ 'btn_update_and_edit_again'|trans({}, 'SonataAdminBundle') }}</button>
+
+                            {% if admin.hasRoute('list') and admin.hasAccess('list') %}
+                                <button type="submit" class="btn btn-success" name="btn_update_and_list"><i class="fa fa-save"></i> <i class="fa fa-list" aria-hidden="true"></i> {{ 'btn_update_and_return_to_list'|trans({}, 'SonataAdminBundle') }}</button>
+                            {% endif %}
+
+                            {% if admin.hasRoute('delete') and admin.hasAccess('delete', object) %}
+                                {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
+                                <a class="btn btn-danger" href="{{ admin.generateObjectUrl('delete', object) }}"><i class="fa fa-minus-circle" aria-hidden="true"></i> {{ 'link_delete'|trans({}, 'SonataAdminBundle') }}</a>
+                            {% endif %}
+
+                            {% if admin.isAclEnabled() and admin.hasRoute('acl') and admin.hasAccess('acl', object) %}
+                                <a class="btn btn-info" href="{{ admin.generateObjectUrl('acl', object) }}"><i class="fa fa-users" aria-hidden="true"></i> {{ 'link_edit_acl'|trans({}, 'SonataAdminBundle') }}</a>
+                            {% endif %}
+                        {% else %}
+                            {% if admin.hasroute('edit') and admin.hasAccess('edit') %}
+                                <button class="btn btn-success" type="submit" name="btn_create_and_edit"><i class="fa fa-save" aria-hidden="true"></i> {{ 'btn_create_and_edit_again'|trans({}, 'SonataAdminBundle') }}</button>
+                            {% endif %}
+                            {% if admin.hasroute('list') and admin.hasAccess('list') %}
+                                <button type="submit" class="btn btn-success" name="btn_create_and_list"><i class="fa fa-save"></i> <i class="fa fa-list" aria-hidden="true"></i> {{ 'btn_create_and_return_to_list'|trans({}, 'SonataAdminBundle') }}</button>
+                            {% endif %}
+                            <button class="btn btn-success" type="submit" name="btn_create_and_create"><i class="fa fa-plus-circle" aria-hidden="true"></i> {{ 'btn_create_and_create_a_new_one'|trans({}, 'SonataAdminBundle') }}</button>
+                        {% endif %}
+                    {% endif %}
+                {% endblock %}
+            </div>
+        {% endblock formactions %}
+    </form>
+{% endif%}
+
+{{ sonata_block_render_event('sonata.admin.edit.form.bottom', { 'admin': admin, 'object': object }) }}
+
+{% endblock %}

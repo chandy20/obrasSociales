@@ -48,7 +48,7 @@ RawBlameHistory
 
 # Assets and user uploads
 /web/bundles/
-/web/uploads/
+/web/upload/
 
 # PHPUnit
 /app/phpunit.xml
