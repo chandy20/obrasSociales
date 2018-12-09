@@ -51,6 +51,9 @@ function actualizarProgramas(datoSelect) {
     };
     var url = "/app_dev.php/admin/app/programas/programasPorProgramaPadre";
     var programa_selector = $("select[name*='programas']:eq(0)");
+    if (programa_selector.length < 1) {
+        programa_selector = $("select[name*='programa']:eq(1)");
+    }
     $.ajax({
         type: 'post',
         url: url,

@@ -17,7 +17,7 @@ class AddProgramasFieldSubscriber implements EventSubscriberInterface {
         );
     }
 
-    private function addProgramasForm($form, $padre) {
+    private function addProgramasForm($form, $padre, $multiple) {
 
         $formOptions = array(
             "class" => "AppBundle:Programas",
@@ -25,7 +25,7 @@ class AddProgramasFieldSubscriber implements EventSubscriberInterface {
             "empty_value" => 'label.seleccion',
             "required" => true,
             'mapped' => true,
-            'multiple' => true,
+            'multiple' => $multiple,
             'query_builder' => function (EntityRepository $repository) use ($padre) {
                 $padre = $padre ?: 0;
                 $qb = $repository->createQueryBuilder('p')
@@ -37,8 +37,11 @@ class AddProgramasFieldSubscriber implements EventSubscriberInterface {
                 return $qb;
             },
         );
-
-        $form->add('programas', EntityType::class, $formOptions);
+        if ($multiple) {
+            $form->add('programas', EntityType::class, $formOptions);
+        } else {
+            $form->add('programa', EntityType::class, $formOptions);
+        }
     }
 
     public function preSetData(FormEvent $event) {
@@ -48,21 +51,23 @@ class AddProgramasFieldSubscriber implements EventSubscriberInterface {
         if (null === $data) {
             return;
         }
-
-        $padre = count($data->getProgramas()) > 0 ? $data->getProgramas()[0]->getPrograma() : null;
-        $this->addProgramasForm($form, $padre);
+        if (property_exists($data, 'programas')) {
+            $padre = count($data->getProgramas()) > 0 ? $data->getProgramas()[0]->getPrograma() : null;
+        } else {
+            $padre = $data->getPrograma() ? $data->getPrograma()->getPrograma() : null;
+        }
+        $this->addProgramasForm($form, $padre, property_exists($data, 'programas'));
     }
 
     public function preSubmit(FormEvent $event) {
         $data = $event->getData();
         $form = $event->getForm();
-
         if (null === $data) {
             return;
         }
 
         $padre = array_key_exists('programaPadre', $data) ? $data['programaPadre'] : null;
-        $this->addProgramasForm($form, $padre);
+        $this->addProgramasForm($form, $padre, array_key_exists('programas', $data));
     }
 
 }

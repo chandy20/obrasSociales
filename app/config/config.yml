@@ -95,6 +95,8 @@ sonata_admin:
     options:
         html5_validate: true
         confirm_exit:   false 
+    templates:
+        layout:                AppBundle::standard_layout.html.twig
         
     dashboard:
         groups:
