@@ -27,7 +27,8 @@
         "sonata-project/admin-bundle": "^3.0",
         "sonata-project/doctrine-orm-admin-bundle": "^3.0",
         "sonata-project/user-bundle": "^3.0",
-        "knplabs/knp-snappy-bundle": "^1.5"
+        "knplabs/knp-snappy-bundle": "^1.5",
+        "liuggio/ExcelBundle": "^2.1"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "~2.7"

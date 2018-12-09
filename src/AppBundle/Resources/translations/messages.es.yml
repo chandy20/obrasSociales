@@ -4,3 +4,23 @@ label:
   importar: Importar solicitudes
   download:
     template: Descargar plantilla
+error:
+  create:
+    excel: Error al leer el archivo Excel adjunto, por favor intente de nuevo.
+  dato:
+    vacio: El campo de la celda "%cell%"  no puede estar vacío.
+    numero: El campo de la celda "%cell%"  solo puede contener números.
+    letra: El campo de la celda "%cell%"  solo puede contener letras.
+    email: El campo de la celda "%cell%"  no es un correo electrónico válido.
+    fecha: El campo de la celda "%cell%"  no es una fecha válida, el fomato válido es "yyyy-mm-dd".
+  importando:
+    datos: Error al guardar los datos, por favor intente nuevamente, si el error persiste por favor contacte con el proveedor.
+  items:
+    vacio: Debe agregar por lo menos un elemento.
+  mensaje:
+    fechas: La fecha inicial no puede ser mayor a la final.
+  no:
+    existe:
+      dato: Error, no se encontró %header% en la base de datos, columna %column%
+      entidad: Error, no se encontró %value% en la base de datos, columna %cell%
+      titulo: Error, el archivo cargado no contiene la columna %columna%.
