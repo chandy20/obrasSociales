@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  */
 class Presupuestos {
-    
+
     public function __toString() {
         return "";
     }
@@ -45,7 +45,7 @@ class Presupuestos {
      * @ORM\Column(name="fechaCreacion", type="date", nullable= true)
      */
     private $fechaCreacion;
-    
+
     /**
      * @var \Date
      *
@@ -69,7 +69,7 @@ class Presupuestos {
      * })
      */
     private $idarea;
-    
+
     /**
      * @var \Seccionales
      *
@@ -79,6 +79,16 @@ class Presupuestos {
      * })
      */
     private $seccional;
+
+    /**
+     * @var \Programas
+     *
+     * @ORM\ManyToOne(targetEntity="Programas")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="programa_id", referencedColumnName="id")
+     * })
+     */
+    private $programa;
 
     /**
      * Get id
@@ -133,7 +143,6 @@ class Presupuestos {
         return $this->idarea;
     }
 
-
     /**
      * Set saldo
      *
@@ -141,8 +150,7 @@ class Presupuestos {
      *
      * @return Presupuestos
      */
-    public function setSaldo($saldo)
-    {
+    public function setSaldo($saldo) {
         $this->saldo = $saldo;
 
         return $this;
@@ -153,8 +161,7 @@ class Presupuestos {
      *
      * @return string
      */
-    public function getSaldo()
-    {
+    public function getSaldo() {
         return $this->saldo;
     }
 
@@ -165,8 +172,7 @@ class Presupuestos {
      *
      * @return Presupuestos
      */
-    public function setDesde($desde)
-    {
+    public function setDesde($desde) {
         $this->desde = $desde;
 
         return $this;
@@ -177,8 +183,7 @@ class Presupuestos {
      *
      * @return \DateTime
      */
-    public function getDesde()
-    {
+    public function getDesde() {
         return $this->desde;
     }
 
@@ -189,8 +194,7 @@ class Presupuestos {
      *
      * @return Presupuestos
      */
-    public function setHasta($hasta)
-    {
+    public function setHasta($hasta) {
         $this->hasta = $hasta;
 
         return $this;
@@ -201,8 +205,7 @@ class Presupuestos {
      *
      * @return \DateTime
      */
-    public function getHasta()
-    {
+    public function getHasta() {
         return $this->hasta;
     }
 
@@ -213,8 +216,7 @@ class Presupuestos {
      *
      * @return Presupuestos
      */
-    public function setSeccional(\AppBundle\Entity\Seccionales $seccional = null)
-    {
+    public function setSeccional(\AppBundle\Entity\Seccionales $seccional = null) {
         $this->seccional = $seccional;
 
         return $this;
@@ -225,8 +227,7 @@ class Presupuestos {
      *
      * @return \AppBundle\Entity\Seccionales
      */
-    public function getSeccional()
-    {
+    public function getSeccional() {
         return $this->seccional;
     }
 
@@ -237,8 +238,7 @@ class Presupuestos {
      *
      * @return Presupuestos
      */
-    public function setFechaCreacion($fechaCreacion)
-    {
+    public function setFechaCreacion($fechaCreacion) {
         $this->fechaCreacion = $fechaCreacion;
 
         return $this;
@@ -249,8 +249,32 @@ class Presupuestos {
      *
      * @return \DateTime
      */
-    public function getFechaCreacion()
-    {
+    public function getFechaCreacion() {
         return $this->fechaCreacion;
+    }
+
+
+    /**
+     * Set programa
+     *
+     * @param \AppBundle\Entity\Programas $programa
+     *
+     * @return Presupuestos
+     */
+    public function setPrograma(\AppBundle\Entity\Programas $programa = null)
+    {
+        $this->programa = $programa;
+
+        return $this;
+    }
+
+    /**
+     * Get programa
+     *
+     * @return \AppBundle\Entity\Programas
+     */
+    public function getPrograma()
+    {
+        return $this->programa;
     }
 }

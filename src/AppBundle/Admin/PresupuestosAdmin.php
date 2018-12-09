@@ -55,6 +55,8 @@ class PresupuestosAdmin extends AbstractAdmin {
                 ->add('presupuestomonto', null, ["label" => "Monto"])
                 ->add('seccional', null, ["lable" => "Seccional"])
                 ->add('idarea', null, ["lable" => "Área"])
+                ->add('programa.programa', null, ["lable" => "Programa"])
+                ->add('programa', null, ["lable" => "Subprograma"])
                 ->add('saldo', null, ["label" => "Saldo"])
                 ->add('desde', null, ["label" => "Desde"])
                 ->add('hasta', null, ["label" => "Hasta"])
