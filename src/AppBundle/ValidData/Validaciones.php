@@ -5,7 +5,7 @@ namespace AppBundle\ValidData;
 class Validaciones
 {
 
-    public function getValidacionInventario()
+    public function getValidacion()
     {
         return array(
             'FECHA_DE_SOLICITUD' => array(
@@ -16,7 +16,7 @@ class Validaciones
                     ),
                     array(
                         'tipo' => 'fecha',
-                        'mensaje_error' => 'error.import.date.data'
+                        'mensaje_error' => 'error.dato.fecha'
                     )
                 )
             ),
@@ -28,7 +28,7 @@ class Validaciones
                     ),
                     array(
                         'tipo' => 'texto',
-                        'mensaje_error' => 'error.import.text.data'
+                        'mensaje_error' => 'error.dato.letra'
                     ),
                     array(
                         'tipo' => 'entidad',
@@ -46,11 +46,11 @@ class Validaciones
                     ),
                     array(
                         'tipo' => 'texto',
-                        'mensaje_error' => 'error.import.text.data'
+                        'mensaje_error' => 'error.dato.letra'
                     ),
                     array(
                         'tipo' => 'entidad',
-                        'clase' => 'TipoSolicitud',
+                        'clase' => 'Tipossolicitud',
                         'campo' => 'tiposolicitudnombre',
                         'mensaje_error' => 'error.no.existe.entidad'
                     )
@@ -64,7 +64,7 @@ class Validaciones
                     ),
                     array(
                         'tipo' => 'numero',
-                        'mensaje_error' => 'error.import.numero.data'
+                        'mensaje_error' => 'error.dato.numero'
                     ),
                 )
             ),
@@ -76,7 +76,7 @@ class Validaciones
                     ),
                     array(
                         'tipo' => 'texto',
-                        'mensaje_error' => 'error.import.text.data'
+                        'mensaje_error' => 'error.dato.letra'
                     ),
                 )
             ),
@@ -84,7 +84,7 @@ class Validaciones
                 'validaciones' => array(
                     array(
                         'tipo' => 'email',
-                        'mensaje_error' => 'error.import.email.data'
+                        'mensaje_error' => 'error.dato.email'
                     ),
                     array(
                         'tipo' => 'no-null',
@@ -100,7 +100,7 @@ class Validaciones
                     ),
                     array(
                         'tipo' => 'texto',
-                        'mensaje_error' => 'error.import.text.data'
+                        'mensaje_error' => 'error.dato.letra'
                     ),
                 )
             ),
@@ -112,7 +112,7 @@ class Validaciones
                     ),
                     array(
                         'tipo' => 'numero',
-                        'mensaje_error' => 'error.import.numero.data'
+                        'mensaje_error' => 'error.dato.numero'
                     ),
                 )
             ),
@@ -124,7 +124,7 @@ class Validaciones
                     ),
                     array(
                         'tipo' => 'numero',
-                        'mensaje_error' => 'error.import.numero.data'
+                        'mensaje_error' => 'error.dato.numero'
                     ),
                 )
             ),
@@ -136,7 +136,7 @@ class Validaciones
                     ),
                     array(
                         'tipo' => 'texto',
-                        'mensaje_error' => 'error.import.text.data'
+                        'mensaje_error' => 'error.dato.letra'
                     ),
                     array(
                         'tipo' => 'entidad',
@@ -151,18 +151,42 @@ class Validaciones
                     array(
                         array(
                             'tipo' => 'texto',
-                            'mensaje_error' => 'error.import.text.data'
+                            'mensaje_error' => 'error.dato.letra'
                         ),
                         array(
                             'tipo' => 'entidad',
-                            'clase' => 'Grados',
-                            'campo' => 'gradonombre',
+                            'clase' => 'unidad',
+                            'campo' => 'nombre',
                             'mensaje_error' => 'error.no.existe.entidad'
                         )
                     )
                 ),
             ),
-            'NOMBRE_Y_APELLIDO_SOLICITANTE' => array(
+            'NOMBRE_FUNCIONARIO_POLICIAL' => array(
+                'validaciones' => array(
+                    array(
+                        'tipo' => 'texto',
+                        'mensaje_error' => 'error.dato.letra'
+                    ),
+                )
+            ),
+            'ANTIGUEDAD_FUNCIONARIO' => array(
+                'validaciones' => array(
+                    array(
+                        array(
+                            'tipo' => 'texto',
+                            'mensaje_error' => 'error.dato.letra'
+                        ),
+                        array(
+                            'tipo' => 'entidad',
+                            'clase' => 'antiguedad',
+                            'campo' => 'tiempo',
+                            'mensaje_error' => 'error.no.existe.entidad'
+                        )
+                    )
+                ),
+            ),
+            'AREA' => array(
                 'validaciones' => array(
                     array(
                         'tipo' => 'no-null',
@@ -170,10 +194,37 @@ class Validaciones
                     ),
                     array(
                         'tipo' => 'texto',
-                        'mensaje_error' => 'error.import.text.data'
+                        'mensaje_error' => 'error.dato.letra'
                     ),
+                    array(
+                        'tipo' => 'entidad',
+                        'clase' => 'Areas',
+                        'campo' => 'areanombre',
+                        'mensaje_error' => 'error.no.existe.entidad'
+                    )
                 )
             ),
+            'PROGRAMAS' => array(
+                'validaciones' => array(
+                    array(
+                        'tipo' => 'no-null',
+                        'mensaje_error' => 'error.dato.vacio'
+                    ),
+                    array(
+                        'tipo' => 'texto',
+                        'mensaje_error' => 'error.dato.letra'
+                    ),
+                    array(
+                        'tipo' => 'iterativo',
+                        'iterator' => 'entidad',
+                        'delimiter'=> ';',
+                        'clase' => 'Areas',
+                        'campo' => 'areanombre',
+                        'mensaje_error' => 'error.no.existe.entidad'
+                    )
+                )
+            ),
+
         );
     }
 

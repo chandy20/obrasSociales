@@ -30,6 +30,8 @@ class AppKernel extends Kernel {
             new Application\Sonata\UserBundle\ApplicationSonataUserBundle(),
             new FrontendBundle\FrontendBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
+
+            new Liuggio\ExcelBundle\LiuggioExcelBundle(),
             new Sonata\IntlBundle\SonataIntlBundle(),
         );
 

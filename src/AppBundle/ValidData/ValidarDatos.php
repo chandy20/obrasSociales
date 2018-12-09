@@ -2,10 +2,12 @@
 
 namespace AppBundle\ValidData;
 
+use DateTime;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ValidarDatos {
+class ValidarDatos
+{
 
     protected $container = null;
     protected $trans = null;
@@ -13,13 +15,15 @@ class ValidarDatos {
     protected $entities = [];
     protected $unico = [];
 
-    public function __construct(ContainerInterface $container) {
+    public function __construct(ContainerInterface $container)
+    {
         $this->container = $container;
         $this->trans = $container->get("translator");
         $this->em = $container->get("doctrine")->getManager();
     }
 
-    public function validar($datos, $validaciones) {
+    public function validar($datos, $validaciones)
+    {
         $errores = [];
 
         if (count($datos) <= 0) {
@@ -38,14 +42,17 @@ class ValidarDatos {
             }
             foreach ($dato as $keyItem => $item) {
                 try {
-                    foreach ($validaciones[$keyItem]["validaciones"] as $key => $validacion) {
-                        $validacionError = $this->switcValidate($validacion, $item['valor'], $dato);
-                        if ($validacionError === true) {
-                            array_push($errores, $this->trans->trans($validacion['mensaje_error'], ["%cell%" => $item['columna'] . $keyDato, "%value%" => $item['valor']]));
+                    if (array_key_exists("validaciones", $validaciones[$keyItem])) {
+                        foreach ($validaciones[$keyItem]["validaciones"] as $key => $validacion) {
+                            $validacionError = $this->switcValidate($validacion, $item['valor'], $dato);
+                            if ($validacionError === true) {
+                                array_push($errores, $this->trans->trans($validacion['mensaje_error'], ["%cell%" => $item['columna'] . $keyDato, "%value%" => $item['valor']]));
+                            }
                         }
                     }
                 } catch (\Exception $exc) {
-                    array_push($errores, $this->trans->trans('error.no.existe.dato', ['%header%' => $keyItem . " => " . $item['valor'], '%column%' => $item['columna'] . $keyDato]));
+//                    dump($exc);die;
+//                    array_push($errores, $this->trans->trans('error.no.existe.dato', ['%header%' => $keyItem . " => " . $item['valor'], '%column%' => $item['columna'] . $keyDato]));
                 }
             }
         }
@@ -57,13 +64,10 @@ class ValidarDatos {
         return true;
     }
 
-    public function getDatos(File $file) {
+    public function getDatos(File $file)
+    {
 
-//        try {
         $objPHPExcel = $this->container->get('phpexcel')->createPHPExcelObject($file);
-//        } catch (\Exception $e) {
-//            return ["error" => $this->trans->trans("error.create.excel")];
-//        }
 
         $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
 
@@ -71,9 +75,9 @@ class ValidarDatos {
         $highestColumn = $objWorksheet->getHighestDataColumn();
 
 
-        $headingsArray = $objWorksheet->rangeToArray('A2:' . $highestColumn . '2', null, true, true, true);
-        $headingsArray = $headingsArray[2];
-        $datosArray = $objWorksheet->rangeToArray('A3:' . $highestColumn . $highestRow, null, true, true, true);
+        $headingsArray = $objWorksheet->rangeToArray('A3:' . $highestColumn . '3', null, true, true, true);
+        $headingsArray = $headingsArray[3];
+        $datosArray = $objWorksheet->rangeToArray('A4:' . $highestColumn . $highestRow, null, true, true, true);
 
         $cuerpo = [];
         foreach ($datosArray as $keyDato => $dato) {
@@ -88,7 +92,8 @@ class ValidarDatos {
         return $cuerpo;
     }
 
-    public function switcValidate($validacion, $valor, $dato) {
+    public function switcValidate($validacion, $valor, $dato)
+    {
         switch ($validacion['tipo']) {
             case 'no-null':
                 return $this->esNull($valor);
@@ -132,10 +137,17 @@ class ValidarDatos {
             case 'different':
                 return $this->noIsDiffernt($validacion, $valor);
                 break;
+            case 'iterativo':
+                return $this->iterarEntidades($validacion, $valor);
+                break;
+            case 'fecha':
+                return $this->validateDate($valor);
+                break;
         }
     }
 
-    public function esNull($valor) {
+    public function esNull($valor)
+    {
         if (is_null($valor)) {
             return true;
         }
@@ -143,7 +155,8 @@ class ValidarDatos {
         return false;
     }
 
-    public function noEsTexto($tipo, $valor) {
+    public function noEsTexto($tipo, $valor)
+    {
         if (key_exists('valores', $tipo)) {
             if (!in_array(mb_strtoupper($valor, 'UTF-8'), array_map('mb_strtoupper', $tipo['valores']))) {
                 return true;
@@ -157,7 +170,8 @@ class ValidarDatos {
         return false;
     }
 
-    public function buscarTexto($validacion, $valor) {
+    public function buscarTexto($validacion, $valor)
+    {
         $error = true;
         if (key_exists('valores', $validacion)) {
             foreach ($validacion['valores'] as $texto) {
@@ -170,7 +184,8 @@ class ValidarDatos {
         return $error;
     }
 
-    public function noEsNumero($valor) {
+    public function noEsNumero($valor)
+    {
         if (!is_numeric($valor) && !is_null($valor)) {
             return true;
         }
@@ -178,7 +193,8 @@ class ValidarDatos {
         return false;
     }
 
-    public function noEsFlotante($valor) {
+    public function noEsFlotante($valor)
+    {
         $patrón = '/^\d+\.?\d*$/';
         if (!preg_match($patrón, $valor) && !is_null($valor)) {
             return true;
@@ -187,7 +203,8 @@ class ValidarDatos {
         return false;
     }
 
-    public function noEsEntidad($tipo, $valor) {
+    public function noEsEntidad($tipo, $valor)
+    {
         if (!is_null($valor)) {
             $entity = $this->getEntidad($tipo['clase'], $valor, $tipo['campo']);
 
@@ -199,7 +216,8 @@ class ValidarDatos {
         return false;
     }
 
-    public function noEsUnico($tipo, $valor) {
+    public function noEsUnico($tipo, $valor)
+    {
         if (key_exists($tipo['clase'], $this->unico)) {
             if (key_exists("$valor", $this->unico[$tipo['clase']])) {
                 return true;
@@ -224,7 +242,8 @@ class ValidarDatos {
         return false;
     }
 
-    public function noEsBooleano($valor) {
+    public function noEsBooleano($valor)
+    {
         if (gettype($valor) == "double" && gettype($valor) == "integer") {
             $valor = intval($valor);
         } else {
@@ -242,7 +261,8 @@ class ValidarDatos {
         return true;
     }
 
-    public function getPersonalizada($tipo, $valor) {
+    public function getPersonalizada($tipo, $valor)
+    {
         $entity = $this->getEntidad($tipo['clase'], $valor, null, $tipo['metodo']);
 
         if (!$valor) {
@@ -256,24 +276,23 @@ class ValidarDatos {
         return false;
     }
 
-    public function getEntidad($clase, $valor, $campo, $metodo = false) {
+    public function getEntidad($clase, $valor, $campo, $metodo = false)
+    {
+        if ($clase == "unidad") {
+            die("sad");
+        }
 
         if ($metodo) {
             $entity = $this->em->getRepository("AppBundle:" . $clase)->{$metodo}(trim($valor));
         } else {
             $entity = $this->em->getRepository("AppBundle:" . $clase)->findOneBy([$campo => trim($valor)]);
         }
-        if ($entity) {
-            if (!key_exists($clase, $this->entities)) {
-                $this->entities[$clase] = [];
-            }
 
-            $this->entities[$clase]["$valor"] = $entity;
-        }
         return $entity;
     }
 
-    public function noEsEmail($valor) {
+    public function noEsEmail($valor)
+    {
         if (!filter_var($valor, FILTER_VALIDATE_EMAIL) && !is_null($valor)) {
             return true;
         }
@@ -281,7 +300,8 @@ class ValidarDatos {
         return false;
     }
 
-    public function convertData($valor) {
+    public function convertData($valor)
+    {
         try {
             $date = str_replace('/', '-', $valor);
             $date = new \DateTime($date);
@@ -293,11 +313,13 @@ class ValidarDatos {
         return $date;
     }
 
-    public function getEntidades() {
+    public function getEntidades()
+    {
         return $this->entities;
     }
 
-    public function busacarEntidad($calse, $valor) {
+    public function busacarEntidad($calse, $valor)
+    {
         if (key_exists($calse, $this->entities)) {
             if (key_exists("$valor", $this->entities[$calse])) {
                 return $this->entities[$calse][$valor];
@@ -307,7 +329,8 @@ class ValidarDatos {
         return null;
     }
 
-    public function noCumpleDepencia($tipo, $dato, $valor) {
+    public function noCumpleDepencia($tipo, $dato, $valor)
+    {
         if (in_array($dato[$tipo['campo']]['valor'], $tipo['valores'])) {
             if (is_null($valor)) {
                 return true;
@@ -317,7 +340,8 @@ class ValidarDatos {
         return false;
     }
 
-    public function noCumpleDepenciaCampo($tipo, $dato, $valor) {
+    public function noCumpleDepenciaCampo($tipo, $dato, $valor)
+    {
         if (!is_null($dato[$tipo['campo']]['valor'])) {
             if (is_null($valor)) {
                 return true;
@@ -326,7 +350,8 @@ class ValidarDatos {
         return false;
     }
 
-    public function getBooleano($valor) {
+    public function getBooleano($valor)
+    {
         if (is_null($valor)) {
             return false;
         }
@@ -341,7 +366,8 @@ class ValidarDatos {
         }
     }
 
-    public function noLength($tipo, $valor) {
+    public function noLength($tipo, $valor)
+    {
         if (is_null($valor)) {
             return false;
         }
@@ -353,12 +379,36 @@ class ValidarDatos {
         return false;
     }
 
-    function noIsDiffernt($tipo, $valor) {
+    function noIsDiffernt($tipo, $valor)
+    {
         if (in_array(strtoupper($valor), array_map('strtoupper', $tipo['valores']))) {
             return true;
         }
 
         return false;
+    }
+
+    function iterarEntidades($validacion, $datos)
+    {
+        $elementos = explode($validacion["delimiter"], $datos);
+        foreach ($elementos as $elemento) {
+            $entidad = $this->getEntidad($validacion['clase'], $elemento, $validacion['campo']);
+            if (!$entidad) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    function validateDate($date)
+    {
+        $d = DateTime::createFromFormat('Y-m-d', $date);
+        $isValidDate = $d && $d->format('Y-m-d') == $date;
+        if($isValidDate){
+            return false;
+        }
+        return true;
     }
 
 }
