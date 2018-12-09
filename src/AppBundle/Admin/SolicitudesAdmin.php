@@ -36,6 +36,7 @@ class SolicitudesAdmin extends AbstractAdmin {
     protected function configureRoutes(RouteCollection $collection) {
         $collection->remove('delete');
         $collection->remove('edit');
+        $collection->add('importar', 'importar');
     }
 
     /**

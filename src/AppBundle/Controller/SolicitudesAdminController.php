@@ -13,7 +13,6 @@ use AppBundle\ValidData\ValidacionesInstitucionales;
 use AppBundle\ValidData\ValidarDatos;
 use DateTime;
 use ReflectionClass;
-use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\FormExtension;
