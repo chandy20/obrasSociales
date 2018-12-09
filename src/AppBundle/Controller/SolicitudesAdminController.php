@@ -13,6 +13,7 @@ use AppBundle\ValidData\ValidacionesInstitucionales;
 use AppBundle\ValidData\ValidarDatos;
 use DateTime;
 use ReflectionClass;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\FormExtension;
@@ -428,5 +429,16 @@ class SolicitudesAdminController extends CRUDController {
             $this->em->persist($solicitud);
         }
         $this->em->flush();
+    }
+
+    public function consultarAction()
+    {
+        $request = $this->getRequest();
+        $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findOneBySolicitudcedulasolicita($request->get("documento"));
+        $solicitudes = $this->em->getRepository("AppBundle:Solicitudes")->findBySolicitudcedulasolicita($request->get("documento"));
+        $response = [];
+        $response ["solicitante"] = $solicitud->getSolicitudnombresolicita();
+        $response ["email"] = $solicitud->getEmailSolicitante();
+        $response ["documentoFuncionario"] = $solicitud->getSolicitudcedulafuncionario();
     }
 }

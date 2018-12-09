@@ -28,3 +28,6 @@ error:
   programa: Programa
   programas: Subprogramas
   seleccion: Selecciones una opción
+mensaje:
+  datos:
+    cargados: Datos importados con éxito

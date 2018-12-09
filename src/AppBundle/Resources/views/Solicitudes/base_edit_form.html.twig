@@ -258,6 +258,27 @@
                 </div>
             </div>
         </div>
+            <script>
+                $(function () {
+                    $("#{{ form.vars.id }}_solicitudcedulasolicita").blur(function () {
+                        cargarDatos($(this).val());
+                    })
+                })
+
+                function cargarDatos(documento) {
+                    var url = "{{ path('admin_app_solicitudes_consultar')}}";
+                    if (documento.length > 0) {
+                    console.log(documento);
+                        $.get(url, {"documento": documento}, function (response) {
+                            //your callback here
+                            console.log(response.result);
+                            if(response.result === "ok"){
+                                alert("Se ha registrado el usuario satisfactoriamente");
+                            }
+                        }, 'JSON');
+                    }
+                }
+            </script>
         {% block formactions %}
             <div class="sonata-ba-form-actions well well-small form-actions">
                 {% block sonata_form_actions %}

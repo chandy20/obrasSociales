@@ -37,6 +37,7 @@ class SolicitudesAdmin extends AbstractAdmin {
         $collection->remove('delete');
         $collection->remove('edit');
         $collection->add('importar', 'importar');
+        $collection->add('consultar', 'consultar');
     }
 
     /**
