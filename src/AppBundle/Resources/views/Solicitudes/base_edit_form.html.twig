@@ -43,12 +43,6 @@
                                         <div class="col-md-12 form-group" >
                                             {{ form_row(form.solicitudfecha) }}
                                         </div>
-                                        <div class="col-md-12 has-error" >
-                                            {{ form_errors(form.solicitudfecha) }}
-                                        </div>
-                                        <div class="col-md-12" >
-                                            {{ form_widget(form.solicitudfecha) }}
-                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="col-md-12 form-group">
@@ -137,6 +131,12 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
+                                        <div class="col xs-12 col-md-12 form-group">  
+                                            {{ form_row(form.area) }}
+                                        </div>
+                                        <div class="col xs-12 col-md-12 form-group">  
+                                            {{ form_row(form.programaPadre) }}
+                                        </div>
                                         <div class="col xs-12 col-md-12 form-group">  
                                             {{ form_row(form.programas) }}
                                         </div>

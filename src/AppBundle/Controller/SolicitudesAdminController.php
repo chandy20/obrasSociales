@@ -63,8 +63,8 @@ class SolicitudesAdminController extends CRUDController {
         $form->setData($newObject);
         $form->handleRequest($request);
 
-        $this->validaciones($form);
         if ($form->isSubmitted()) {
+            $this->validaciones($form);
             $isFormValid = $form->isValid();
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
@@ -74,8 +74,7 @@ class SolicitudesAdminController extends CRUDController {
                 $concepto = '';
                 try {
                     $entity = $submittedObject = $form->getData();
-                    $this->admin->setSubject($submittedObject);
-                    $this->admin->checkAccess('create', $submittedObject);
+                    $entity->setProgramas(null);
                     foreach ($enviado[$form->getName()]['programas'] as $prog) {
                         $programa = $em->getRepository('AppBundle:Programas')->findOneById($prog);
                         $programaSolicitud = new ProgramaSolicitud($programa, $entity);

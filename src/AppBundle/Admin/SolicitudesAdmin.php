@@ -2,6 +2,9 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Form\EventListener\AddAreaFieldSubscriber;
+use AppBundle\Form\EventListener\AddProgramaPadreFieldSubscriber;
+use AppBundle\Form\EventListener\AddProgramasFieldSubscriber;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -32,6 +35,7 @@ class SolicitudesAdmin extends AbstractAdmin {
 
     protected function configureRoutes(RouteCollection $collection) {
         $collection->remove('delete');
+        $collection->remove('edit');
     }
 
     /**
@@ -77,33 +81,13 @@ class SolicitudesAdmin extends AbstractAdmin {
                 ->add('solicitudfecha', null, ["label" => "Fecha de la Solicitud"])
                 ->add('solicitudcedulasolicita', null, ["label" => "Cedula del Solicitante"])
                 ->add('solicitudnombresolicita', null, ["label" => "Nombre del Solicitante"])
-                ->add('idparentesco', null, ["label" => "Parentesco con el Solicitante"])
                 ->add('solicitudcedulafuncionario', null, ["label" => "Cedula Funcionario Policial"])
                 ->add('idgrado', null, ["label" => "Grado Funcionario Policial"])
-                ->add('solicituddireccionfuncionario', null, ["label" => "Direccion Funcionario"])
-                ->add('solicitudtelefonosfuncionario', null, ["label" => "Telefono Funcionario"])
                 ->add('solicitudnombrefuncionario', null, ["label" => "Nombre del Funcionario"])
-                ->add('antiguedad', null, ["label" => "Antiguedad Funcionario:"])
-                ->add('solicituddescripcion', null, ["label" => "Descripcion de la Solicitud"])
                 ->add('idtiposolicitud', null, ["label" => "Tipo de Solicitud"])
-                ->add('idestadocivil', null, ["label" => "Estado Civil"])
-                ->add('idingreso', null, ["label" => "Ingresos"])
-                ->add('idpersonacargo', null, ["label" => "Cantidad de Personas a Cargo"])
-                ->add('idsituacionvivienda', null, ["label" => "Situacion de Vivienda"])
-                ->add('idmotivodeuda', null, ["label" => "Motivo Deuda"])
-                ->add('idcantidadesbeneficioinst', null, ["label" => "Cantidad de beneficios recibidos por AOS - UNIDAD"])
-                ->add('idafiliadodibie', null, ["label" => "Afiliado a DIBIE?"])
-                ->add('idpoblacionbeneficia', null, ["label" => "Cantidad de Poblacion a Beneficiar"])
-                ->add('idviabilidadplaneacion', null, ["label" => "Viabilidad Planeacion"])
-                ->add('idzonaubicacion', null, ["label" => "Zona de Ubicacion"])
-                ->add('idconceptovisita', null, ["label" => "Concepto Visita Domiciliaria"])
                 ->add('idseccional', null, ["label" => "Seccional"])
-                ->add('totalPuntaje', null, ["label" => "Puntaje total", 'required' => false])
                 ->add('concepto', null, ["label" => "Concepto Previo"])
                 ->add('conceptoFinal', null, ["label" => "Concepto Junta"])
-                ->add('cantidadSolicitada', null, ["label" => "Cantidad solicitada (Mes)", 'required' => false])
-                ->add('cantidadAprobada', null, ["label" => "Cantidad Aprobada", 'required' => false])
-                ->add('programas', null, ["label" => "Programas", 'required' => false])
                 ->add('_action', null, array(
                     'actions' => array(
                         'show' => array(),
@@ -309,6 +293,10 @@ class SolicitudesAdmin extends AbstractAdmin {
                     'label' => 'Adjunte fotografía 3*4',
                     'required' => false]
                 )
+                ->getFormBuilder()
+                ->addEventSubscriber(new AddAreaFieldSubscriber())
+                ->addEventSubscriber(new AddProgramaPadreFieldSubscriber())
+                ->addEventSubscriber(new AddProgramasFieldSubscriber())
         ;
     }
 

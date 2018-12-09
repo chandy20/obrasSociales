@@ -1179,6 +1179,19 @@ class Solicitudes {
     }
 
     /**
+     * set programas
+     *
+     * @param \AppBundle\Entity\ProgramaSolicitud $programa
+     *
+     * @return Solicitudes
+     */
+    public function setProgramas($programas) {
+        $this->programas = null;
+
+        return $this;
+    }
+
+    /**
      * Add programa
      *
      * @param \AppBundle\Entity\ProgramaSolicitud $programa
