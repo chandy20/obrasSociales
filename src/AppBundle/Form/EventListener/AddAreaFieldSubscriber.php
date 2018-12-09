@@ -47,7 +47,11 @@ class AddAreaFieldSubscriber implements EventSubscriberInterface {
         if (null === $data) {
             return;
         }
-        $area = count($data->getProgramas()) > 0 ? $data->getProgramas()[0]->getPrograma()->getArea() : null;
+        if (property_exists($data, 'programas')) {
+            $area = count($data->getProgramas()) > 0 ? $data->getProgramas()[0]->getPrograma()->getArea() : null;
+        } else {
+            $area = $data->getPrograma() ? $data->getPrograma()->getPrograma()->getArea() : null;
+        }
         $this->addAreaForm($form, $area);
     }
 

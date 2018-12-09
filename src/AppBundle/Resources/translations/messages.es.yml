@@ -4,6 +4,10 @@ label:
   importar: Importar solicitudes
   download:
     template: Descargar plantilla
+  area: Área
+  programa: Programa
+  programas: Subprogramas
+  seleccion: Seleccione una opción
 error:
   create:
     excel: Error al leer el archivo Excel adjunto, por favor intente de nuevo.

@@ -2,31 +2,35 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Form\EventListener\AddAreaFieldSubscriber;
+use AppBundle\Form\EventListener\AddProgramaPadreFieldSubscriber;
+use AppBundle\Form\EventListener\AddProgramasFieldSubscriber;
+use DateTime;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\CoreBundle\Form\Type\DatePickerType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Translation\Translator;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class PresupuestosAdmin extends AbstractAdmin {
-    
-    
+
     public function createQuery($context = 'list') {
         $query = parent::createQuery($context);
         $em = $this->getConfigurationPool()->getContainer()->get("doctrine")->getEntityManager();
 
         $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
         if ($user->hasRole('ROLE_CONSULTOR')) {
-            $query->where($query->getRootAliases()[0].".seccional = :seccional")
+            $query->where($query->getRootAliases()[0] . ".seccional = :seccional")
                     ->setParameter("seccional", $user->getSeccional());
         }
         return $query;
     }
-    
+
     protected function configureRoutes(RouteCollection $collection) {
         $collection->remove('delete');
         $collection->remove('show');
@@ -39,8 +43,8 @@ class PresupuestosAdmin extends AbstractAdmin {
     protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
         $datagridMapper
                 ->add('presupuestomonto', null, ["label" => "Monto"])
-                ->add('seccional', null, ["lable" => "Seccional"])
-                ->add('idarea', null, ["lable" => "Área"])
+                ->add('seccional', null, ["label" => "Seccional"])
+                ->add('idarea', null, ["label" => "Área"])
                 ->add('saldo', null, ["label" => "Saldo"])
                 ->add('desde', null, ["label" => "Desde"])
                 ->add('hasta', null, ["label" => "Hasta"])
@@ -53,21 +57,14 @@ class PresupuestosAdmin extends AbstractAdmin {
     protected function configureListFields(ListMapper $listMapper) {
         $listMapper
                 ->add('presupuestomonto', null, ["label" => "Monto"])
-                ->add('seccional', null, ["lable" => "Seccional"])
-                ->add('idarea', null, ["lable" => "Área"])
-                ->add('programa.programa', null, ["lable" => "Programa"])
-                ->add('programa', null, ["lable" => "Subprograma"])
+                ->add('seccional', null, ["label" => "Seccional"])
+                ->add('idarea', null, ["label" => "Área"])
+                ->add('programa.programa', null, ["label" => "Programa"])
+                ->add('programa', null, ["label" => "Subprograma"])
                 ->add('saldo', null, ["label" => "Saldo"])
                 ->add('desde', null, ["label" => "Desde"])
                 ->add('hasta', null, ["label" => "Hasta"])
                 ->add('fechaCreacion', null, ["label" => "Fecha de creación"])
-                ->add('_action', null, array(
-                    'actions' => array(
-                        'show' => array(),
-                        'edit' => array(),
-                        'delete' => array(),
-                    ),
-                ))
         ;
     }
 
@@ -78,24 +75,30 @@ class PresupuestosAdmin extends AbstractAdmin {
         $constraint = array(new NotBlank());
         $formMapper
                 ->add('presupuestomonto', null, ["label" => "Monto"])
-                ->add('idarea', null, ["label" => "Área"])
+                ->add('area', EntityType::class, [
+                    "class" => "AppBundle:Areas"
+                    ])
+                ->add('programaPadre', EntityType::class, [
+                    "class" => "AppBundle:Programas"
+                    ])
+                ->add('programa', null, ["label" => "Subprograma"])
                 ->add('seccional', null, ["label" => "Seccional"])
-                ->add('desde', DateType::class, array(
-                    'widget' => 'single_text',
+                ->add('desde', DatePickerType::class, array(
                     'constraints' => $constraint,
                     "label" => "Desde",
                     'format' => 'yyyy-MM-dd',
-                    'empty_value' => "",
-                    'attr' => array('class' => 'form-control')
                 ))
-                ->add('hasta', DateType::class, array(
-                    'widget' => 'single_text',
+                ->add('hasta', DatePickerType::class, array(
                     'constraints' => $constraint,
                     "label" => "Hasta",
                     'format' => 'yyyy-MM-dd',
-                    'empty_value' => "",
                     'attr' => array('class' => 'form-control')
-        ));
+                ))
+                ->getFormBuilder()
+                ->addEventSubscriber(new AddAreaFieldSubscriber())
+                ->addEventSubscriber(new AddProgramaPadreFieldSubscriber())
+                ->addEventSubscriber(new AddProgramasFieldSubscriber())
+        ;
     }
 
     /**
@@ -110,10 +113,10 @@ class PresupuestosAdmin extends AbstractAdmin {
                 ->add('idarea', null, ["label" => "label.area"])
         ;
     }
-    
+
     public function prePersist($object) {
         parent::prePersist($object);
-        $hoy = new \DateTime();
+        $hoy = new DateTime();
         $object->setSaldo($object->getPresupuestomonto());
         $object->setFechaCreacion($hoy);
     }

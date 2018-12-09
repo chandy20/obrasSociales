@@ -53,9 +53,13 @@ class AddProgramaPadreFieldSubscriber implements EventSubscriberInterface {
         if (null === $data) {
             return;
         }
-
-        $area = count($data->getProgramas()) > 0 ? $data->getProgramas()[0]->getPrograma()->getArea() : null;
-        $padre = count($data->getProgramas()) > 0 ? $data->getProgramas()[0]->getPrograma() : null;
+        if (property_exists($data, 'programas')) {
+            $area = count($data->getProgramas()) > 0 ? $data->getProgramas()[0]->getPrograma()->getArea() : null;
+            $padre = count($data->getProgramas()) > 0 ? $data->getProgramas()[0]->getPrograma() : null;
+        } else {
+            $area = $data->getPrograma() ? $data->getPrograma()->getPrograma()->getArea() : null;
+            $padre = $data->getPrograma() ? $data->getPrograma()->getPrograma() : null;
+        }
         $this->addProgramaPadreForm($form, $area, $padre);
     }
 
