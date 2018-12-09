@@ -15,9 +15,7 @@ use AppBundle\ValidData\ValidacionesInstitucionales;
 use AppBundle\ValidData\ValidarDatos;
 use AppBundle\Entity\Conceptosjunta;
 use AppBundle\Entity\ProgramaConcepto;
-use AppBundle\Entity\ProgramaSolicitud;
 use ReflectionClass;
-use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\FormExtension;
@@ -28,9 +26,6 @@ use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use AppBundle\Form\ImportarDatosFormType;
-use AppBundle\ValidData\Validaciones;
-use AppBundle\ValidData\ValidarDatos;
 
 class SolicitudesAdminController extends CRUDController {
 
