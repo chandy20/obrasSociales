@@ -23,7 +23,7 @@
         >
 
         {{ include('@SonataAdmin/Helper/render_form_dismissable_errors.html.twig') }}
-
+            <script src="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/js/sweetalert.js"></script>
         <div class="nav-tabs-custom">
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="tab_s5c0c201f55662_1">
@@ -270,9 +270,42 @@
                     console.log(documento);
                         $.get(url, {"documento": documento}, function (response) {
                             //your callback here
-                            console.log(response.result);
-                            if(response.result === "ok"){
-                                alert("Se ha registrado el usuario satisfactoriamente");
+                            console.log(response);
+                            if(response.beneficios){
+                                $("#{{ form.vars.id }}_idseccional").val(response.seccional).trigger('change.select2');
+                                $("#{{ form.vars.id }}_idtiposolicitud").val(response.tipoSoliciutd).trigger('change.select2');
+                                $("#{{ form.vars.id }}_solicitudnombresolicita").val(response.nombreSolicitante);
+                                $("#{{ form.vars.id }}_emailSolicitante").val(response.email);
+                                $("#{{ form.vars.id }}_solicitudcedulafuncionario").val(response.documentoPolicia);
+                                $("#{{ form.vars.id }}_idgrado").val(response.grado).trigger('change.select2');
+                                $("#{{ form.vars.id }}_unidad").val(response.unidad).trigger('change.select2');
+                                $("#{{ form.vars.id }}_solicitudnombrefuncionario").val(response.nombrePolicia);
+                                $("#{{ form.vars.id }}_solicituddireccionfuncionario").val(response.direccion);
+                                $("#{{ form.vars.id }}_solicitudtelefonosfuncionario").val(response.telefono);
+                                $("#{{ form.vars.id }}_antiguedad").val(response.antiguedad).trigger('change.select2');
+                                $("#{{ form.vars.id }}_idparentesco").val(response.parentesco).trigger('change.select2');
+                                $("#{{ form.vars.id }}_idestadocivil").val(response.estadoCivil).trigger('change.select2');
+                                $("#{{ form.vars.id }}_idingreso").val(response.ingreso).trigger('change.select2');
+                                $("#{{ form.vars.id }}_idpersonacargo").val(response.personasCargo).trigger('change.select2');
+                                $("#{{ form.vars.id }}_idsituacionvivienda").val(response.situacionVivienda).trigger('change.select2');
+                                $("#{{ form.vars.id }}_idmotivodeuda").val(response.dificultad).trigger('change.select2');
+                                $("#{{ form.vars.id }}_cantidadesbeneficio").val(response.cantidadBeneficios).trigger('change.select2');
+                                $("#{{ form.vars.id }}_idconceptovisita").val(response.conceptoVisita).trigger('change.select2');
+                                $("#{{ form.vars.id }}_idafiliadodibie").val(response.afiliado).trigger('change.select2');
+                                $("#{{ form.vars.id }}_documentoBeneficiarioFinal").val(response.documentoBeneficiario);
+                                $("#{{ form.vars.id }}_nombreBeneficiarioFinal").val(response.nombreBeneficiario);
+                                $("#{{ form.vars.id }}_idpoblacionbeneficia").val(response.poblacion).trigger('change.select2');
+                                $("#{{ form.vars.id }}_idviabilidadplaneacion").val(response.viabilidad).trigger('change.select2');
+                                $("#{{ form.vars.id }}_idzonaubicacion").val(response.zona).trigger('change.select2');
+                                $("#{{ form.vars.id }}_idcantidadesbeneficioinst").val(response.beneficioIns).trigger('change.select2');
+
+                                if(response.beneficios === 1) {
+                                    alert("Esta persona ha solicitado 1 beneficio");
+                                }else{
+                                    alert("Esta persona ha solicitado " + response.beneficios + " beneficios");
+
+                                }
+
                             }
                         }, 'JSON');
                     }

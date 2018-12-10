@@ -23,10 +23,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class SolicitudesAdminController extends CRUDController {
+class SolicitudesAdminController extends CRUDController
+{
 
     public function setContainer(ContainerInterface $container = null)
     {
@@ -41,7 +43,8 @@ class SolicitudesAdminController extends CRUDController {
      *
      * @return Response
      */
-    public function createAction() {
+    public function createAction()
+    {
         $request = $this->getRequest();
         // the key used to lookup the template
         $templateKey = 'edit';
@@ -202,7 +205,9 @@ class SolicitudesAdminController extends CRUDController {
             'objectId' => null,
         ], null);
     }
-    public function validaciones($form) {
+
+    public function validaciones($form)
+    {
         $tipoDeSolicitud = $form->get("idtiposolicitud")->getData();
         if ($tipoDeSolicitud) {
             if ($tipoDeSolicitud->getTiposolicitudnombre() == "Familiar y personal") {
@@ -285,12 +290,14 @@ class SolicitudesAdminController extends CRUDController {
             }
         }
     }
+
     /**
      * Sets the admin form theme to form view. Used for compatibility between Symfony versions.
      *
      * @param string $theme
      */
-    public function setFormTheme(FormView $formView, $theme) {
+    public function setFormTheme(FormView $formView, $theme)
+    {
         $twig = $this->get('twig');
         // BC for Symfony < 3.2 where this runtime does not exists
         if (!method_exists(AppVariable::class, 'getToken')) {
@@ -419,7 +426,7 @@ class SolicitudesAdminController extends CRUDController {
             $solicitud->setIdconceptovisita($this->em->getRepository("AppBundle:Conceptosvisita")->findOneByConceptovisitanombre($dato['CONCEPTO_VISITA_DOMICILIARIA']['valor']));
             $solicitud->setIdafiliadodibie($this->em->getRepository("AppBundle:Afiliadodibie")->findOneByAfiliadodibiedesc($dato['AFILIADO_DIBIE']['valor']));
             $solicitud->setDocumentoBeneficiarioFinal($dato['DOCUMENTO_BENEFICIARIO_FINAL']['valor']);
-            $solicitud->setDocumentoBeneficiarioFinal($dato['NOMBRE_BENEFICIARIO_FINAL']['valor']);
+            $solicitud->setNombreBeneficiarioFinal($dato['NOMBRE_BENEFICIARIO_FINAL']['valor']);
             $programas = explode(";", $dato['PROGRAMAS']['valor']);
             foreach ($programas as $prog) {
                 $programaSolicitud = new ProgramaSolicitud($this->em->getRepository("AppBundle:Programas")->findOneByProgramanombre($prog), $solicitud);
@@ -437,8 +444,87 @@ class SolicitudesAdminController extends CRUDController {
         $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findOneBySolicitudcedulasolicita($request->get("documento"));
         $solicitudes = $this->em->getRepository("AppBundle:Solicitudes")->findBySolicitudcedulasolicita($request->get("documento"));
         $response = [];
-        $response ["solicitante"] = $solicitud->getSolicitudnombresolicita();
-        $response ["email"] = $solicitud->getEmailSolicitante();
-        $response ["documentoFuncionario"] = $solicitud->getSolicitudcedulafuncionario();
+        if($solicitud) {
+            $response["beneficios"] = count($solicitudes);
+            $response["seccional"] = $solicitud->getIdseccional()->getId();
+            $response["tipoSoliciutd"] = $solicitud->getIdtiposolicitud()->getId();
+            $response["cedulaSolicitante"] = $solicitud->getSolicitudcedulasolicita();
+            $response["nombreSolicitante"] = $solicitud->getSolicitudnombresolicita();
+            $response["email"] = $solicitud->getEmailSolicitante();
+            $response["direccion"] = $solicitud->getSolicituddireccionfuncionario();
+            $response["telefono"] = $solicitud->getSolicitudtelefonosfuncionario();
+            $response["documentoPolicia"] = $solicitud->getSolicitudcedulafuncionario();
+            $grado = $solicitud->getIdgrado();
+            if ($grado) {
+                $response["grado"] = $grado->getid();
+            }
+            $unidad = $solicitud->getUnidad();
+            if ($grado) {
+                $response["unidad"] = $unidad->getid();
+            }
+            $response["nombrePolicia"] = $solicitud->getSolicitudnombrefuncionario();
+            $antiguedad = $solicitud->getAntiguedad();
+            if ($antiguedad) {
+                $response["antiguedad"] = $antiguedad->getid();
+            }
+            $poblacion = $solicitud->getIdpoblacionbeneficia();
+            if ($poblacion) {
+                $response["poblacion"] = $poblacion->getid();
+            }
+            $viabilidad = $solicitud->getIdviabilidadplaneacion();
+            if ($viabilidad) {
+                $response["viabilidad"] = $viabilidad->getid();
+            }
+            $zona = $solicitud->setIdzonaubicacion();
+            if ($zona) {
+                $response["zona"] = $zona->getid();
+            }
+            $beneficioIns = $solicitud->getIdcantidadesbeneficioinst();
+            if ($beneficioIns) {
+                $response["beneficioIns"] = $beneficioIns->getid();
+            }
+            $parentesco = $solicitud->getIdparentesco();
+            if ($parentesco) {
+                $response["parentesco"] = $parentesco->getid();
+            }
+            $estadoCivil = $solicitud->getIdestadocivil();
+            if ($estadoCivil) {
+                $response["estadoCivil"] = $estadoCivil->getid();
+            }
+            $ingreso = $solicitud->getIdingreso();
+            if ($ingreso) {
+                $response["ingreso"] = $ingreso->getid();
+            }
+            $personasCargo = $solicitud->getIdpersonacargo();
+            if ($personasCargo) {
+                $response["personasCargo"] = $personasCargo->getid();
+            }
+            $situacionVivienda = $solicitud->getIdsituacionvivienda();
+            if ($situacionVivienda) {
+                $response["situacionVivienda"] = $situacionVivienda->getid();
+            }
+            $dificultad = $solicitud->getIdmotivodeuda();
+            if ($dificultad) {
+                $response["dificultad"] = $dificultad->getid();
+            }
+            $cantidadBeneficios = $solicitud->getCantidadesbeneficio();
+            if ($cantidadBeneficios) {
+                $response["cantidadBeneficios"] = $cantidadBeneficios->getCantidadesbeneficioId();
+            }
+            $conceptoVisita = $solicitud->getIdconceptovisita();
+            if ($conceptoVisita) {
+                $response["conceptoVisita"] = $conceptoVisita->getIdconceptovisita();
+            }
+            $afiliado = $solicitud->getIdafiliadodibie();
+            if ($afiliado) {
+                $response["afiliado"] = $afiliado->getIdafiliadodibie();
+            }
+            $response["documentoBeneficiario"] = $solicitud->getDocumentoBeneficiarioFinal();
+            $response["nombreBeneficiario"] = $solicitud->getNombreBeneficiarioFinal();
+
+            return new JsonResponse($response);
+        }
+        return new JsonResponse($response);
+
     }
 }
