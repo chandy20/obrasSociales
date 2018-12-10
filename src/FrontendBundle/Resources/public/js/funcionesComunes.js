@@ -32,6 +32,9 @@ function actualizarProgramasPadres(datoSelect) {
     };
     var url = "/app_dev.php/admin/app/programas/programasPorArea";
     var programa_selector = $("select[name*='programaPadre']:eq(0)");
+    if (programa_selector.length < 1) {
+        programa_selector = $("select[name*='programa']:eq(0)");
+    }
     $.ajax({
         type: 'post',
         url: url,

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Form\EventListener;
+namespace AppBundle\Form\EventListener\Programa;
 
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-class AddProgramaPadreFieldSubscriber implements EventSubscriberInterface {
+class AddProgramasFieldSubscriber implements EventSubscriberInterface {
 
     public static function getSubscribedEvents() {
         return array(
@@ -17,21 +17,18 @@ class AddProgramaPadreFieldSubscriber implements EventSubscriberInterface {
         );
     }
 
-    private function addProgramaPadreForm($form, $area, $padre) {
+    private function addProgramasForm($form, $area) {
 
         $formOptions = array(
             "class" => "AppBundle:Programas",
-            "label" => "label.programa",
+            "label" => "label.programas",
             "empty_value" => 'label.seleccion',
-            "required" => true,
-            'mapped' => false,
-            'attr' => [
-                'onchange' => 'actualizarProgramas(this);',
-            ],
+            "required" => false,
+            'mapped' => true,
             'query_builder' => function (EntityRepository $repository) use ($area) {
                 $area = $area ?: 0;
                 $qb = $repository->createQueryBuilder('p')
-                        ->innerJoin('p.idarea', 'a')
+                        ->join('p.idarea', 'a')
                         ->where('a.idArea = :area')
                         ->andwhere('p.programa is null')
                         ->orderBy("p.programanombre", 'DESC')
@@ -40,11 +37,7 @@ class AddProgramaPadreFieldSubscriber implements EventSubscriberInterface {
                 return $qb;
             },
         );
-
-        if ($padre) {
-            $formOptions['data'] = $padre;
-        }
-        $form->add('programaPadre', EntityType::class, $formOptions);
+        $form->add('programa', EntityType::class, $formOptions);
     }
 
     public function preSetData(FormEvent $event) {
@@ -54,27 +47,22 @@ class AddProgramaPadreFieldSubscriber implements EventSubscriberInterface {
         if (null === $data) {
             return;
         }
-        if (property_exists($data, 'programas')) {
-            $area = count($data->getProgramas()) > 0 ? $data->getProgramas()[0]->getPrograma()->getArea() : null;
-            $padre = count($data->getProgramas()) > 0 ? $data->getProgramas()[0]->getPrograma() : null;
-        } else {
-            $area = $data->getPrograma() ? $data->getPrograma()->getPrograma()->getArea() : null;
-            $padre = $data->getPrograma() ? $data->getPrograma()->getPrograma() : null;
+        $area = $data->getPrograma() ? $data->getPrograma()->getIdarea() : null;
+        if (!$area) {
+            $area = $data->getIdarea();
         }
-        $this->addProgramaPadreForm($form, $area, $padre);
+        $this->addProgramasForm($form, $area);
     }
 
     public function preSubmit(FormEvent $event) {
         $data = $event->getData();
         $form = $event->getForm();
-
         if (null === $data) {
             return;
         }
 
-        $area = array_key_exists('area', $data) ? $data['area'] : null;
-        $padre = array_key_exists('programaPadre', $data) ? $data['programaPadre'] : null;
-        $this->addProgramaPadreForm($form, $area, $padre);
+        $area = array_key_exists('idarea', $data) ? $data['idarea'] : null;
+        $this->addProgramasForm($form, $area);
     }
 
 }
