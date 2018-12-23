@@ -7,6 +7,7 @@ use AppBundle\Entity\ProgramaConcepto;
 use AppBundle\Entity\ProgramaSolicitud;
 use AppBundle\Entity\Solicitudes;
 use AppBundle\Form\ImportarDatosFormType;
+use AppBundle\Form\ReemplazarArchivo;
 use AppBundle\ValidData\Validaciones;
 use AppBundle\ValidData\ValidacionesFamiliares;
 use AppBundle\ValidData\ValidacionesInstitucionales;
@@ -444,7 +445,7 @@ class SolicitudesAdminController extends CRUDController
         $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findOneBySolicitudcedulasolicita($request->get("documento"));
         $solicitudes = $this->em->getRepository("AppBundle:Solicitudes")->findBySolicitudcedulasolicita($request->get("documento"));
         $response = [];
-        if($solicitud) {
+        if ($solicitud) {
             $response["beneficios"] = count($solicitudes);
             $response["seccional"] = $solicitud->getIdseccional()->getId();
             $response["tipoSoliciutd"] = $solicitud->getIdtiposolicitud()->getId();
@@ -525,6 +526,47 @@ class SolicitudesAdminController extends CRUDController
             return new JsonResponse($response);
         }
         return new JsonResponse($response);
+
+    }
+
+    public function replaceFileAction($id)
+    {
+        $request = $this->getRequest();
+        $form = $this->createForm(ReemplazarArchivo::class, null);
+        $form->handleRequest($request);
+        $titulo = 'label.reemplazar';
+        $directory = $this->getParameter('uploads_directory');
+
+        if ($form->isSubmitted()) {
+            $isFormValid = $form->isValid();
+
+            if ($isFormValid) {
+                $file = $request->files->all()['reemplazar_archivo']['file'];
+                $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findOneById($id);
+                try {
+                    unlink($directory . "/" . $solicitud->getArchivo());
+                } catch (\Exception $e) {
+
+                }
+                try {
+                    $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                    $solicitud->setArchivo($fileName);
+                    $this->em->persist($solicitud);
+                    $this->em->flush();
+                    $file->move(
+                        $this->getParameter('uploads_directory'), $fileName
+                    );
+                    $request->getSession()->getFlashBag()->add('sonata_flash_success', $this->admin->trans('mensaje.datos.cargados'));
+                } catch (Exception $e) {
+                    $request->getSession()->getFlashBag()->add('sonata_flash_error', $this->admin->trans('error.importando.datos'));
+                }
+            }
+        }
+
+        return $this->renderWithExtraParams($this->admin->getTemplate("replaceFile"), [
+            'titulo' => $titulo,
+            'form' => $form->createView(),
+        ], null);
 
     }
 }

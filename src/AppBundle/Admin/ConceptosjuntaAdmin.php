@@ -61,6 +61,8 @@ class ConceptosjuntaAdmin extends AbstractAdmin {
                 ->add('solicitud.solicitudnombresolicita', null, ["label" => "Solicitante"])
                 ->add('solicitud.solicitudcedulasolicita', null, ["label" => "Documento"])
                 ->add('solicitud.programas.programa.idarea', null, ["label" => "Área"])
+                ->add('solicitud.programas.programa', null, ["label" => "Programa"])
+                ->add('solicitud.idseccional', null, ["label" => "Seccional"])
         ;
     }
 
