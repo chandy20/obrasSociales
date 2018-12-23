@@ -4,6 +4,7 @@ label:
   importar: Importar solicitudes
   download:
     template: Descargar plantilla
+  reemplazar: Reemplazar archivo cargado
   area: Área
   programa: Programa
   programas: Subprogramas

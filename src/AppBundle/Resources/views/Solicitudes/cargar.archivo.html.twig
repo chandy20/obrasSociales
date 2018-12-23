@@ -1,0 +1,37 @@
+{% extends base_template %}
+
+{% block sonata_admin_content %}
+    
+    {% block notice %}
+        {% include 'SonataCoreBundle:FlashMessage:render.html.twig' %}
+    {% endblock notice %}
+
+    <div class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="col-xs-12">
+                            <h3 class="text-center help-block">{{ titulo | trans }}</h3>
+                        </div>
+                        <div class="col-xs-12">
+                            <form novalidate="" method="POST" enctype="multipart/form-data">
+                                {{ form_widget(form) }}
+
+                                <div class="col-xs-12">
+                                    <br>
+                                    <button class="btn btn-success pull-right">
+                                        <i class="fa fa-send"></i>
+                                        {{ 'label.send' | trans }}
+                                    </button>
+                                </div>
+
+                                {{ form_rest(form) }}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

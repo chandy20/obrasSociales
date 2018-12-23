@@ -38,6 +38,7 @@ class SolicitudesAdmin extends AbstractAdmin {
         $collection->remove('edit');
         $collection->add('importar', 'importar');
         $collection->add('consultar', 'consultar');
+        $collection->add('replaceFile', $this->getRouterIdParameter().'/reemplazar/archivo');
     }
 
     /**
@@ -95,6 +96,9 @@ class SolicitudesAdmin extends AbstractAdmin {
                         'show' => array(),
                         'edit' => array(),
                         'delete' => array(),
+                        'archivo' => array(
+                            'template' => 'AppBundle:Solicitudes/btn:reemplazar.archivo.html.twig'
+                        ),
                     ),
                 ))
         ;
@@ -302,6 +306,13 @@ class SolicitudesAdmin extends AbstractAdmin {
         ;
     }
 
+    public function getDataSourceIterator()
+    {
+        $datasourceit = parent::getDataSourceIterator();
+        $datasourceit->setDateTimeFormat('Y-m-d');
+        return $datasourceit;
+    }
+
     public function getExportFields() {
         return array(
             "Fecha de la Solicitud" => 'solicitudfecha',
@@ -378,10 +389,16 @@ class SolicitudesAdmin extends AbstractAdmin {
         switch ($name) {
             case 'show':
                 return 'AppBundle:Solicitudes:base_show.html.twig';
+                break;
             case "importar";
                 return 'AppBundle:Solicitudes:importar.datos.html.twig';
+                break;
             case 'edit':
                 return 'AppBundle:Solicitudes:base_edit.html.twig';
+                break;
+            case 'replaceFile':
+                return  'AppBundle:Solicitudes:cargar.archivo.html.twig';
+                break;
             default:
                 return parent::getTemplate($name);
         }

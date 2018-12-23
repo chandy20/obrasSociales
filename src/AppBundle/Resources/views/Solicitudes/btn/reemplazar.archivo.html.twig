@@ -1,0 +1,6 @@
+{% if admin.hasAccess('list') and admin.hasRoute('list') %}
+        <a href="{{ admin.generateURL('replaceFile', {id: object.id}) }}" class="btn btn-sm btn-default edit_link" title="Reemplazar archivo">
+            <i class="fa fa-upload" aria-hidden="true"></i>
+            Reemplazar archivo
+        </a>
+{% endif %}
