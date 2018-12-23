@@ -10,6 +10,12 @@ use Symfony\Component\Form\FormEvents;
 
 class AddProgramasFieldSubscriber implements EventSubscriberInterface {
 
+    public $presupuesto = false;
+
+    public function __construct($presupuesto = false) {
+        $this->presupuesto = $presupuesto;
+    }
+
     public static function getSubscribedEvents() {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',

@@ -10,6 +10,12 @@ use Symfony\Component\Form\FormEvents;
 
 class AddAreaFieldSubscriber implements EventSubscriberInterface {
 
+    public $presupuesto = false;
+
+    public function __construct($presupuesto = false) {
+        $this->presupuesto = $presupuesto;
+    }
+
     public static function getSubscribedEvents() {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
@@ -23,7 +29,7 @@ class AddAreaFieldSubscriber implements EventSubscriberInterface {
             "label" => "label.area",
             "required" => true,
             "empty_value" => 'label.seleccion',
-            'mapped' => false,
+            'mapped' => $this->presupuesto,
             'attr' => [
                 'onchange' => 'actualizarProgramasPadres(this);',
             ],
@@ -36,8 +42,11 @@ class AddAreaFieldSubscriber implements EventSubscriberInterface {
         if ($area) {
             $formOptions['data'] = $area;
         }
-
-        $form->add('area', EntityType::class, $formOptions);
+        $nombreCampo = 'area';
+        if ($this->presupuesto) {
+            $nombreCampo = 'idarea';
+        }
+        $form->add($nombreCampo, EntityType::class, $formOptions);
     }
 
     public function preSetData(FormEvent $event) {
@@ -48,9 +57,9 @@ class AddAreaFieldSubscriber implements EventSubscriberInterface {
             return;
         }
         if (property_exists($data, 'programas')) {
-            $area = count($data->getProgramas()) > 0 ? $data->getProgramas()[0]->getPrograma()->getArea() : null;
+            $area = count($data->getProgramas()) > 0 ? $data->getProgramas()[0]->getPrograma()->getIdarea() : null;
         } else {
-            $area = $data->getPrograma() ? $data->getPrograma()->getPrograma()->getArea() : null;
+            $area = $data->getPrograma() ? $data->getPrograma()->getPrograma()->getIdarea() : null;
         }
         $this->addAreaForm($form, $area);
     }
@@ -63,7 +72,11 @@ class AddAreaFieldSubscriber implements EventSubscriberInterface {
             return;
         }
 
-        $area = array_key_exists('area', $data) ? $data['area'] : null;
+        $nombreCampo = 'area';
+        if ($this->presupuesto) {
+            $nombreCampo = 'idarea';
+        }
+        $area = array_key_exists($nombreCampo, $data) ? $data[$nombreCampo] : null;
         $this->addAreaForm($form, $area);
     }
 

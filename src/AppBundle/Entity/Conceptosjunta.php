@@ -33,13 +33,6 @@ class Conceptosjunta {
     private $conceptojuntavalorb;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="ConceptoJuntaTiempo", type="integer", nullable=true)
-     */
-    private $conceptojuntatiempo;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="ConceptoJuntaValorTotalB", type="decimal", precision=12, scale=2, nullable=true)
@@ -125,28 +118,6 @@ class Conceptosjunta {
      */
     public function getConceptojuntavalorb() {
         return $this->conceptojuntavalorb;
-    }
-
-    /**
-     * Set conceptojuntatiempo
-     *
-     * @param integer $conceptojuntatiempo
-     *
-     * @return Conceptosjunta
-     */
-    public function setConceptojuntatiempo($conceptojuntatiempo) {
-        $this->conceptojuntatiempo = $conceptojuntatiempo;
-
-        return $this;
-    }
-
-    /**
-     * Get conceptojuntatiempo
-     *
-     * @return integer
-     */
-    public function getConceptojuntatiempo() {
-        return $this->conceptojuntatiempo;
     }
 
     /**

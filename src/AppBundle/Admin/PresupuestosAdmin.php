@@ -75,7 +75,7 @@ class PresupuestosAdmin extends AbstractAdmin {
         $constraint = array(new NotBlank());
         $formMapper
                 ->add('presupuestomonto', null, ["label" => "Monto"])
-                ->add('area', EntityType::class, [
+                ->add('idarea', EntityType::class, [
                     "class" => "AppBundle:Areas"
                     ])
                 ->add('programaPadre', EntityType::class, [
@@ -95,9 +95,9 @@ class PresupuestosAdmin extends AbstractAdmin {
                     'attr' => array('class' => 'form-control')
                 ))
                 ->getFormBuilder()
-                ->addEventSubscriber(new AddAreaFieldSubscriber())
-                ->addEventSubscriber(new AddProgramaPadreFieldSubscriber())
-                ->addEventSubscriber(new AddProgramasFieldSubscriber())
+                ->addEventSubscriber(new AddAreaFieldSubscriber(true))
+                ->addEventSubscriber(new AddProgramaPadreFieldSubscriber(true))
+                ->addEventSubscriber(new AddProgramasFieldSubscriber(true))
         ;
     }
 

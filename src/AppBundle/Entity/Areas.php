@@ -29,7 +29,7 @@ class Areas
     private $areanombre;
 
 public function __toString(){
-    return (string) $this->getareanombre();
+    return (string) $this->getAreanombre();
 }
 
     /**

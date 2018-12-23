@@ -40,12 +40,12 @@ class ConceptosjuntaAdminController extends CRUDController {
 
         $id = $request->get($this->admin->getIdParameter());
         $existingObject = $this->admin->getObject($id);
-
+        $securityContext = $this->container->get('security.context');
+        $form = $this->admin->getForm();
+        $form->setData($existingObject);
         if (!$existingObject) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
-        } else {
-            $form = $this->admin->getForm();
-            $form->setData($existingObject);
+        } else if (!$securityContext->isGranted('ROLE_SUPER_ADMIN')) {
             if ($existingObject->getEditado()) {
                 $this->addFlash('sonata_flash_error', $this->trans('El concepto junta ya fue editado, solo es posible realizar el proceso una vez.'));
                 return $this->redirect($this->generateUrl('admin_app_conceptosjunta_list'));
@@ -65,71 +65,73 @@ class ConceptosjuntaAdminController extends CRUDController {
         /** @var $form Form */
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            $this->validar($existingObject, $form);
             //TODO: remove this check for 4.0
             if (method_exists($this->admin, 'preValidate')) {
                 $this->admin->preValidate($existingObject);
             }
             $isFormValid = $form->isValid();
-
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
-                $submittedObject = $form->getData();
-                $submittedObject->setEditado(true);
-                $solicitud = $submittedObject->getSolicitud();
-                $solicitud->setCantidadAprobada($submittedObject->getConceptojuntavalortotalb());
-                $concepto = $this->em->getRepository("AppBundle:Concepto")->findOneById(4);
-                if ($submittedObject->getAprobado()) {
-                    $concepto = $this->em->getRepository("AppBundle:Concepto")->findOneById(1);
-                } else {
-                    $submittedObject->setAprobado(false);
-                }
-                $solicitud->setConceptoFinal($concepto);
-                $this->admin->setSubject($submittedObject);
-                try {
-                    $existingObject = $this->admin->update($submittedObject);
-                    if ($existingObject->getAprobado()) {
-                        foreach ($form->get("programasConcepto")->getData() as $programa) {
-                            $programa->setAprobado(true);
-                            $this->em->persist($programa);
-                        }
-                    }
-//                    $this->em->flush();
-
-                    if ($this->isXmlHttpRequest()) {
-                        return $this->renderJson([
-                                    'result' => 'ok',
-                                    'objectId' => $objectId,
-                                    'objectName' => $this->escapeHtml($this->admin->toString($existingObject)),
-                                        ], 200, []);
-                    }
+                $this->validar($existingObject, $form);
+                $isFormValid = $form->isValid();
+                if ($isFormValid) {
+                    $submittedObject = $form->getData();
+                    $submittedObject->setEditado(true);
+                    $solicitud = $submittedObject->getSolicitud();
+                    $solicitud->setCantidadAprobada($submittedObject->getConceptojuntavalortotalb());
+                    $concepto = $this->em->getRepository("AppBundle:Concepto")->findOneById(4);
                     if ($submittedObject->getAprobado()) {
-                        foreach ($this->presupuesto as $presupuesto) {
-                            if (intval($presupuesto->getSaldo()) < 1000001) {
-                                $this->addFlash(
-                                        'sonata_flash_error', "El saldo del presupuesto de la seccional " . $presupuesto->getSeccional()->getSeccionalnombre() . " del área " . $presupuesto->getIdarea()->getAreanombre() . " es de " . $presupuesto->getSaldo()
-                                );
+                        $concepto = $this->em->getRepository("AppBundle:Concepto")->findOneById(1);
+                    } else {
+                        $submittedObject->setAprobado(false);
+                    }
+                    $solicitud->setConceptoFinal($concepto);
+                    $this->admin->setSubject($submittedObject);
+                    try {
+                        $existingObject = $this->admin->update($submittedObject);
+                        if ($existingObject->getAprobado()) {
+                            foreach ($form->get("programasConcepto")->getData() as $programa) {
+                                $programa->setAprobado(true);
+                                $this->em->persist($programa);
                             }
                         }
+//                    $this->em->flush();
+
+                        if ($this->isXmlHttpRequest()) {
+                            return $this->renderJson([
+                                        'result' => 'ok',
+                                        'objectId' => $objectId,
+                                        'objectName' => $this->escapeHtml($this->admin->toString($existingObject)),
+                                            ], 200, []);
+                        }
+                        if ($submittedObject->getAprobado()) {
+                            foreach ($this->presupuesto as $presupuesto) {
+                                if (intval($presupuesto->getSaldo()) < 1000001) {
+                                    $this->addFlash(
+                                            'sonata_flash_error', "El saldo del presupuesto de la seccional " . $presupuesto->getSeccional()->getSeccionalnombre() . " del área " . $presupuesto->getIdarea()->getAreanombre() . " es de " . $presupuesto->getSaldo()
+                                    );
+                                }
+                            }
+                        }
+                        $this->addFlash(
+                                'sonata_flash_success', $this->trans(
+                                        'flash_edit_success', ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))], 'SonataAdminBundle'
+                                )
+                        );
+
+                        // redirect to edit mode
+                        return $this->redirectTo($existingObject);
+                    } catch (ModelManagerException $e) {
+                        $this->handleModelManagerException($e);
+
+                        $isFormValid = false;
+                    } catch (LockException $e) {
+                        $this->addFlash('sonata_flash_error', $this->trans('flash_lock_error', [
+                                    '%name%' => $this->escapeHtml($this->admin->toString($existingObject)),
+                                    '%link_start%' => '<a href="' . $this->admin->generateObjectUrl('edit', $existingObject) . '">',
+                                    '%link_end%' => '</a>',
+                                        ], 'SonataAdminBundle'));
                     }
-                    $this->addFlash(
-                            'sonata_flash_success', $this->trans(
-                                    'flash_edit_success', ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))], 'SonataAdminBundle'
-                            )
-                    );
-
-                    // redirect to edit mode
-                    return $this->redirectTo($existingObject);
-                } catch (ModelManagerException $e) {
-                    $this->handleModelManagerException($e);
-
-                    $isFormValid = false;
-                } catch (LockException $e) {
-                    $this->addFlash('sonata_flash_error', $this->trans('flash_lock_error', [
-                                '%name%' => $this->escapeHtml($this->admin->toString($existingObject)),
-                                '%link_start%' => '<a href="' . $this->admin->generateObjectUrl('edit', $existingObject) . '">',
-                                '%link_end%' => '</a>',
-                                    ], 'SonataAdminBundle'));
                 }
             }
 
@@ -181,39 +183,48 @@ class ConceptosjuntaAdminController extends CRUDController {
         $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
     }
 
-    function validar(Conceptosjunta $concepto, $form) {
-        if ($concepto->getAprobado()) {
-            $hoy = new DateTime();
-            $totalBeneficio = 0;
-            foreach ($concepto->getProgramasConcepto() as $programaConcepto) {
-                $presupuesto = $this->em->getRepository("AppBundle:Presupuestos")->createQueryBuilder('p')
-                                ->where("p.seccional = :seccional")
-                                ->andWhere(":hoy BETWEEN p.desde AND p.hasta")
-                                ->andWhere("p.idarea = :area")
-                                ->setParameter("seccional", $concepto->getSolicitud()->getIdseccional())
-                                ->setParameter("area", $programaConcepto->getPrograma()->getIdarea())
-                                ->setParameter("hoy", $hoy)->getQuery()->getResult();
-                if (!$presupuesto) {
-                    $form->addError(new FormError("No existe presupuesto vigente disponible para la seccional selecional " . $concepto->getSolicitud()->getIdseccional()->getSeccionalnombre() . " para el area de " . $programaConcepto->getPrograma()->getIdarea()));
-                } else {
-                    $presupuesto = $presupuesto[0];
-                    $totalMovimiento = $programaConcepto->getPrograma()->getValorMes() * $concepto->getConceptojuntatiempo();
-                    $totalBeneficio += $totalMovimiento;
-                    $movimiento = $this->em->getRepository("AppBundle:Movimiento")->createQueryBuilder('m')
-                                    ->where("m.seccional = :seccional")
-                                    ->andWhere("m.concepto = :concepto")
-                                    ->andWhere("m.valor = :valor")
-                                    ->andWhere("m.presupuesto = :presupuesto")
+    function validar(Conceptosjunta $concepto, \Symfony\Component\Form\Form $form) {
+        if ($form->getData()->getAprobado()) {
+            if (!$form->getData()->getConceptosjuntanumacta()) {
+                $form->addError(new FormError("Por favor agregue el número de acta de aprobación"));
+            } else {
+
+                $hoy = new DateTime();
+                $totalBeneficio = 0;
+                foreach ($concepto->getProgramasConcepto() as $programaConcepto) {
+                    $presupuesto = $this->em->getRepository("AppBundle:Presupuestos")->createQueryBuilder('p')
+                                    ->where("p.seccional = :seccional")
+                                    ->andWhere(":hoy BETWEEN p.desde AND p.hasta")
+                                    ->andWhere("p.idarea = :area")
+                                    ->andWhere("p.programa = :programa")
                                     ->setParameter("seccional", $concepto->getSolicitud()->getIdseccional())
-                                    ->setParameter("concepto", $concepto)
-                                    ->setParameter("valor", $totalMovimiento)
-                                    ->setParameter("presupuesto", $presupuesto)->getQuery()->getResult();
-                    if (!$movimiento) {
+                                    ->setParameter("area", $programaConcepto->getPrograma()->getPrograma()->getIdarea())
+                                    ->setParameter("programa", $programaConcepto->getPrograma())
+                                    ->setParameter("hoy", $hoy)->getQuery()->getResult();
+                    if (!$presupuesto) {
+                        $form->addError(new FormError("No existe presupuesto vigente disponible para la seccional selecional " . $concepto->getSolicitud()->getIdseccional()->getSeccionalnombre() . " para el área de " . $programaConcepto->getPrograma()->getPrograma()->getIdarea() . " - " . $programaConcepto->getPrograma()->getPrograma() . " - " . $programaConcepto->getPrograma()));
+                    } else {
+                        $presupuesto = $presupuesto[0];
+                        $totalMovimiento = $programaConcepto->getPrograma()->getValorMes() * $programaConcepto->getUnidadesAprobadas();
+                        $totalBeneficio += $totalMovimiento;
+                        $movimiento = $this->em->getRepository("AppBundle:Movimiento")->createQueryBuilder('m')
+                                        ->where("m.seccional = :seccional")
+                                        ->andWhere("m.concepto = :concepto")
+                                        ->andWhere("m.valor = :valor")
+                                        ->andWhere("m.presupuesto = :presupuesto")
+                                        ->setParameter("seccional", $concepto->getSolicitud()->getIdseccional())
+                                        ->setParameter("concepto", $concepto)
+                                        ->setParameter("valor", $totalMovimiento)
+                                        ->setParameter("presupuesto", $presupuesto)->getQuery()->getResult();
+                        if (!$movimiento) {
+                            $movimiento = new Movimiento();
+                        } else {
+                            $movimiento = $movimiento[0];
+                        }
                         if ($presupuesto->getSaldo() < $totalMovimiento) {
                             $form->addError(new FormError("El saldo del presupuesto de la seccional " . $concepto->getSolicitud()->getIdseccional()->getSeccionalnombre() . " para el area de " . $programaConcepto->getPrograma()->getIdarea() . ", es inferior al monto de la transacción."));
                         } else {
                             $presupuesto->setSaldo($presupuesto->getSaldo() - $totalMovimiento);
-                            $movimiento = new Movimiento();
                             $movimiento->setValor($totalMovimiento);
                             $movimiento->setTipo("Débito");
                             $movimiento->setSeccional($concepto->getSolicitud()->getIdseccional());
@@ -223,14 +234,14 @@ class ConceptosjuntaAdminController extends CRUDController {
                             $this->em->persist($movimiento);
                         }
                     }
+                    if (!in_array($presupuesto, $this->presupuesto)) {
+                        $this->presupuesto[] = $presupuesto;
+                    }
                 }
-                if (!in_array($presupuesto, $this->presupuesto)) {
-                    $this->presupuesto[] = $presupuesto;
-                }
-            }
-            $concepto->setConceptojuntavalortotalb($totalBeneficio);
+                $concepto->setConceptojuntavalortotalb($totalBeneficio);
 
-            $this->em->persist($concepto);
+                $this->em->persist($concepto);
+            }
         }
     }
 
