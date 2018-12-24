@@ -6,6 +6,7 @@ use AppBundle\Entity\Conceptosjunta;
 use AppBundle\Entity\Movimiento;
 use AppBundle\Form\FormularioReportesType;
 use DateTime;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Exception\LockException;
@@ -15,6 +16,7 @@ use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Bundle\TwigBundle\Command\DebugCommand;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
@@ -183,7 +185,7 @@ class ConceptosjuntaAdminController extends CRUDController {
         $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
     }
 
-    function validar(Conceptosjunta $concepto, \Symfony\Component\Form\Form $form) {
+    function validar(Conceptosjunta $concepto, Form $form) {
         if ($form->getData()->getAprobado()) {
             if (!$form->getData()->getConceptosjuntanumacta()) {
                 $form->addError(new FormError("Por favor agregue el número de acta de aprobación"));
@@ -191,7 +193,7 @@ class ConceptosjuntaAdminController extends CRUDController {
 
                 $hoy = new DateTime();
                 $totalBeneficio = 0;
-                foreach ($concepto->getProgramasConcepto() as $programaConcepto) {
+                foreach ($concepto->getProgramasConcepto() as $key => $programaConcepto) {
                     $presupuesto = $this->em->getRepository("AppBundle:Presupuestos")->createQueryBuilder('p')
                                     ->where("p.seccional = :seccional")
                                     ->andWhere(":hoy BETWEEN p.desde AND p.hasta")
@@ -221,10 +223,38 @@ class ConceptosjuntaAdminController extends CRUDController {
                         } else {
                             $movimiento = $movimiento[0];
                         }
-                        if ($presupuesto->getSaldo() < $totalMovimiento) {
-                            $form->addError(new FormError("El saldo del presupuesto de la seccional " . $concepto->getSolicitud()->getIdseccional()->getSeccionalnombre() . " para el area de " . $programaConcepto->getPrograma()->getIdarea() . ", es inferior al monto de la transacción."));
+                        $em = $this->getDoctrine()->getManager();
+                        $stmt = $em->getConnection()->prepare('SELECT unidades_aprobadas FROM programa_concepto WHERE id =' . $programaConcepto->getId());
+                        $stmt->execute();
+                        $resultado = $stmt->fetchAll();
+                        $unidadesAntiguas = null;
+                        if ($resultado[0]['unidades_aprobadas']) {
+                            $unidadesAntiguas = $resultado[0]['unidades_aprobadas'];
+                        }
+                        $errorForm = false;
+                        if ($unidadesAntiguas != null && $unidadesAntiguas != $programaConcepto->getUnidadesAprobadas()) {
+                            if ($unidadesAntiguas < $programaConcepto->getUnidadesAprobadas()) {
+                                $nuevoSaldo = $presupuesto->getSaldo() - $totalMovimiento;
+                                if ($presupuesto->getSaldo() < $nuevoSaldo) {
+                                    $errorForm = true;
+                                    $form->addError(new FormError("El saldo del presupuesto de la seccional " . $concepto->getSolicitud()->getIdseccional()->getSeccionalnombre() . " para el area de " . $programaConcepto->getPrograma()->getPrograma()->getIdarea() . " - " . $programaConcepto->getPrograma()->getPrograma() . " - " . $programaConcepto->getPrograma() . ", es inferior al monto de la transacción."));
+                                }
+                            } else {
+                                $nuevoSaldo = $presupuesto->getSaldo() + $totalMovimiento;
+                            }
+                            if ($programaConcepto->getUnidadesAprobadas() == 0) {
+                                $nuevoSaldo = $presupuesto->getPresupuestomonto();
+                            }
                         } else {
-                            $presupuesto->setSaldo($presupuesto->getSaldo() - $totalMovimiento);
+                            if ($unidadesAntiguas == $programaConcepto->getUnidadesAprobadas()) {
+                                $nuevoSaldo = $presupuesto->getSaldo();
+                            } else {
+                                $nuevoSaldo = $presupuesto->getSaldo() - $totalMovimiento;
+                            }
+                        }
+                        if (!$errorForm) {
+
+                            $presupuesto->setSaldo($nuevoSaldo);
                             $movimiento->setValor($totalMovimiento);
                             $movimiento->setTipo("Débito");
                             $movimiento->setSeccional($concepto->getSolicitud()->getIdseccional());

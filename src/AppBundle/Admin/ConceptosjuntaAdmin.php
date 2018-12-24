@@ -135,6 +135,10 @@ class ConceptosjuntaAdmin extends AbstractAdmin {
                     'data' => $object->getAprobado()
                 ])
         ;
+        if ($object->getEditado()) {
+            $formMapper
+                    ->add('numeroActaModificacion', null, ["label" => "Número Acta Modificación"]);
+        }
     }
 
     /**
