@@ -65,7 +65,7 @@ class ProgramaConceptoAdmin extends AbstractAdmin {
                     ]
                 ])
                 ->add('valorPrograma', null, [
-                    'label' => 'Valor programa',
+                    'label' => 'Valor unidad',
                     'data' => $data,
                     'attr' => [
                         'readonly' => $data ? true : false,
