@@ -4,9 +4,10 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\Conceptosjunta;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -191,6 +192,27 @@ class FormularioReportesType extends AbstractType {
                                 ->orderBy("m.motivodeudanombre", "ASC");
             }
         ];
+
+        $opcionesAgrupaciones = [
+            'mapped' => false,
+            "label" => "Agrupación de datos por:",
+            'required' => false,
+            'choices' => [
+                'Parentescos' => 'Parentescos',
+                'Grados' => 'Grados',
+                'Estadosciviles' => 'Estados Civiles',
+                'Ingresos' => 'Ingresos',
+                'Personascargo' => 'Personas a cargo',
+                'Situacionesvivienda' => 'Situaciones de Vivienda',
+                'Motivosdeuda' => 'Motivos de deuda',
+                'Tipossolicitud' => 'Tipos de solicitud',
+            ],
+            'attr' => array(
+                'class' => 'form-control',
+            ),
+            'expanded' => true,
+            'multiple' => true,
+        ];
         $builder
                 ->add('fechaInicial', DateType::class, $opcionesFechaInicial)
                 ->add('fechaFinal', DateType::class, $opcionesFechaFinal)
@@ -335,6 +357,7 @@ class FormularioReportesType extends AbstractType {
                 ->add("programa2", EntityType::class, $opcionesPrograma)
                 ->add("programa3", EntityType::class, $opcionesPrograma)
                 ->add("area3", EntityType::class, $opcionesArea)
+                ->add("agrupaciones", ChoiceType::class, $opcionesAgrupaciones)
         //dificultad
         ;
     }

@@ -82,7 +82,8 @@
     <div id="exTab2" class="container col-md-12">	
         <ul class="nav nav-tabs">
             <li class="active">
-                <a  href="#cantidades" onclick="marcarPestana(1)" data-toggle="tab">Cantidades</a>
+                {#                <a  href="#cantidades" onclick="marcarPestana(1)" data-toggle="tab">Cantidades</a>#}
+                <a  href="#agrupaciones" onclick="marcarPestana(1)" data-toggle="tab">Cantidades</a>
             </li>
             <li>
                 <a href="#numero" onclick="marcarPestana(2)" data-toggle="tab">Número de inscritos</a>
@@ -119,7 +120,7 @@
             </li>
         </ul>
         <div class="tab-content ">
-            <div class="tab-pane active" id="cantidades">
+            {#<div class="tab-pane" id="cantidades">
                 <div class="col-md-3">
                     {{ form_label(form.fechaInicial) }}
                     {{ form_errors(form.fechaInicial) }}
@@ -221,6 +222,30 @@
                     {{ form_label(form.area) }}
                     {{ form_errors(form.area) }}
                     {{ form_widget(form.area) }}
+                </div>
+            </div>#}
+            <div class="tab-pane active" id="agrupaciones">
+                <div class="col-md-4">
+                    {{ form_label(form.fechaInicial) }}
+                    {{ form_errors(form.fechaInicial) }}
+                    {{ form_widget(form.fechaInicial) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_label(form.fechaFinal) }}
+                    {{ form_errors(form.fechaFinal) }}
+                    {{ form_widget(form.fechaFinal) }}
+                </div>
+                <div class="col-md-12">
+                    {{ form_label(form.agrupaciones) }}
+                    {{ form_errors(form.agrupaciones) }}
+                    <div class="col-md-12">
+                        {% for key, entidad in form.agrupaciones.children %}
+                            <div class="col col-md-6">
+                                {{ form_label(entidad) }}
+                                {{ form_widget(entidad) }}
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
             <div class="tab-pane" id="numero">

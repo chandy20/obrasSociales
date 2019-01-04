@@ -1,0 +1,9 @@
+{%if datos %}
+    <div id="chart_div" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    <script src="{{ asset('bundles/app/js/highcharts.js') }}"></script>
+    <script type="text/javascript">
+    </script>
+
+{%else%}
+    <div>No se encontró información con los parametros de busqueda.</div>
+{%endif%}
