@@ -37,3 +37,12 @@ mensaje:
   datos:
     cargados: Datos importados con éxito
     reemplazados: Archivo sustituido con éxito
+email:
+  saludo: Cordial saludo
+  contenido: En respuesta a la solicitud, se envía adjunto el correo que servirá como respuesta a las solicitudes gestionadas a través del Sistema Gestor de Beneficios AOS.
+  segundo_contenido: "En atención a su solicitud nos permitimos informar que debe tomar contacto a través de los siguientes canales de comunicación:"
+  Portal: "Portal web: http://obrassocialespolicia.org/obras/"
+  twitter: "Twitter: @AosPolicia"
+  facebook: "Facebook:/obrassocialespolicia"
+  instagram: "Instagram:/obrassocialespolicia"
+  pbx: "PBX: 7468999 Cel: 3174273162"
