@@ -10,6 +10,11 @@ use Symfony\Component\Form\FormEvents;
 
 class AddProgramaPadreFieldSubscriber implements EventSubscriberInterface {
 
+    public $presupuesto = false;
+
+    public function __construct($presupuesto = false) {
+        $this->presupuesto = $presupuesto;
+    }
     public static function getSubscribedEvents() {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
@@ -55,10 +60,10 @@ class AddProgramaPadreFieldSubscriber implements EventSubscriberInterface {
             return;
         }
         if (property_exists($data, 'programas')) {
-            $area = count($data->getProgramas()) > 0 ? $data->getProgramas()[0]->getPrograma()->getArea() : null;
+            $area = count($data->getProgramas()) > 0 ? $data->getProgramas()[0]->getPrograma()->getIdarea() : null;
             $padre = count($data->getProgramas()) > 0 ? $data->getProgramas()[0]->getPrograma() : null;
         } else {
-            $area = $data->getPrograma() ? $data->getPrograma()->getPrograma()->getArea() : null;
+            $area = $data->getPrograma() ? $data->getPrograma()->getPrograma()->getIdarea() : null;
             $padre = $data->getPrograma() ? $data->getPrograma()->getPrograma() : null;
         }
         $this->addProgramaPadreForm($form, $area, $padre);
@@ -71,8 +76,12 @@ class AddProgramaPadreFieldSubscriber implements EventSubscriberInterface {
         if (null === $data) {
             return;
         }
-
-        $area = array_key_exists('area', $data) ? $data['area'] : null;
+        
+        $nombreCampo = 'area';
+        if ($this->presupuesto) {
+            $nombreCampo = 'idarea';
+        }
+        $area = array_key_exists($nombreCampo, $data) ? $data[$nombreCampo] : null;
         $padre = array_key_exists('programaPadre', $data) ? $data['programaPadre'] : null;
         $this->addProgramaPadreForm($form, $area, $padre);
     }

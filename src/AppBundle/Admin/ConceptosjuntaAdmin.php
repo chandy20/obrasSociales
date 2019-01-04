@@ -10,6 +10,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Validator\ErrorElement;
+use Sonata\AdminBundle\Form\Type\CollectionType;
 
 class ConceptosjuntaAdmin extends AbstractAdmin {
 
@@ -105,13 +106,39 @@ class ConceptosjuntaAdmin extends AbstractAdmin {
      * @param FormMapper $formMapper
      */
     protected function configureFormFields(FormMapper $formMapper) {
+        $object = $this->getSubject();
         $formMapper
-                ->add('programasConcepto', null, ["label" => "programas"])
-                ->add('conceptojuntatiempo', null, ["label" => "Tiempo del Beneficio (Meses)"])
+                ->add('programasConcepto', 'sonata_type_collection', [
+                    'btn_add' => false,
+                    'type_options' => array(
+                        // Prevents the "Delete" option from being displayed
+                        'delete' => false,
+                        'delete_options' => array(
+                            // You may otherwise choose to put the field but hide it
+                            'type' => 'hidden',
+                            // In that case, you need to fill in the options as well
+                            'type_options' => array(
+                                'mapped' => false,
+                                'required' => false,
+                            )
+                        )
+                    )
+                        ], [
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                    'sortable' => 'position',
+                ])
                 ->add('conceptosjuntadesc', null, ["label" => "Descripcion Junta"])
                 ->add('conceptosjuntanumacta', null, ["label" => "Número Acta Aprobación"])
-                ->add('aprobado', null, ["label" => "¿Aprueba solicitud?"])
+                ->add('aprobado', null, [
+                    "label" => "¿Aprueba solicitud?",
+                    'data' => $object->getAprobado()
+                ])
         ;
+        if ($object->getEditado()) {
+            $formMapper
+                    ->add('numeroActaModificacion', null, ["label" => "Número Acta Modificación"]);
+        }
     }
 
     /**
@@ -127,16 +154,6 @@ class ConceptosjuntaAdmin extends AbstractAdmin {
                 ->add('conceptosjuntaotorgada', null, ["label" => "Otorga Beneficio?"])
                 ->add('conceptosjuntanumacta', null, ["label" => "Número Acta Aprobacion"])
         ;
-    }
-
-    public function validate(ErrorElement $errorElement, $object) {
-        parent::validate($errorElement, $object);
-        if (!$object->getConceptojuntatiempo() && $object->getConceptojuntatiempo()< 0) {
-            return $errorElement
-                            ->with("conceptojuntatiempo")
-                            ->addViolation('Este valor no debería estar vacío')
-                            ->end();
-        }
     }
 
 }

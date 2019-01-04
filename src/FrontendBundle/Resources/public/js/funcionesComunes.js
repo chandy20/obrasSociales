@@ -62,6 +62,7 @@ function actualizarProgramas(datoSelect) {
         url: url,
         data: data,
         success: function (data) {
+            programa_selector.html('<option value="">Seleccione una opción</option>');
             for (var i = 0, total = data.length; i < total; i++) {
                 programa_selector.append('<option value="' + data[i].id + '">' + data[i].nombre + '</option>');
             }

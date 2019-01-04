@@ -45,11 +45,27 @@ class ProgramaConcepto {
     private $programa;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="unidades_aprobadas", type="integer", nullable=true)
+     */
+    private $unidadesAprobadas;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="valor_programa", type="float", nullable=true)
+     */
+    private $valorPrograma;
+
+   
+    /**
      * Get id
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -60,7 +76,8 @@ class ProgramaConcepto {
      *
      * @return ProgramaConcepto
      */
-    public function setAprobado($aprobado) {
+    public function setAprobado($aprobado)
+    {
         $this->aprobado = $aprobado;
 
         return $this;
@@ -71,30 +88,33 @@ class ProgramaConcepto {
      *
      * @return boolean
      */
-    public function getAprobado() {
+    public function getAprobado()
+    {
         return $this->aprobado;
     }
 
     /**
-     * Set programa
+     * Set unidadesAprobadas
      *
-     * @param \AppBundle\Entity\Programas $programa
+     * @param integer $unidadesAprobadas
      *
      * @return ProgramaConcepto
      */
-    public function setPrograma(\AppBundle\Entity\Programas $programa = null) {
-        $this->programa = $programa;
+    public function setUnidadesAprobadas($unidadesAprobadas)
+    {
+        $this->unidadesAprobadas = $unidadesAprobadas;
 
         return $this;
     }
 
     /**
-     * Get programa
+     * Get unidadesAprobadas
      *
-     * @return \AppBundle\Entity\Programas
+     * @return integer
      */
-    public function getPrograma() {
-        return $this->programa;
+    public function getUnidadesAprobadas()
+    {
+        return $this->unidadesAprobadas;
     }
 
     /**
@@ -104,7 +124,8 @@ class ProgramaConcepto {
      *
      * @return ProgramaConcepto
      */
-    public function setConceptoJunta(\AppBundle\Entity\Conceptosjunta $conceptoJunta = null) {
+    public function setConceptoJunta(\AppBundle\Entity\Conceptosjunta $conceptoJunta = null)
+    {
         $this->conceptoJunta = $conceptoJunta;
 
         return $this;
@@ -115,8 +136,56 @@ class ProgramaConcepto {
      *
      * @return \AppBundle\Entity\Conceptosjunta
      */
-    public function getConceptoJunta() {
+    public function getConceptoJunta()
+    {
         return $this->conceptoJunta;
     }
 
+    /**
+     * Set programa
+     *
+     * @param \AppBundle\Entity\Programas $programa
+     *
+     * @return ProgramaConcepto
+     */
+    public function setPrograma(\AppBundle\Entity\Programas $programa = null)
+    {
+        $this->programa = $programa;
+
+        return $this;
+    }
+
+    /**
+     * Get programa
+     *
+     * @return \AppBundle\Entity\Programas
+     */
+    public function getPrograma()
+    {
+        return $this->programa;
+    }
+
+    /**
+     * Set valorPrograma
+     *
+     * @param float $valorPrograma
+     *
+     * @return ProgramaConcepto
+     */
+    public function setValorPrograma($valorPrograma)
+    {
+        $this->valorPrograma = $valorPrograma;
+
+        return $this;
+    }
+
+    /**
+     * Get valorPrograma
+     *
+     * @return float
+     */
+    public function getValorPrograma()
+    {
+        return $this->valorPrograma;
+    }
 }

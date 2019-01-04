@@ -33,13 +33,6 @@ class Conceptosjunta {
     private $conceptojuntavalorb;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="ConceptoJuntaTiempo", type="integer", nullable=true)
-     */
-    private $conceptojuntatiempo;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="ConceptoJuntaValorTotalB", type="decimal", precision=12, scale=2, nullable=true)
@@ -97,6 +90,12 @@ class Conceptosjunta {
     private $editado;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="numero_acta_modificacion", type="string", length=45, nullable=true)
+     */
+    private $numeroActaModificacion;
+    /**
      * Get id
      *
      * @return integer
@@ -125,28 +124,6 @@ class Conceptosjunta {
      */
     public function getConceptojuntavalorb() {
         return $this->conceptojuntavalorb;
-    }
-
-    /**
-     * Set conceptojuntatiempo
-     *
-     * @param integer $conceptojuntatiempo
-     *
-     * @return Conceptosjunta
-     */
-    public function setConceptojuntatiempo($conceptojuntatiempo) {
-        $this->conceptojuntatiempo = $conceptojuntatiempo;
-
-        return $this;
-    }
-
-    /**
-     * Get conceptojuntatiempo
-     *
-     * @return integer
-     */
-    public function getConceptojuntatiempo() {
-        return $this->conceptojuntatiempo;
     }
 
     /**
@@ -344,5 +321,29 @@ class Conceptosjunta {
     public function getEditado()
     {
         return $this->editado;
+    }
+
+    /**
+     * Set numeroActaModificacion
+     *
+     * @param string $numeroActaModificacion
+     *
+     * @return Conceptosjunta
+     */
+    public function setNumeroActaModificacion($numeroActaModificacion)
+    {
+        $this->numeroActaModificacion = $numeroActaModificacion;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroActaModificacion
+     *
+     * @return string
+     */
+    public function getNumeroActaModificacion()
+    {
+        return $this->numeroActaModificacion;
     }
 }
