@@ -38,7 +38,7 @@ class SolicitudesAdmin extends AbstractAdmin {
 //        $collection->remove('edit');
         $collection->add('importar', 'importar');
         $collection->add('consultar', 'consultar');
-        $collection->add('replaceFile', $this->getRouterIdParameter().'/reemplazar/archivo');
+        $collection->add('replaceFile', $this->getRouterIdParameter().'/sustituir/archivo');
     }
 
     /**
