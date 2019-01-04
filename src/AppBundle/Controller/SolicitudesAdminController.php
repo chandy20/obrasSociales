@@ -556,7 +556,7 @@ class SolicitudesAdminController extends CRUDController
                     $file->move(
                         $this->getParameter('uploads_directory'), $fileName
                     );
-                    $request->getSession()->getFlashBag()->add('sonata_flash_success', $this->admin->trans('mensaje.datos.cargados'));
+                    $request->getSession()->getFlashBag()->add('sonata_flash_success', $this->admin->trans('mensaje.datos.reemplazados'));
                 } catch (Exception $e) {
                     $request->getSession()->getFlashBag()->add('sonata_flash_error', $this->admin->trans('error.importando.datos'));
                 }

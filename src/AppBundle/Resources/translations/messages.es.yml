@@ -4,7 +4,7 @@ label:
   importar: Importar solicitudes
   download:
     template: Descargar plantilla
-  reemplazar: Reemplazar archivo cargado
+  reemplazar: Sustituir archivo cargado
   area: Área
   programa: Programa
   programas: Subprogramas
@@ -36,3 +36,4 @@ error:
 mensaje:
   datos:
     cargados: Datos importados con éxito
+    reemplazados: Archivo sustituido con éxito
