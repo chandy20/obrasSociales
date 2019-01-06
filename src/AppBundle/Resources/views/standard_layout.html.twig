@@ -85,6 +85,8 @@ file that was distributed with this source code.
         {% endblock %}
         <script src="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/js/funcionesComunes.js"></script>
         <script src="{{ asset('bundles/app/js/highcharts.js') }}"></script>
+        <script src="{{ asset('bundles/app/js/exporting.js') }}"></script>
+        <script src="{{ asset('bundles/app/js/export-data.js') }}"></script>
         <title>
             {% block sonata_head_title %}
                 {{ 'Admin'|trans({}, 'SonataAdminBundle') }}

@@ -25,18 +25,21 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ConceptosjuntaAdminController extends CRUDController {
+class ConceptosjuntaAdminController extends CRUDController
+{
 
     protected $em;
     public $presupuesto;
 
-    public function setContainer(ContainerInterface $container = null) {
+    public function setContainer(ContainerInterface $container = null)
+    {
         parent::setContainer($container);
         $this->presupuesto = [];
         $this->em = $container->get("doctrine")->getManager();
     }
 
-    public function editAction($id = null) {
+    public function editAction($id = null)
+    {
         $request = $this->getRequest();
         // the key used to lookup the template
         $templateKey = 'edit';
@@ -101,25 +104,25 @@ class ConceptosjuntaAdminController extends CRUDController {
 
                         if ($this->isXmlHttpRequest()) {
                             return $this->renderJson([
-                                        'result' => 'ok',
-                                        'objectId' => $objectId,
-                                        'objectName' => $this->escapeHtml($this->admin->toString($existingObject)),
-                                            ], 200, []);
+                                'result' => 'ok',
+                                'objectId' => $objectId,
+                                'objectName' => $this->escapeHtml($this->admin->toString($existingObject)),
+                            ], 200, []);
                         }
                         $this->sendMail($submittedObject);
                         if ($submittedObject->getAprobado()) {
                             foreach ($this->presupuesto as $presupuesto) {
                                 if (intval($presupuesto->getSaldo()) < 1000001) {
                                     $this->addFlash(
-                                            'sonata_flash_error', "El saldo del presupuesto de la seccional " . $presupuesto->getSeccional()->getSeccionalnombre() . " del área " . $presupuesto->getIdarea()->getAreanombre() . " es de " . $presupuesto->getSaldo()
+                                        'sonata_flash_error', "El saldo del presupuesto de la seccional " . $presupuesto->getSeccional()->getSeccionalnombre() . " del área " . $presupuesto->getIdarea()->getAreanombre() . " es de " . $presupuesto->getSaldo()
                                     );
                                 }
                             }
                         }
                         $this->addFlash(
-                                'sonata_flash_success', $this->trans(
-                                        'flash_edit_success', ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))], 'SonataAdminBundle'
-                                )
+                            'sonata_flash_success', $this->trans(
+                            'flash_edit_success', ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))], 'SonataAdminBundle'
+                        )
                         );
 
                         // redirect to edit mode
@@ -130,10 +133,10 @@ class ConceptosjuntaAdminController extends CRUDController {
                         $isFormValid = false;
                     } catch (LockException $e) {
                         $this->addFlash('sonata_flash_error', $this->trans('flash_lock_error', [
-                                    '%name%' => $this->escapeHtml($this->admin->toString($existingObject)),
-                                    '%link_start%' => '<a href="' . $this->admin->generateObjectUrl('edit', $existingObject) . '">',
-                                    '%link_end%' => '</a>',
-                                        ], 'SonataAdminBundle'));
+                            '%name%' => $this->escapeHtml($this->admin->toString($existingObject)),
+                            '%link_start%' => '<a href="' . $this->admin->generateObjectUrl('edit', $existingObject) . '">',
+                            '%link_end%' => '</a>',
+                        ], 'SonataAdminBundle'));
                     }
                 }
             }
@@ -142,9 +145,9 @@ class ConceptosjuntaAdminController extends CRUDController {
             if (!$isFormValid) {
                 if (!$this->isXmlHttpRequest()) {
                     $this->addFlash(
-                            'sonata_flash_error', $this->trans(
-                                    'flash_edit_error', ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))], 'SonataAdminBundle'
-                            )
+                        'sonata_flash_error', $this->trans(
+                        'flash_edit_error', ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))], 'SonataAdminBundle'
+                    )
                     );
                 }
             } elseif ($this->isPreviewRequested()) {
@@ -159,14 +162,15 @@ class ConceptosjuntaAdminController extends CRUDController {
         $this->setFormTheme($formView, $this->admin->getFormTheme());
 
         return $this->renderWithExtraParams($this->admin->getTemplate($templateKey), [
-                    'action' => 'edit',
-                    'form' => $formView,
-                    'object' => $existingObject,
-                    'objectId' => $objectId,
-                        ], null);
+            'action' => 'edit',
+            'form' => $formView,
+            'object' => $existingObject,
+            'objectId' => $objectId,
+        ], null);
     }
 
-    private function setFormTheme(FormView $formView, $theme) {
+    private function setFormTheme(FormView $formView, $theme)
+    {
         $twig = $this->get('twig');
 
         // BC for Symfony < 3.2 where this runtime does not exists
@@ -186,7 +190,8 @@ class ConceptosjuntaAdminController extends CRUDController {
         $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
     }
 
-    function validar(Conceptosjunta $concepto, Form $form) {
+    function validar(Conceptosjunta $concepto, Form $form)
+    {
         if ($form->getData()->getAprobado()) {
             if (!$form->getData()->getConceptosjuntanumacta()) {
                 $form->addError(new FormError("Por favor agregue el número de acta de aprobación"));
@@ -196,14 +201,14 @@ class ConceptosjuntaAdminController extends CRUDController {
                 $totalBeneficio = 0;
                 foreach ($concepto->getProgramasConcepto() as $key => $programaConcepto) {
                     $presupuesto = $this->em->getRepository("AppBundle:Presupuestos")->createQueryBuilder('p')
-                                    ->where("p.seccional = :seccional")
-                                    ->andWhere(":hoy BETWEEN p.desde AND p.hasta")
-                                    ->andWhere("p.idarea = :area")
-                                    ->andWhere("p.programa = :programa")
-                                    ->setParameter("seccional", $concepto->getSolicitud()->getIdseccional())
-                                    ->setParameter("area", $programaConcepto->getPrograma()->getPrograma()->getIdarea())
-                                    ->setParameter("programa", $programaConcepto->getPrograma())
-                                    ->setParameter("hoy", $hoy)->getQuery()->getResult();
+                        ->where("p.seccional = :seccional")
+                        ->andWhere(":hoy BETWEEN p.desde AND p.hasta")
+                        ->andWhere("p.idarea = :area")
+                        ->andWhere("p.programa = :programa")
+                        ->setParameter("seccional", $concepto->getSolicitud()->getIdseccional())
+                        ->setParameter("area", $programaConcepto->getPrograma()->getPrograma()->getIdarea())
+                        ->setParameter("programa", $programaConcepto->getPrograma())
+                        ->setParameter("hoy", $hoy)->getQuery()->getResult();
                     if (!$presupuesto) {
                         $form->addError(new FormError("No existe presupuesto vigente disponible para la seccional selecional " . $concepto->getSolicitud()->getIdseccional()->getSeccionalnombre() . " para el área de " . $programaConcepto->getPrograma()->getPrograma()->getIdarea() . " - " . $programaConcepto->getPrograma()->getPrograma() . " - " . $programaConcepto->getPrograma()));
                     } else {
@@ -211,14 +216,14 @@ class ConceptosjuntaAdminController extends CRUDController {
                         $totalMovimiento = $programaConcepto->getPrograma()->getValorMes() * $programaConcepto->getUnidadesAprobadas();
                         $totalBeneficio += $totalMovimiento;
                         $movimiento = $this->em->getRepository("AppBundle:Movimiento")->createQueryBuilder('m')
-                                        ->where("m.seccional = :seccional")
-                                        ->andWhere("m.concepto = :concepto")
-                                        ->andWhere("m.valor = :valor")
-                                        ->andWhere("m.presupuesto = :presupuesto")
-                                        ->setParameter("seccional", $concepto->getSolicitud()->getIdseccional())
-                                        ->setParameter("concepto", $concepto)
-                                        ->setParameter("valor", $totalMovimiento)
-                                        ->setParameter("presupuesto", $presupuesto)->getQuery()->getResult();
+                            ->where("m.seccional = :seccional")
+                            ->andWhere("m.concepto = :concepto")
+                            ->andWhere("m.valor = :valor")
+                            ->andWhere("m.presupuesto = :presupuesto")
+                            ->setParameter("seccional", $concepto->getSolicitud()->getIdseccional())
+                            ->setParameter("concepto", $concepto)
+                            ->setParameter("valor", $totalMovimiento)
+                            ->setParameter("presupuesto", $presupuesto)->getQuery()->getResult();
                         if (!$movimiento) {
                             $movimiento = new Movimiento();
                         } else {
@@ -276,19 +281,21 @@ class ConceptosjuntaAdminController extends CRUDController {
         }
     }
 
-    public function reporteAction() {
+    public function reporteAction()
+    {
         $concepto = new Conceptosjunta();
         $form = $this->createForm(FormularioReportesType::class, $concepto, []);
         $form->handleRequest($this->getRequest());
         return $this->renderWithExtraParams("AppBundle:Reporte:base_reporte.html.twig", [
-                    'action' => 'edit',
-                    'form' => $form->createView(),
-                    'object' => $concepto
-                        ], null);
+            'action' => 'edit',
+            'form' => $form->createView(),
+            'object' => $concepto
+        ], null);
     }
 
-    public function dataReporteAction(Request $request) {
-        $form = (array) json_decode($request->request->get('form'));
+    public function dataReporteAction(Request $request)
+    {
+        $form = (array)json_decode($request->request->get('form'));
 
         $pestana = json_decode($request->request->get('pestana'));
         switch ($pestana) {
@@ -313,21 +320,22 @@ class ConceptosjuntaAdminController extends CRUDController {
         return new JsonResponse($respuesta);
     }
 
-    public function cargarDatosGeneral($form, $pestana) {
+    public function cargarDatosGeneral($form, $pestana)
+    {
         $parametros = $this->obtenerDatos($form, $pestana);
         $query = $this->em->getRepository("AppBundle:Solicitudes")->createQueryBuilder('s')
-                ->where("s.solicitudfecha BETWEEN :inicio AND :fin")
-                ->setParameter("inicio", $parametros["inicio"])
-                ->setParameter("fin", $parametros['fin']);
+            ->where("s.solicitudfecha BETWEEN :inicio AND :fin")
+            ->setParameter("inicio", $parametros["inicio"])
+            ->setParameter("fin", $parametros['fin']);
         if ($parametros["extra"]) {
             $query->andWhere($parametros["campo"] . "= :" . $parametros["alias"])
-                    ->setParameter($parametros["alias"], $parametros["valor"]);
+                ->setParameter($parametros["alias"], $parametros["valor"]);
         }
         $user = $this->getUser();
         if ($user->hasRole('ROLE_CONSULTOR')) {
             $query->join("s.idseccional", "se")
-                    ->andWhere("se.id = :seccional")
-                    ->setParameter("seccional", $user->getSeccional());
+                ->andWhere("se.id = :seccional")
+                ->setParameter("seccional", $user->getSeccional());
         }
         $solicitudes = $query->getQuery()->getResult();
         $datos = [];
@@ -341,14 +349,14 @@ class ConceptosjuntaAdminController extends CRUDController {
                         $datos['"' . $padre->getNombre() . '"']["aprobadas"] = 0;
                         $datos['"' . $padre->getNombre() . '"']["rechazadas"] = 0;
                     } else {
-                        $datos['"' . $padre->getNombre() . '"']["total"] ++;
+                        $datos['"' . $padre->getNombre() . '"']["total"]++;
                     }
                 }
             }
         }
         $queryAprobadas = $query;
         $queryAprobadas->join("s.conceptoJunta", "cj")
-                ->andWhere("cj.editado = :editado");
+            ->andWhere("cj.editado = :editado");
         $queryAprobadas->setParameter("editado", true);
         $solicitudesAprobadas = $queryAprobadas->getQuery()->getResult();
         foreach ($solicitudesAprobadas as $solicitud) {
@@ -356,9 +364,9 @@ class ConceptosjuntaAdminController extends CRUDController {
             foreach ($solicitud->getConceptoJunta() as $concepto) {
                 foreach ($concepto->getProgramasConcepto() as $programaConcepto) {
                     if ($programaConcepto->getAprobado()) {
-                        $datos['"' . $padre->getNombre() . '"']["aprobadas"] ++;
+                        $datos['"' . $padre->getNombre() . '"']["aprobadas"]++;
                     } else if (!$programaConcepto->getAprobado()) {
-                        $datos['"' . $padre->getNombre() . '"']["rechazadas"] ++;
+                        $datos['"' . $padre->getNombre() . '"']["rechazadas"]++;
                     }
                 }
             }
@@ -372,12 +380,12 @@ class ConceptosjuntaAdminController extends CRUDController {
         return $html;
     }
 
-    public function cargarDatosAgrupados($form) {
+    public function cargarDatosAgrupados($form)
+    {
         $query = $this->em->getRepository("AppBundle:Solicitudes")->createQueryBuilder('s')
-                ->where("s.solicitudfecha BETWEEN :inicio AND :fin")
-                ->setParameter("inicio", $form->fechaInicial)
-                ->setParameter("fin", $form->fechaFinal)
-        ;
+            ->where("s.solicitudfecha BETWEEN :inicio AND :fin")
+            ->setParameter("inicio", $form->fechaInicial)
+            ->setParameter("fin", $form->fechaFinal);
         $query->resetDQLPart('select');
         $arrayEntidadCampos = [
             'Parentescos' => [
@@ -413,16 +421,26 @@ class ConceptosjuntaAdminController extends CRUDController {
                 'campo' => 'tiposolicitudnombre',
             ],
         ];
+        $labels = [
+            'Parentescos' => 'Parentesco',
+            'Grados' => 'Grado',
+            'Estadosciviles' => 'Estado civil',
+            'Ingresos' => 'Ingreso',
+            'Personascargo' => 'Personas a cargo',
+            'Situacionesvivienda' => 'Situación de vivienda',
+            'Motivosdeuda' => 'Motivo deuda',
+            'Tipossolicitud' => 'Tipos de solicitud',
+        ];
         foreach ($form->agrupaciones as $entidad) {
             $query
-                    ->addSelect("COUNT(" . $arrayEntidadCampos[$entidad]['relacion'] . '.' . $arrayEntidadCampos[$entidad]['campo'] . ") "
-                            . "as cantidad_" . $arrayEntidadCampos[$entidad]['campo'])
-                    ->addSelect($arrayEntidadCampos[$entidad]['relacion'] . '.' . $arrayEntidadCampos[$entidad]['campo'])
-                    ->join("s." . $arrayEntidadCampos[$entidad]['relacion'], $arrayEntidadCampos[$entidad]['relacion'])
-                    ->addGroupBy($arrayEntidadCampos[$entidad]['relacion'] . '.' . $arrayEntidadCampos[$entidad]['campo']);
+                ->addSelect("COUNT(" . $arrayEntidadCampos[$entidad]['relacion'] . '.' . $arrayEntidadCampos[$entidad]['campo'] . ") "
+                    . "as cantidad_" . $arrayEntidadCampos[$entidad]['campo'])
+                ->addSelect($arrayEntidadCampos[$entidad]['relacion'] . '.' . $arrayEntidadCampos[$entidad]['campo'])
+                ->leftJoin("s." . $arrayEntidadCampos[$entidad]['relacion'], $arrayEntidadCampos[$entidad]['relacion'])
+                ->addGroupBy($arrayEntidadCampos[$entidad]['relacion'] . '.' . $arrayEntidadCampos[$entidad]['campo']);
         }
         $solicitudes = $query->getQuery()->getResult();
-        $datos = [];
+
         $entidadNombreCantidad = [];
         foreach ($form->agrupaciones as $entidad) {
             $entidadNombreCantidad[$entidad] = [];
@@ -434,128 +452,136 @@ class ConceptosjuntaAdminController extends CRUDController {
                 }
             }
         }
-        // Agregar categorias en 0 para poder pintar graficas de barras apiladas
+        // Agregar categorias en null para poder pintar graficas de barras apiladas
         foreach ($entidadNombreCantidad as $entidad1 => $campos1) {
             foreach ($entidadNombreCantidad as $entidad2 => $campos2) {
                 foreach ($campos2 as $categoria => $valor) {
                     if (!array_key_exists($categoria, $entidadNombreCantidad[$entidad1])) {
-                        $entidadNombreCantidad[$entidad1][$categoria] = 0;
+                        $entidadNombreCantidad[$entidad1][$categoria] = null;
                     }
                 }
             }
         }
-        dump($entidadNombreCantidad);exit;
-//        $html = $this->renderView('AppBundle:Reporte:reporte_cantidades.html.twig', [
+        //ordenar los datos para pintar en la gráfica
+        $columnas = [];
+        $datos = [];
+        foreach ($entidadNombreCantidad as $key => $arreglo) {
+            $columnas[$labels[$key]] = $labels[$key];
+            foreach ($arreglo as $llave => $valor) {
+                $datos[$llave][] = ($valor != null && $valor != 0) ? $valor + 0 : null;
+            }
+        }
         $html = $this->renderView('AppBundle:Reporte:reporte_agrupaciones.html.twig', [
-            'datos' => $entidadNombreCantidad
+            'columnas' => $columnas,
+            'datos' => $datos,
         ]);
-
         return $html;
     }
 
-    public function cargarDatosCantidades($form) {
+    public function cargarDatosCantidades($form)
+    {
         $query = $this->em->getRepository("AppBundle:Solicitudes")->createQueryBuilder('s')
-                ->where("s.solicitudfecha BETWEEN :inicio AND :fin")
-                ->setParameter("inicio", $form->fechaInicial)
-                ->setParameter("fin", $form->fechaFinal);
+            ->where("s.solicitudfecha BETWEEN :inicio AND :fin")
+            ->setParameter("inicio", $form->fechaInicial)
+            ->setParameter("fin", $form->fechaFinal);
         $user = $this->getUser();
         if ($user->hasRole('ROLE_CONSULTOR')) {
             $query->join("s.idseccional", "se")
-                    ->andWhere("se.id = :seccional")
-                    ->setParameter("seccional", $user->getSeccional());
+                ->andWhere("se.id = :seccional")
+                ->setParameter("seccional", $user->getSeccional());
         }
         if ($form->seccional != "") {
             $query->join("s.idseccional", "se")
-                    ->andWhere("se.id = :seccional")
-                    ->setParameter("seccional", $form->seccional);
+                ->andWhere("se.id = :seccional")
+                ->setParameter("seccional", $form->seccional);
         }
         if ($form->concepto != "") {
             $query->join("s.concepto", "co")
-                    ->andWhere("co.id = :concepto")
-                    ->setParameter("concepto", $form->concepto);
+                ->andWhere("co.id = :concepto")
+                ->setParameter("concepto", $form->concepto);
         }
         if ($form->parentesco != "") {
             $query->join("s.idparentesco", "pa")
-                    ->andWhere("pa.id = :parentesco")
-                    ->setParameter("parentesco", $form->parentesco);
+                ->andWhere("pa.id = :parentesco")
+                ->setParameter("parentesco", $form->parentesco);
         }
         if ($form->grado != "") {
             $query->join("s.idgrado", "g")
-                    ->andWhere("g.id = :grado")
-                    ->setParameter("grado", $form->grado);
+                ->andWhere("g.id = :grado")
+                ->setParameter("grado", $form->grado);
         }
         if ($form->tipoSolicitud != "") {
             $query->join("s.idtiposolicitud", "ts")
-                    ->andWhere("ts.id = :tipoSolicitud")
-                    ->setParameter("tipoSolicitud", $form->tipoSolicitud);
+                ->andWhere("ts.id = :tipoSolicitud")
+                ->setParameter("tipoSolicitud", $form->tipoSolicitud);
         }
         if ($form->estadoCivil != "") {
             $query->join("s.idestadocivil", "es")
-                    ->andWhere("es.id = :estadoCivil")
-                    ->setParameter("estadoCivil", $form->estadoCivil);
+                ->andWhere("es.id = :estadoCivil")
+                ->setParameter("estadoCivil", $form->estadoCivil);
         }
         if ($form->ingreso != "") {
             $query->join("s.idingreso", "i")
-                    ->andWhere("i.id = :ingreso")
-                    ->setParameter("ingreso", $form->ingreso);
+                ->andWhere("i.id = :ingreso")
+                ->setParameter("ingreso", $form->ingreso);
         }
         if ($form->personasCargo != "") {
             $query->join("s.idpersonacargo", "pc")
-                    ->andWhere("pc.id = :personasCargo")
-                    ->setParameter("personasCargo", $form->personasCargo);
+                ->andWhere("pc.id = :personasCargo")
+                ->setParameter("personasCargo", $form->personasCargo);
         }
         if ($form->situacionVivienda != "") {
             $query->join("s.idsituacionvivienda", "sv")
-                    ->andWhere("sv.id = :situacionVivienda")
-                    ->setParameter("situacionVivienda", $form->situacionVivienda);
+                ->andWhere("sv.id = :situacionVivienda")
+                ->setParameter("situacionVivienda", $form->situacionVivienda);
         }
         if ($form->motivoDeuda != "") {
             $query->join("s.idmotivodeuda", "md")
-                    ->andWhere("md.id = :motivoDeuda")
-                    ->setParameter("motivoDeuda", $form->motivoDeuda);
+                ->andWhere("md.id = :motivoDeuda")
+                ->setParameter("motivoDeuda", $form->motivoDeuda);
         }
         if ($form->cantidadBeneficio != "") {
             $query->join("s.cantidadesbeneficio", "cb")
-                    ->andWhere("cb.cantidadesbeneficio_id = :cantidadBeneficio")
-                    ->setParameter("cantidadBeneficio", $form->cantidadBeneficio);
+                ->andWhere("cb.cantidadesbeneficio_id = :cantidadBeneficio")
+                ->setParameter("cantidadBeneficio", $form->cantidadBeneficio);
         }
         if ($form->conceptoVisita != "") {
             $query->join("s.idconceptovisita", "cv")
-                    ->andWhere("cv.idconceptovisita = :conceptoVisita")
-                    ->setParameter("conceptoVisita", $form->conceptoVisita);
+                ->andWhere("cv.idconceptovisita = :conceptoVisita")
+                ->setParameter("conceptoVisita", $form->conceptoVisita);
         }
         if ($form->afiliadoDibie != "") {
             $query->join("s.idafiliadodibie", "ad")
-                    ->andWhere("ad.idafiliadodibie = :afiliadoDibie")
-                    ->setParameter("afiliadoDibie", $form->afiliadoDibie);
+                ->andWhere("ad.idafiliadodibie = :afiliadoDibie")
+                ->setParameter("afiliadoDibie", $form->afiliadoDibie);
         }
         if ($form->poblacionBeneficiada != "") {
             $query->join("s.idpoblacionbeneficia", "pb")
-                    ->andWhere("pb.id = :poblacionBeneficiada")
-                    ->setParameter("poblacionBeneficiada", $form->poblacionBeneficiada);
+                ->andWhere("pb.id = :poblacionBeneficiada")
+                ->setParameter("poblacionBeneficiada", $form->poblacionBeneficiada);
         }
         if ($form->viabilidadPlaneacion != "") {
             $query->join("s.idviabilidadplaneacion", "vp")
-                    ->andWhere("vp.id = :viabilidadPlaneacion")
-                    ->setParameter("viabilidadPlaneacion", $form->viabilidadPlaneacion);
+                ->andWhere("vp.id = :viabilidadPlaneacion")
+                ->setParameter("viabilidadPlaneacion", $form->viabilidadPlaneacion);
         }
         if ($form->zonaUbicacion != "") {
             $query->join("s.idzonaubicacion", "z")
-                    ->andWhere("z.id = :zonaUbicacion")
-                    ->setParameter("zonaUbicacion", $form->zonaUbicacion);
+                ->andWhere("z.id = :zonaUbicacion")
+                ->setParameter("zonaUbicacion", $form->zonaUbicacion);
         }
         if ($form->programa != "") {
             $query->join("s.programas", "sp")
-                    ->join("sp.programa", "p")
-                    ->andWhere("p.id = :programa")
-                    ->setParameter("programa", $form->programa);
+                ->join("sp.programa", "p")
+                ->andWhere("p.id = :programa")
+                ->setParameter("programa", $form->programa);
         }
         if ($form->area != "") {
             $query->join("s.programas", "sp")
-                    ->join("sp.programa", "p")
-                    ->join("p.idarea", "a")
-                    ->andWhere("a.idArea = :area")
-                    ->setParameter("area", $form->area);
+                ->join("sp.programa", "p")
+                ->join("p.idarea", "a")
+                ->andWhere("a.idArea = :area")
+                ->setParameter("area", $form->area);
         }
         $solicitudes = $query->getQuery()->getResult();
         $datos = [];
@@ -567,15 +593,15 @@ class ConceptosjuntaAdminController extends CRUDController {
                     $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["rechazadas"] = 0;
                 } else if ($form->programa != "") {
                     if ($programa->getPrograma()->getId() == $form->programa) {
-                        $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["total"] ++;
+                        $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["total"]++;
                     }
                 } else {
-                    $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["total"] ++;
+                    $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["total"]++;
                 }
             }
         }
         $query->join("s.conceptoJunta", "cj")
-                ->andWhere("cj.editado = :editado");
+            ->andWhere("cj.editado = :editado");
         $queryAprobadas = $query;
         $queryAprobadas->setParameter("editado", true);
         $solicitudesAprobadas = $queryAprobadas->getQuery()->getResult();
@@ -585,18 +611,18 @@ class ConceptosjuntaAdminController extends CRUDController {
                     if ($programaConcepto->getAprobado()) {
                         if ($form->programa != "") {
                             if ($programaConcepto->getPrograma()->getId() == $form->programa) {
-                                $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["aprobadas"] ++;
+                                $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["aprobadas"]++;
                             }
                         } else {
-                            $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["aprobadas"] ++;
+                            $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["aprobadas"]++;
                         }
                     } else {
                         if ($form->programa != "") {
                             if ($programaConcepto->getPrograma()->getId() == $form->programa) {
-                                $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["rechazadas"] ++;
+                                $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["rechazadas"]++;
                             }
                         } else {
-                            $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["rechazadas"] ++;
+                            $datos[$solicitud->getIdseccional()->getSeccionalnombre()]["rechazadas"]++;
                         }
                     }
                 }
@@ -610,49 +636,50 @@ class ConceptosjuntaAdminController extends CRUDController {
         return $html;
     }
 
-    public function cargarDatosInscritos($form) {
+    public function cargarDatosInscritos($form)
+    {
         $query = $this->em->getRepository("AppBundle:Solicitudes")->createQueryBuilder('s')
-                ->where("s.solicitudfecha BETWEEN :inicio AND :fin")
-                ->setParameter("inicio", $form->fechaInicial2)
-                ->setParameter("fin", $form->fechaFinal2);
+            ->where("s.solicitudfecha BETWEEN :inicio AND :fin")
+            ->setParameter("inicio", $form->fechaInicial2)
+            ->setParameter("fin", $form->fechaFinal2);
 
         $user = $this->getUser();
         if ($user->hasRole('ROLE_CONSULTOR')) {
             $query->join("s.idseccional", "se")
-                    ->andWhere("se.id = :seccional")
-                    ->setParameter("seccional", $user->getSeccional());
+                ->andWhere("se.id = :seccional")
+                ->setParameter("seccional", $user->getSeccional());
         }
 
         if ($form->documentoSolicitante != "") {
             $query->andWhere("s.solicitudcedulasolicita = :documento")
-                    ->setParameter("documento", $form->documentoSolicitante);
+                ->setParameter("documento", $form->documentoSolicitante);
         }
         if ($form->documentoTitular != "") {
             $query->andWhere("s.solicitudcedulafuncionario = :documentoTitular")
-                    ->setParameter("documentoTitular", $form->documentoTitular);
+                ->setParameter("documentoTitular", $form->documentoTitular);
         }
         if ($form->documentoTitular != "") {
             $query->andWhere("s.solicitudcedulafuncionario = :documentoTitular")
-                    ->setParameter("documentoTitular", $form->documentoTitular);
+                ->setParameter("documentoTitular", $form->documentoTitular);
         }
         if ($form->programa3 != "") {
             $query->join("s.programas", "sp")
-                    ->join("sp.programa", "p")
-                    ->andWhere("p.id = :programa")
-                    ->setParameter("programa", $form->programa3);
+                ->join("sp.programa", "p")
+                ->andWhere("p.id = :programa")
+                ->setParameter("programa", $form->programa3);
         }
         if ($form->area2 != "") {
             $query->join("s.programas", "sp")
-                    ->join("sp.programa", "p")
-                    ->join("p.idarea", "a")
-                    ->andWhere("a.idArea = :area")
-                    ->setParameter("area", $form->area2);
+                ->join("sp.programa", "p")
+                ->join("p.idarea", "a")
+                ->andWhere("a.idArea = :area")
+                ->setParameter("area", $form->area2);
         }
         $solicitudes = $query->getQuery()->getResult();
         $datos = [];
         foreach ($solicitudes as $solicitud) {
             foreach ($solicitud->getProgramas() as $programa) {
-                
+
             }
             if (!array_key_exists($solicitud->getSolicitudnombrefuncionario(), $datos) && $solicitud->getNombreBeneficiarioFinal()) {
                 if ($programa->getPrograma()->getId() == $form->programa) {
@@ -670,32 +697,33 @@ class ConceptosjuntaAdminController extends CRUDController {
         return $html;
     }
 
-    public function cargarDatosPresupuesto($form) {
+    public function cargarDatosPresupuesto($form)
+    {
         $query = $this->em->getRepository("AppBundle:Movimiento")->createQueryBuilder('m')
-                ->join("m.seccional", "s")
-                ->join("m.concepto", "c")
-                ->join("c.solicitud", "so")
-                ->where("so.solicitudfecha BETWEEN :inicio AND :fin")
-                ->setParameter("inicio", $form->fechaInicial3)
-                ->setParameter("fin", $form->fechaFinal3);
+            ->join("m.seccional", "s")
+            ->join("m.concepto", "c")
+            ->join("c.solicitud", "so")
+            ->where("so.solicitudfecha BETWEEN :inicio AND :fin")
+            ->setParameter("inicio", $form->fechaInicial3)
+            ->setParameter("fin", $form->fechaFinal3);
 
         $user = $this->getUser();
         if ($user->hasRole('ROLE_CONSULTOR')) {
             $query->join("s.idseccional", "se")
-                    ->andWhere("se.id = :seccional")
-                    ->setParameter("seccional", $user->getSeccional());
+                ->andWhere("se.id = :seccional")
+                ->setParameter("seccional", $user->getSeccional());
         }
 
         if ($form->seccional3) {
             $query->andWhere("s.id = :seccional")
-                    ->setParameter("seccional", $form->seccional3);
+                ->setParameter("seccional", $form->seccional3);
         }
         if ($form->area3 != "") {
             $query->join("so.programas", "sp")
-                    ->join("sp.programa", "p")
-                    ->join("p.idarea", "a")
-                    ->andWhere("a.idArea = :area")
-                    ->setParameter("area", $form->area3);
+                ->join("sp.programa", "p")
+                ->join("p.idarea", "a")
+                ->andWhere("a.idArea = :area")
+                ->setParameter("area", $form->area3);
         }
         $movimientos = $query->getQuery()->getResult();
         $datos = [];
@@ -703,15 +731,15 @@ class ConceptosjuntaAdminController extends CRUDController {
         foreach ($movimientos as $movimiento) {
             if (!array_key_exists($movimiento->getSeccional()->getSeccionalnombre(), $datos)) {
                 $presupuestos = $this->em->getRepository("AppBundle:Presupuestos")->createQueryBuilder('p')
-                        ->where("p.desde <= :inicio OR p.hasta >= :fin")
-                        ->andWhere("p.seccional = :seccional")
-                        ->setParameter("inicio", $form->fechaInicial3)
-                        ->setParameter("fin", $form->fechaFinal3)
-                        ->setParameter("seccional", $movimiento->getSeccional());
+                    ->where("p.desde <= :inicio OR p.hasta >= :fin")
+                    ->andWhere("p.seccional = :seccional")
+                    ->setParameter("inicio", $form->fechaInicial3)
+                    ->setParameter("fin", $form->fechaFinal3)
+                    ->setParameter("seccional", $movimiento->getSeccional());
                 if ($form->area3) {
                     $presupuestos->join("p.idarea", "a")
-                            ->andWhere("a.idArea = :area")
-                            ->setParameter("area", $form->area3);
+                        ->andWhere("a.idArea = :area")
+                        ->setParameter("area", $form->area3);
                 }
                 $presupuestos = $presupuestos->getQuery()->getResult();
                 $totalValor = 0;
@@ -736,37 +764,38 @@ class ConceptosjuntaAdminController extends CRUDController {
         return $html;
     }
 
-    public function cargarDatosMovimientos($form) {
+    public function cargarDatosMovimientos($form)
+    {
         $query = $this->em->getRepository("AppBundle:Movimiento")->createQueryBuilder('m')
-                ->join("m.seccional", "s")
-                ->join("m.concepto", "c")
-                ->join("c.solicitud", "so")
-                ->where("so.solicitudfecha BETWEEN :inicio AND :fin")
-                ->setParameter("inicio", $form->fechaInicial4)
-                ->setParameter("fin", $form->fechaFinal4);
+            ->join("m.seccional", "s")
+            ->join("m.concepto", "c")
+            ->join("c.solicitud", "so")
+            ->where("so.solicitudfecha BETWEEN :inicio AND :fin")
+            ->setParameter("inicio", $form->fechaInicial4)
+            ->setParameter("fin", $form->fechaFinal4);
         if ($form->documentoSolicitante2) {
             $query->andWhere("so.solicitudcedulasolicita = :cedula")
-                    ->setParameter("cedula", $form->documentoSolicitante2);
+                ->setParameter("cedula", $form->documentoSolicitante2);
         }
         if ($form->documentoTitular2) {
             $query->andWhere("so.solicitudcedulafuncionario = :cedulaTitular")
-                    ->setParameter("cedulaTitular", $form->documentoTitular2);
+                ->setParameter("cedulaTitular", $form->documentoTitular2);
         }
         $user = $this->getUser();
         if ($user->hasRole('ROLE_CONSULTOR')) {
             $query->join("s.idseccional", "se")
-                    ->andWhere("se.id = :seccional")
-                    ->setParameter("seccional", $user->getSeccional());
+                ->andWhere("se.id = :seccional")
+                ->setParameter("seccional", $user->getSeccional());
         }
         if ($form->seccional4) {
             $query->andWhere("s.id = :seccional")
-                    ->setParameter("seccional", $form->seccional4);
+                ->setParameter("seccional", $form->seccional4);
         }
         if ($form->programa2) {
             $query->join("so.programas", "sp")
-                    ->join("sp.programa", "p")
-                    ->andWhere("p.id = :programa")
-                    ->setParameter("programa", $form->programa2);
+                ->join("sp.programa", "p")
+                ->andWhere("p.id = :programa")
+                ->setParameter("programa", $form->programa2);
         }
         $movimientos = $query->getQuery()->getResult();
         $html = $this->renderView('AppBundle:Reporte:reporte_movimientos.html.twig', [
@@ -775,7 +804,8 @@ class ConceptosjuntaAdminController extends CRUDController {
         return $html;
     }
 
-    public function downloadArchivoAction($id) {
+    public function downloadArchivoAction($id)
+    {
         $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findOneById($id);
         $path = "/home/obrasso1/public_html/web/upload/";
         $content = file_get_contents($path . $solicitud->getArchivo());
@@ -790,7 +820,8 @@ class ConceptosjuntaAdminController extends CRUDController {
         return $response;
     }
 
-    public function downloadPDFAction($id) {
+    public function downloadPDFAction($id)
+    {
         $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findOneById($id);
         $html = $this->renderView('AppBundle:Solicitudes:pdf.html.twig', array(
             'solicitud' => $solicitud
@@ -798,13 +829,14 @@ class ConceptosjuntaAdminController extends CRUDController {
         $session = $this->getRequest()->getSession();
         $session->save();
         return new PdfResponse(
-                $this->get('knp_snappy.pdf')->getOutputFromHtml($html, [
-                    'encoding' => 'utf-8',
-                ]), 'solicitud.pdf'
+            $this->get('knp_snappy.pdf')->getOutputFromHtml($html, [
+                'encoding' => 'utf-8',
+            ]), 'solicitud.pdf'
         );
     }
 
-    public function obtenerDatos($form, $pestana) {
+    public function obtenerDatos($form, $pestana)
+    {
         $datos = [];
         $datos["extra"] = 0;
         switch ($pestana) {
@@ -908,18 +940,19 @@ class ConceptosjuntaAdminController extends CRUDController {
         return $datos;
     }
 
-    function sendMail($conceptoJunta) {
+    function sendMail($conceptoJunta)
+    {
         $message = \Swift_Message::newInstance()
-                ->setSubject('Saldo insuficiente en caja menor')
-                ->setTo($conceptoJunta->getSolicitud()->getEmailSolicitante())
-                ->setBody($this->container->get('templating')->render(
-                        'AppBundle:Solicitudes:plantilla_mail.html.twig'
-                ), 'text/html');
+            ->setSubject('Saldo insuficiente en caja menor')
+            ->setTo($conceptoJunta->getSolicitud()->getEmailSolicitante())
+            ->setBody($this->container->get('templating')->render(
+                'AppBundle:Solicitudes:plantilla_mail.html.twig'
+            ), 'text/html');
 
         try {
             $this->container->get('mailer')->send($message);
         } catch (\Exception $ex) {
-            
+
         }
     }
 

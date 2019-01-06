@@ -1,4 +1,7 @@
-{%if datos %}
+{% if datos %}
+    {% for entidad , dato in datos %}
+        {#{{ dump(dato|join(',')) }}#}
+    {% endfor %}
     <div id="chart_div" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
     <script type="text/javascript">
@@ -12,47 +15,115 @@
             },
             xAxis: {
                 categories: [
-        {% for entidad , categorias in datos %}
-                        '{{entidad}}'{%- if not loop.last %},{% endif -%}
-        {% endfor %}
-                    ]
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Total de solicitudes'
-                    },
-                    stackLabels: {
-                        enabled: true,
-                        style: {
-                            fontWeight: 'bold',
-                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                        }
-                    }
-                },
-                legend: false,
-                tooltip: {
-                    headerFormat: '<b>{point.x}</b><br/>',
-                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
-                },
-                plotOptions: {
-                    column: {
-                        stacking: 'normal',
-                        dataLabels: {
-                            enabled: true,
-                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
-                        }
-                    }
-                },
-                series: [
-                    {
-                        name: 'jose',
-                        data: [1,2]
-                    },
+                    {% for entidad , categorias in columnas %}
+                     '{{entidad}}'{%- if not loop.last %},{% endif -%}
+                    {% endfor %}
                 ]
-            });
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Total de solicitudes'
+                },
+                stackLabels: {
+                    enabled: true,
+                    style: {
+                        fontWeight: 'bold',
+                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                    }
+                }
+            },
+            legend: false,
+            tooltip: {
+                headerFormat: '<b>{point.x}</b><br/>',
+                pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: true,
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                    }
+                }
+            },
+            series: [
+                    {% for categoria , dato in datos %}
+                    {
+                    name: '{{ categoria }}',
+                        data:{{ dato|json_encode|raw }}
+
+                      }{%- if not loop.last %},{% endif -%}
+                    {% endfor %}
+
+            ]
+        });
+
+
+        {#Highcharts.chart('chart_div', {#}
+        {#chart: {#}
+        {#type: 'column'#}
+        {#},#}
+        {#title: {#}
+        {#text: 'Stacked column chart'#}
+        {#},#}
+        {#xAxis: {#}
+        {#categories: [#}
+        {#{% for entidad , categorias in columnas %}#}
+        {#'{{entidad}}'{%- if not loop.last %},{% endif -%}#}
+        {#{% endfor %}#}
+        {#]#}
+        {#},#}
+        {#yAxis: {#}
+        {#min: 0,#}
+        {#title: {#}
+        {#text: 'Total fruit consumption'#}
+        {#},#}
+        {#stackLabels: {#}
+        {#enabled: true,#}
+        {#style: {#}
+        {#fontWeight: 'bold',#}
+        {#color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'#}
+        {#}#}
+        {#}#}
+        {#},#}
+        {#legend: {#}
+        {#align: 'right',#}
+        {#x: -30,#}
+        {#verticalAlign: 'top',#}
+        {#y: 25,#}
+        {#floating: true,#}
+        {#backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',#}
+        {#borderColor: '#CCC',#}
+        {#borderWidth: 1,#}
+        {#shadow: false#}
+        {#},#}
+        {#tooltip: {#}
+        {#headerFormat: '<b>{point.x}</b><br/>',#}
+        {#pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'#}
+        {#},#}
+        {#plotOptions: {#}
+        {#column: {#}
+        {#stacking: 'normal',#}
+        {#dataLabels: {#}
+        {#enabled: true,#}
+        {#color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'#}
+        {#}#}
+        {#}#}
+        {#},#}
+        {#series: [{#}
+        {#name: 'John',#}
+        {#data: [5, 3, 4, 7, 2,4, 7, 2]#}
+        {#}, {#}
+        {#name: 'Jane',#}
+        {#data: [2, 2, 3, 2, 1,4, 7, 2]#}
+        {#}, {#}
+        {#name: 'Joe',#}
+        {#data: [3, 4, 4, 2, 5,4, 7, 2]#}
+        {#}]#}
+        {#});#}
     </script>
 
-{%else%}
+{% else %}
     <div>No se encontró información con los parametros de busqueda.</div>
-{%endif%}
+{% endif %}
