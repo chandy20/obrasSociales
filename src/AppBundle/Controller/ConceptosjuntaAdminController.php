@@ -374,9 +374,9 @@ class ConceptosjuntaAdminController extends CRUDController {
 
     public function cargarDatosAgrupados($form) {
         $query = $this->em->getRepository("AppBundle:Solicitudes")->createQueryBuilder('s')
-//                ->where("s.solicitudfecha BETWEEN :inicio AND :fin")
-//                ->setParameter("inicio", $form->fechaInicial)
-//                ->setParameter("fin", $form->fechaFinal)
+                ->where("s.solicitudfecha BETWEEN :inicio AND :fin")
+                ->setParameter("inicio", $form->fechaInicial)
+                ->setParameter("fin", $form->fechaFinal)
         ;
         $query->resetDQLPart('select');
         $arrayEntidadCampos = [
@@ -431,6 +431,16 @@ class ConceptosjuntaAdminController extends CRUDController {
                     $entidadNombreCantidad[$entidad][$solicitud[$arrayEntidadCampos[$entidad]['campo']]] = $entidadNombreCantidad[$entidad][$solicitud[$arrayEntidadCampos[$entidad]['campo']]] + $solicitud['cantidad_' . $arrayEntidadCampos[$entidad]['campo']];
                 } else {
                     $entidadNombreCantidad[$entidad][$solicitud[$arrayEntidadCampos[$entidad]['campo']]] = $solicitud['cantidad_' . $arrayEntidadCampos[$entidad]['campo']];
+                }
+            }
+        }
+        // Agregar categorias en 0 para poder pintar graficas de barras apiladas
+        foreach ($entidadNombreCantidad as $entidad1 => $campos1) {
+            foreach ($entidadNombreCantidad as $entidad2 => $campos2) {
+                foreach ($campos2 as $categoria => $valor) {
+                    if (!array_key_exists($categoria, $entidadNombreCantidad[$entidad1])) {
+                        $entidadNombreCantidad[$entidad1][$categoria] = 0;
+                    }
                 }
             }
         }

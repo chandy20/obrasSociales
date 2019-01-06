@@ -1,7 +1,56 @@
 {%if datos %}
     <div id="chart_div" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-    <script src="{{ asset('bundles/app/js/highcharts.js') }}"></script>
+
     <script type="text/javascript">
+
+        Highcharts.chart('chart_div', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Grafica por agrupaciones'
+            },
+            xAxis: {
+                categories: [
+        {% for entidad , categorias in datos %}
+                        '{{entidad}}'{%- if not loop.last %},{% endif -%}
+        {% endfor %}
+                    ]
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Total de solicitudes'
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                        }
+                    }
+                },
+                legend: false,
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true,
+                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                        }
+                    }
+                },
+                series: [
+                    {
+                        name: 'jose',
+                        data: [1,2]
+                    },
+                ]
+            });
     </script>
 
 {%else%}
