@@ -92,6 +92,8 @@ knp_snappy:
     temporary_folder: %kernel.root_dir%/../web/pdf 
     
 sonata_admin:
+    title_logo: /bundles/app/images/logo_title.jpeg
+    title: Obras Sociales
     options:
         html5_validate: true
         confirm_exit:   false 
