@@ -5,8 +5,8 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @var Composer\Autoload\ClassLoader
  */
-$loader = require __DIR__.'/../../symfonyadmin/app/autoload.php';
-include_once __DIR__.'/../../symfonyadmin/app/bootstrap.php.cache';
+$loader = require __DIR__.'/../../obrasSociales/app/autoload.php';
+include_once __DIR__.'/../../obrasSociales/app/bootstrap.php.cache';
 
 // Enable APC for autoloading to improve performance.
 // You should change the ApcClassLoader first argument to a unique prefix
