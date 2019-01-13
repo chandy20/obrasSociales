@@ -11,6 +11,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\Filter\DateRangeType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -18,9 +19,11 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class SolicitudesAdmin extends AbstractAdmin {
+class SolicitudesAdmin extends AbstractAdmin
+{
 
-    public function createQuery($context = 'list') {
+    public function createQuery($context = 'list')
+    {
 
         $query = parent::createQuery($context);
         $em = $this->getConfigurationPool()->getContainer()->get("doctrine")->getEntityManager();
@@ -28,23 +31,25 @@ class SolicitudesAdmin extends AbstractAdmin {
         $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
         if ($user->hasRole('ROLE_CONSULTOR')) {
             $query->where($query->getRootAliases()[0] . ".idseccional = :seccional")
-                    ->setParameter("seccional", $user->getSeccional());
+                ->setParameter("seccional", $user->getSeccional());
         }
         return $query;
     }
 
-    protected function configureRoutes(RouteCollection $collection) {
+    protected function configureRoutes(RouteCollection $collection)
+    {
         $collection->remove('delete');
 //        $collection->remove('edit');
         $collection->add('importar', 'importar');
         $collection->add('consultar', 'consultar');
-        $collection->add('replaceFile', $this->getRouterIdParameter().'/sustituir/archivo');
+        $collection->add('replaceFile', $this->getRouterIdParameter() . '/sustituir/archivo');
     }
 
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
         $datagridMapper
                 ->add('solicitudfecha', 'doctrine_orm_date_range', [
                     "label" => "Fecha de la Solicitud",
@@ -79,142 +84,144 @@ class SolicitudesAdmin extends AbstractAdmin {
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper) {
+    protected function configureListFields(ListMapper $listMapper)
+    {
         $listMapper
-                ->add('solicitudfecha', null, ["label" => "Fecha de la Solicitud"])
-                ->add('solicitudcedulasolicita', null, ["label" => "Cedula del Solicitante"])
-                ->add('solicitudnombresolicita', null, ["label" => "Nombre del Solicitante"])
-                ->add('solicitudcedulafuncionario', null, ["label" => "Cedula Funcionario Policial"])
-                ->add('idgrado', null, ["label" => "Grado Funcionario Policial"])
-                ->add('solicitudnombrefuncionario', null, ["label" => "Nombre del Funcionario"])
-                ->add('idtiposolicitud', null, ["label" => "Tipo de Solicitud"])
-                ->add('idseccional', null, ["label" => "Seccional"])
-                ->add('concepto', null, ["label" => "Concepto Previo"])
-                ->add('conceptoFinal', null, ["label" => "Concepto Junta"])
-                ->add('_action', null, array(
-                    'actions' => array(
-                        'show' => array(),
-                        'edit' => array(),
-                        'delete' => array(),
-                        'archivo' => array(
-                            'template' => 'AppBundle:Solicitudes/btn:reemplazar.archivo.html.twig'
-                        ),
+            ->add('solicitudfecha', null, ["label" => "Fecha de la Solicitud"])
+            ->add('solicitudcedulasolicita', null, ["label" => "Cedula del Solicitante"])
+            ->add('solicitudnombresolicita', null, ["label" => "Nombre del Solicitante"])
+            ->add('solicitudcedulafuncionario', null, ["label" => "Cedula Funcionario Policial"])
+            ->add('idgrado', null, ["label" => "Grado Funcionario Policial"])
+            ->add('solicitudnombrefuncionario', null, ["label" => "Nombre del Funcionario"])
+            ->add('idtiposolicitud', null, ["label" => "Tipo de Solicitud"])
+            ->add('idseccional', null, ["label" => "Seccional"])
+            ->add('concepto', null, ["label" => "Concepto Previo"])
+            ->add('conceptoFinal', null, ["label" => "Concepto Junta"])
+            ->add('_action', null, array(
+                'actions' => array(
+                    'show' => array(),
+                    'edit' => array(),
+                    'delete' => array(),
+                    'archivo' => array(
+                        'template' => 'AppBundle:Solicitudes/btn:reemplazar.archivo.html.twig'
                     ),
-                ))
-        ;
+                ),
+            ));
     }
 
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper) {
+    protected function configureFormFields(FormMapper $formMapper)
+    {
+        $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getManager();
         $constraint = array(new NotBlank());
         $constraintEmail = array(new NotBlank(), new Email());
         $hoy = new DateTime();
         $formMapper
-                ->add('solicitudfecha', DateType::class, array(
-                    'widget' => 'single_text',
-                    'constraints' => $constraint,
-                    "label" => "Fecha",
-                    'format' => 'yyyy-MM-dd',
-                    'empty_value' => "",
-                    'data' => $hoy,
-                    'attr' => array('class' => 'form-control', 'readonly' => true)
-                ))
-                ->add('idseccional', null, [
+            ->add('solicitudfecha', DateType::class, array(
+                'widget' => 'single_text',
+                'constraints' => $constraint,
+                "label" => "Fecha",
+                'format' => 'yyyy-MM-dd',
+                'empty_value' => "",
+                'data' => $hoy,
+                'attr' => array('class' => 'form-control', 'readonly' => true)
+            ))
+            ->add('idseccional', null, [
                     'constraints' => $constraint,
                     "placeholder" => "Seleccione",
                     "label" => "Seccional",
                     'attr' => array('class' => 'form-control')]
-                )
-                ->add('idtiposolicitud', null, [
-                    'constraints' => $constraint,
-                    "placeholder" => "Seleccione",
-                    "label" => "Tipo de Solicitud",
-                    'attr' =>
+            )
+            ->add('idtiposolicitud', null, [
+                'constraints' => $constraint,
+                "placeholder" => "Seleccione",
+                "label" => "Tipo de Solicitud",
+                'attr' =>
                     [
                         'onchange' => 'mostrarFormulario()',
                         'class' => 'tipo_solicitud',
                     ]
-                ])
-                ->add('solicitudcedulasolicita', null, [
+            ])
+            ->add('solicitudcedulasolicita', null, [
                     'required' => false,
                     'constraints' => $constraint,
                     "label" => "Cédula del Solicitante",
                     'attr' => array('class' => 'form-control ', 'onkeyup' => "soloNumeros(this)", 'placeholder' => "Documento de identidad")]
-                )
-                ->add('emailSolicitante', null, [
+            )
+            ->add('emailSolicitante', null, [
                     'required' => false,
                     'constraints' => $constraintEmail,
                     "label" => "Correo Electrónico",
                     'attr' => array('class' => 'form-control ', 'placeholder' => "Correo electrónico")]
-                )
-                ->add('documentoBeneficiarioFinal', null, [
+            )
+            ->add('documentoBeneficiarioFinal', null, [
                     "label" => "Documento del beneficiario final",
                     'required' => false,
                     'attr' => array('onkeyup' => "soloNumeros(this)",
                         'class' => 'form-control ',
                         'placeholder' => "Documento de identidad")]
-                )
-                ->add('nombreBeneficiarioFinal', null, [
+            )
+            ->add('nombreBeneficiarioFinal', null, [
                     'required' => false,
                     "label" => "Nombre  del beneficiario final",
                     'attr' => array('class' => 'form-control ', 'placeholder' => "Nombre beneficiario")]
-                )
-                ->add('solicitudnombresolicita', null, [
+            )
+            ->add('solicitudnombresolicita', null, [
                     'required' => false,
                     'constraints' => $constraint,
                     "label" => "Nombres y Apellidos del Solicitante",
                     'attr' => array('class' => 'form-control', 'placeholder' => "Digita Nombres y Apellidos del Solicitante")]
-                )
-                ->add('antiguedad', null, [
+            )
+            ->add('antiguedad', null, [
                     "placeholder" => "Seleccione",
                     "label" => "Antigüedad Funcionario",
                     'attr' => array('class' => 'form-control')]
-                )
-                ->add('idparentesco', null, [
+            )
+            ->add('idparentesco', null, [
                     "placeholder" => "Seleccione",
                     "label" => "Parentesco con el Solicitante",
                     'attr' => array('class' => 'form-control')]
-                )
-                ->add('solicitudcedulafuncionario', null, [
+            )
+            ->add('solicitudcedulafuncionario', null, [
                     'required' => false,
                     "label" => "Cédula Funcionario Policial",
                     'attr' => array('onkeyup' => "soloNumeros(this)", 'class' => 'form-control', 'placeholder' => "Digita Cedula Funcionario Policial")]
-                )
-                ->add('idgrado', null, [
+            )
+            ->add('idgrado', null, [
                     "placeholder" => "Seleccione",
                     "label" => "Grado Funcionario Policial",
                     'attr' => array('class' => 'form-control')]
-                )
-                ->add('unidad', null, [
+            )
+            ->add('unidad', null, [
                     "placeholder" => "Seleccione",
                     "label" => "unidad", 'attr' => array('class' => 'form-control')]
-                )
-                ->add('solicitudnombrefuncionario', null, [
+            )
+            ->add('solicitudnombrefuncionario', null, [
                     'required' => false,
                     "label" => "Nombre del Funcionario Policial",
                     'attr' => array('class' => 'form-control',
                         'placeholder' => "Digita Nombre Completo del Funcionario")]
-                )
-                ->add('solicituddireccionfuncionario', null, [
+            )
+            ->add('solicituddireccionfuncionario', null, [
                     'required' => false,
                     "label" => "Dirección Funcionario",
                     'attr' => array('class' => 'form-control',
                         'placeholder' => "Digita Direccion del Funcionario")]
-                )
-                ->add('solicitudtelefonosfuncionario', null, [
+            )
+            ->add('solicitudtelefonosfuncionario', null, [
                     'required' => false,
                     "label" => "Teléfono Funcionario",
                     'attr' => array('onkeyup' => "soloNumeros(this)",
                         'class' => 'form-control',
                         'placeholder' => "Digita Telefono del Funcionario")]
-                )
-                ->add('programas', null, [
+            )
+            ->add('programas', null, [
                     'class' => "AppBundle:Programas",
                     'label' => "Seleccione los programas para los cuales necesita asistencia",
                     'constraints' => $constraint,
-                    'query_builder' => function(EntityRepository $repository) {
+                    'query_builder' => function (EntityRepository $repository) {
                         return $repository->createQueryBuilder('p')->orderBy('p.programanombre', 'ASC');
                     },
                     "placeholder" => "Seleccione",
@@ -222,88 +229,87 @@ class SolicitudesAdmin extends AbstractAdmin {
                     "mapped" => false,
                     "multiple" => true,
                     "expanded" => true]
-                )
-                ->add('solicituddescripcion', null, [
+            )
+            ->add('solicituddescripcion', null, [
                     'required' => false,
                     'constraints' => $constraint,
                     "label" => "Descripción breve de la solicitud y de la situación económica",
                     'attr' => array('class' => 'form-control',
                         'placeholder' => "Digite una descripción para su Solicitud")]
-                )
-                ->add('idestadocivil', null, [
+            )
+            ->add('idestadocivil', null, [
                     "placeholder" => "Seleccione",
                     "label" => "Estado Civil",
                     'attr' => array('class' => 'form-control')]
-                )
-                ->add('idingreso', null, [
+            )
+            ->add('idingreso', null, [
                     "placeholder" => "Seleccione",
                     "label" => "Ingresos",
                     'attr' => array('class' => 'form-control')]
-                )
-                ->add('idpersonacargo', null, [
+            )
+            ->add('idpersonacargo', null, [
                     "placeholder" => "Seleccione",
                     "label" => "Personas a Cargo",
                     'attr' => array('class' => 'form-control')]
-                )
-                ->add('idsituacionvivienda', null, [
+            )
+            ->add('idsituacionvivienda', null, [
                     "placeholder" => "Seleccione",
                     "label" => "Situación de Vivienda",
                     'attr' => array('class' => 'form-control')]
-                )
-                ->add('idmotivodeuda', null, [
+            )
+            ->add('idmotivodeuda', null, [
                     "placeholder" => "Seleccione",
                     "label" => "Dificultad",
                     'attr' => array('class' => 'form-control')]
-                )
-                ->add('cantidadesbeneficio', null, [
+            )
+            ->add('cantidadesbeneficio', null, [
                     "placeholder" => "Seleccione",
                     "label" => "Cantidad Beneficios Recibidos AOS",
                     'attr' => array('class' => 'form-control',
                         'placeholder' => "Digita la cantidad de Beneficios Recibidos")]
-                )
-                ->add('idconceptovisita', null, [
+            )
+            ->add('idconceptovisita', null, [
                     "placeholder" => "Seleccione",
                     "label" => "Concepto Visita Domiciliaria",
                     'attr' => array('class' => 'form-control')]
-                )
-                ->add('idafiliadodibie', null, [
+            )
+            ->add('idafiliadodibie', null, [
                     "placeholder" => "Seleccione",
                     "label" => "Afiliado a DIBIE?",
                     'attr' => array('class' => 'form-control')]
-                )
-                ->add('idpoblacionbeneficia', null, [
+            )
+            ->add('idpoblacionbeneficia', null, [
                     "placeholder" => "Seleccione",
                     "label" => "Cantidad de Poblacion a Beneficiar",
                     'attr' => array('class' => 'form-control')]
-                )
-                ->add('idviabilidadplaneacion', null, [
+            )
+            ->add('idviabilidadplaneacion', null, [
                     "placeholder" => "Seleccione",
                     "label" => "Viabilidad Planeación",
                     'attr' => array('class' => 'form-control')]
-                )
-                ->add('idzonaubicacion', null, [
+            )
+            ->add('idzonaubicacion', null, [
                     "placeholder" => "Seleccione",
                     "label" => "Zona de Ubicación",
                     'attr' => array('class' => 'form-control')]
-                )
-                ->add('idcantidadesbeneficioinst', null, [
+            )
+            ->add('idcantidadesbeneficioinst', null, [
                     "placeholder" => "Seleccione",
                     "label" => "Cantidad Beneficios Institucionales",
                     'attr' => array('class' => 'form-control')]
-                )
-                ->add('curriculum', FileType::class, [
+            )
+            ->add('curriculum', FileType::class, [
                     'label' => 'Documentación anexa',
                     'required' => false]
-                )
-                ->add('fotoFile', FileType::class, [
+            )
+            ->add('fotoFile', FileType::class, [
                     'label' => 'Adjunte fotografía 3*4',
                     'required' => false]
-                )
-                ->getFormBuilder()
-                ->addEventSubscriber(new AddAreaFieldSubscriber())
-                ->addEventSubscriber(new AddProgramaPadreFieldSubscriber())
-                ->addEventSubscriber(new AddProgramasFieldSubscriber())
-        ;
+            )
+            ->getFormBuilder()
+            ->addEventSubscriber(new AddAreaFieldSubscriber())
+            ->addEventSubscriber(new AddProgramaPadreFieldSubscriber(false,$em))
+            ->addEventSubscriber(new AddProgramasFieldSubscriber());
     }
 
     public function getDataSourceIterator()
@@ -313,7 +319,8 @@ class SolicitudesAdmin extends AbstractAdmin {
         return $datasourceit;
     }
 
-    public function getExportFields() {
+    public function getExportFields()
+    {
         return array(
             "Fecha de la Solicitud" => 'solicitudfecha',
             "Cédula del Solicitante" => 'solicitudcedulasolicita',
@@ -351,41 +358,43 @@ class SolicitudesAdmin extends AbstractAdmin {
     /**
      * @param ShowMapper $showMapper
      */
-    protected function configureShowFields(ShowMapper $showMapper) {
+    protected function configureShowFields(ShowMapper $showMapper)
+    {
         $showMapper
-                ->add('solicitudfecha', null, ["label" => "Fecha de la Solicitud"])
-                ->add('solicitudcedulasolicita', null, ["label" => "Cedula del Solicitante"])
-                ->add('solicitudnombresolicita', null, ["label" => "Nombre del Solicitante"])
-                ->add('idparentesco', null, ["label" => "Parentesco con el Solicitante"])
-                ->add('solicitudcedulafuncionario', null, ["label" => "Cedula Funcionario Policial"])
-                ->add('idgrado', null, ["label" => "Grado Funcionario Policial"])
-                ->add('solicituddireccionfuncionario', null, ["label" => "Direccion Funcionario"])
-                ->add('solicitudtelefonosfuncionario', null, ["label" => "Telefono Funcionario"])
-                ->add('solicitudnombrefuncionario', null, ["label" => "Nombre del Funcionario"])
-                ->add('antiguedad', null, ["label" => "Antiguedad Funcionario:"])
-                ->add('solicituddescripcion', null, ["label" => "Descripcion de la Solicitud"])
-                ->add('idtiposolicitud', null, ["label" => "Tipo de Solicitud"])
-                ->add('idestadocivil', null, ["label" => "Estado Civil"])
-                ->add('idingreso', null, ["label" => "Ingresos"])
-                ->add('idpersonacargo', null, ["label" => "Cantidad de Personas a Cargo"])
-                ->add('idsituacionvivienda', null, ["label" => "Situacion de Vivienda"])
-                ->add('idmotivodeuda', null, ["label" => "Motivo Deuda"])
-                ->add('idcantidadesbeneficioinst', null, ["label" => "Cantidad de beneficios recibidos por AOS - UNIDAD"])
-                ->add('idafiliadodibie', null, ["label" => "Afiliado a DIBIE?"])
-                ->add('idpoblacionbeneficia', null, ["label" => "Cantidad de Poblacion a Beneficiar"])
-                ->add('idviabilidadplaneacion', null, ["label" => "Viabilidad Planeacion"])
-                ->add('idzonaubicacion', null, ["label" => "Zona de Ubicacion"])
-                ->add('idconceptovisita', null, ["label" => "Concepto Visita Domiciliaria"])
-                ->add('idseccional', null, ["label" => "Seccional"])
-                ->add('totalPuntaje', null, ["label" => "Puntaje total", 'required' => false])
-                ->add('concepto', null, ["label" => "Concepto Previo"])
-                ->add('conceptoFinal', null, ["label" => "Concepto Junta"])
-                ->add('cantidadSolicitada', null, ["label" => "Cantidad solicitada", 'required' => false])
-                ->add('cantidadAprobada', null, ["label" => "Cantidad Aprobada", 'required' => false])
-                ->add('programas', null, ["label" => "Programas", 'required' => false]);
+            ->add('solicitudfecha', null, ["label" => "Fecha de la Solicitud"])
+            ->add('solicitudcedulasolicita', null, ["label" => "Cedula del Solicitante"])
+            ->add('solicitudnombresolicita', null, ["label" => "Nombre del Solicitante"])
+            ->add('idparentesco', null, ["label" => "Parentesco con el Solicitante"])
+            ->add('solicitudcedulafuncionario', null, ["label" => "Cedula Funcionario Policial"])
+            ->add('idgrado', null, ["label" => "Grado Funcionario Policial"])
+            ->add('solicituddireccionfuncionario', null, ["label" => "Direccion Funcionario"])
+            ->add('solicitudtelefonosfuncionario', null, ["label" => "Telefono Funcionario"])
+            ->add('solicitudnombrefuncionario', null, ["label" => "Nombre del Funcionario"])
+            ->add('antiguedad', null, ["label" => "Antiguedad Funcionario:"])
+            ->add('solicituddescripcion', null, ["label" => "Descripcion de la Solicitud"])
+            ->add('idtiposolicitud', null, ["label" => "Tipo de Solicitud"])
+            ->add('idestadocivil', null, ["label" => "Estado Civil"])
+            ->add('idingreso', null, ["label" => "Ingresos"])
+            ->add('idpersonacargo', null, ["label" => "Cantidad de Personas a Cargo"])
+            ->add('idsituacionvivienda', null, ["label" => "Situacion de Vivienda"])
+            ->add('idmotivodeuda', null, ["label" => "Motivo Deuda"])
+            ->add('idcantidadesbeneficioinst', null, ["label" => "Cantidad de beneficios recibidos por AOS - UNIDAD"])
+            ->add('idafiliadodibie', null, ["label" => "Afiliado a DIBIE?"])
+            ->add('idpoblacionbeneficia', null, ["label" => "Cantidad de Poblacion a Beneficiar"])
+            ->add('idviabilidadplaneacion', null, ["label" => "Viabilidad Planeacion"])
+            ->add('idzonaubicacion', null, ["label" => "Zona de Ubicacion"])
+            ->add('idconceptovisita', null, ["label" => "Concepto Visita Domiciliaria"])
+            ->add('idseccional', null, ["label" => "Seccional"])
+            ->add('totalPuntaje', null, ["label" => "Puntaje total", 'required' => false])
+            ->add('concepto', null, ["label" => "Concepto Previo"])
+            ->add('conceptoFinal', null, ["label" => "Concepto Junta"])
+            ->add('cantidadSolicitada', null, ["label" => "Cantidad solicitada", 'required' => false])
+            ->add('cantidadAprobada', null, ["label" => "Cantidad Aprobada", 'required' => false])
+            ->add('programas', null, ["label" => "Programas", 'required' => false]);
     }
 
-    public function getTemplate($name) {
+    public function getTemplate($name)
+    {
         switch ($name) {
             case 'show':
                 return 'AppBundle:Solicitudes:base_show.html.twig';
@@ -397,7 +406,7 @@ class SolicitudesAdmin extends AbstractAdmin {
                 return 'AppBundle:Solicitudes:base_edit.html.twig';
                 break;
             case 'replaceFile':
-                return  'AppBundle:Solicitudes:cargar.archivo.html.twig';
+                return 'AppBundle:Solicitudes:cargar.archivo.html.twig';
                 break;
             default:
                 return parent::getTemplate($name);
