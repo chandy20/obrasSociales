@@ -231,16 +231,22 @@
                     </div>
                 </div>#}
                 <div class="tab-pane active" id="agrupaciones">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         {{ form_label(form.fechaInicial) }}
                         {{ form_errors(form.fechaInicial) }}
                         {{ form_widget(form.fechaInicial) }}
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         {{ form_label(form.fechaFinal) }}
                         {{ form_errors(form.fechaFinal) }}
                         {{ form_widget(form.fechaFinal) }}
                     </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.seccional) }}
+                        {{ form_errors(form.seccional) }}
+                        {{ form_widget(form.seccional) }}
+                    </div>
+
                     <div class="col-md-12">
                         <br>
                         {{ form_label(form.agrupaciones) }}
@@ -626,7 +632,6 @@
                 try {
                     form = $('#formulario_reporte').serializeObject();
                 } catch (e) {
-                    console.log("se murió");
                 }
                 form = JSON.stringify(form);
                 var url = 'dataReporte';
@@ -641,12 +646,11 @@
                         document.getElementById("divProceso").style.visibility = "visible";
                     },
                     success: function (data) {
-                        console.log("datos obtenidos");
+                        $("div.content-wrapper").addClass("col-md-10");
                         $("#datosConsulta").html("");
                         $("#datosConsulta").html(data.html);
                     },
                     complete: function (jqXHR, textStatus) {
-                        console.log("ok");
                         document.getElementById("divProceso").style.visibility = "hidden";
                     }
                 });

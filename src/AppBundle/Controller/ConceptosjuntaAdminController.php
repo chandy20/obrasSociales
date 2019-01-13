@@ -307,9 +307,9 @@ class ConceptosjuntaAdminController extends CRUDController {
                 $columna++;
                 $activesheet
                         ->setCellValue($columna . $fila, $valor);
+            $fila++;
             }
             $columna = "A";
-            $fila++;
         }
         // se crea el writer
         $writer = $this->container->get('phpexcel')->createWriter($phpExcelObject, 'Excel2007');
@@ -416,6 +416,10 @@ class ConceptosjuntaAdminController extends CRUDController {
                 ->where("s.solicitudfecha BETWEEN :inicio AND :fin")
                 ->setParameter("inicio", $form->fechaInicial)
                 ->setParameter("fin", $form->fechaFinal);
+        if($form->seccional != null && $form->seccional != 0){
+            $query->andWhere('s.idseccional = :seccional')
+                ->setParameter('seccional', $form->seccional);
+        }
         $query->resetDQLPart('select');
         $arrayEntidadCampos = [
             'Parentescos' => [
@@ -450,6 +454,10 @@ class ConceptosjuntaAdminController extends CRUDController {
                 'relacion' => 'idtiposolicitud',
                 'campo' => 'tiposolicitudnombre',
             ],
+            'Seccionales' => [
+                'relacion' => 'idseccional',
+                'campo' => 'seccionalnombre',
+            ],
         ];
         $labels = [
             'Parentescos' => 'Parentesco',
@@ -460,6 +468,7 @@ class ConceptosjuntaAdminController extends CRUDController {
             'Situacionesvivienda' => 'Situación de vivienda',
             'Motivosdeuda' => 'Motivo deuda',
             'Tipossolicitud' => 'Tipos de solicitud',
+            'Seccionales' => 'Seccional'
         ];
         foreach ($form->agrupaciones as $entidad) {
             $query
@@ -467,8 +476,7 @@ class ConceptosjuntaAdminController extends CRUDController {
                             . "as cantidad_" . $arrayEntidadCampos[$entidad]['campo'])
                     ->addSelect($arrayEntidadCampos[$entidad]['relacion'] . '.' . $arrayEntidadCampos[$entidad]['campo'])
                     ->leftJoin("s." . $arrayEntidadCampos[$entidad]['relacion'], $arrayEntidadCampos[$entidad]['relacion'])
-                    ->addGroupBy($arrayEntidadCampos[$entidad]['relacion'] . '.' . $arrayEntidadCampos[$entidad]['campo'])
-                    ->andWhere($arrayEntidadCampos[$entidad]['relacion'] . '.' . $arrayEntidadCampos[$entidad]['campo'] . " != ''");
+                    ->addGroupBy($arrayEntidadCampos[$entidad]['relacion'] . '.' . $arrayEntidadCampos[$entidad]['campo']);
         }
         $solicitudes = $query->getQuery()->getResult();
 
@@ -503,11 +511,23 @@ class ConceptosjuntaAdminController extends CRUDController {
                 $datos[$llave][] = ($valor != null && $valor != 0) ? $valor + 0 : null;
             }
         }
+
+        $solicitudes = $this->em->getRepository("AppBundle:Solicitudes")->createQueryBuilder('s')
+            ->where("s.solicitudfecha BETWEEN :inicio AND :fin")
+            ->setParameter("inicio", $form->fechaInicial)
+            ->setParameter("fin", $form->fechaFinal);
+        if($form->seccional != null && $form->seccional != 0){
+            $solicitudes->andWhere('s.idseccional = :seccional')
+                ->setParameter('seccional', $form->seccional);
+        }
+        $solicitudes = $solicitudes->getQuery()->getResult();
+
         $html = $this->renderView('AppBundle:Reporte:reporte_agrupaciones.html.twig', [
             'columnas' => $columnas,
             'datos' => $datos,
             'datosParaTabla' => $datosParaTabla,
             'labels' => $labels,
+            'solicitudes' => count($solicitudes)
         ]);
         return $html;
     }
