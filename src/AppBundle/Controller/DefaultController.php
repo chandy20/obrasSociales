@@ -13,7 +13,6 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
-        return $this->render('FrontendBundle:Default:index.html.twig', array('nombre' => "Ronald"));
+        return $this->redirect('/admin');
     }
 }
