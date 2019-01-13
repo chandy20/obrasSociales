@@ -71,7 +71,7 @@ class Conceptosjunta {
     private $solicitud;
 
     /**
-     * @ORM\OneToMany(targetEntity="ProgramaConcepto", mappedBy="conceptoJunta" , cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="ProgramaConcepto", mappedBy="conceptoJunta" , cascade={"all"})
      */
     private $programasConcepto;
     

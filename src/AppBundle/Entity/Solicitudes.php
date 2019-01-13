@@ -1192,7 +1192,7 @@ class Solicitudes {
     }
 
     /**
-     * Add programa
+     * Add ProgramaSolicitud
      *
      * @param \AppBundle\Entity\ProgramaSolicitud $programa
      *
@@ -1205,7 +1205,7 @@ class Solicitudes {
     }
 
     /**
-     * Remove programa
+     * Remove ProgramaSolicitud
      *
      * @param \AppBundle\Entity\ProgramaSolicitud $programa
      */
@@ -1214,7 +1214,7 @@ class Solicitudes {
     }
 
     /**
-     * Get programas
+     * Get ProgramaSolicitud
      *
      * @return \Doctrine\Common\Collections\Collection
      */

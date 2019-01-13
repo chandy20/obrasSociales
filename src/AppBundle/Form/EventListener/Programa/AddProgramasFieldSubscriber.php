@@ -21,7 +21,7 @@ class AddProgramasFieldSubscriber implements EventSubscriberInterface {
 
         $formOptions = array(
             "class" => "AppBundle:Programas",
-            "label" => "label.programas",
+            "label" => "Programa padre",
             "empty_value" => 'label.seleccion',
             "required" => false,
             'mapped' => true,

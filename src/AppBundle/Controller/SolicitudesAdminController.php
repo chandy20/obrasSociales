@@ -25,6 +25,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -207,6 +208,254 @@ class SolicitudesAdminController extends CRUDController
         ], null);
     }
 
+    /**
+     * Edit action.
+     *
+     * @param int|string|null $id
+     *
+     * @throws NotFoundHttpException If the object does not exist
+     * @throws AccessDeniedException If access is not granted
+     *
+     * @return Response|RedirectResponse
+     */
+    public function editAction($id = null)
+    {
+        $request = $this->getRequest();
+        // the key used to lookup the template
+        $templateKey = 'edit';
+
+        $id = $request->get($this->admin->getIdParameter());
+        $existingObject = $this->admin->getObject($id);
+
+        $em = $this->container->get('doctrine')->getManager();
+
+        $concepto = $em->getRepository('AppBundle:Conceptosjunta')->findOneBySolicitud($existingObject);
+        if ($concepto && !is_null($concepto->getAprobado())){
+            $this->addFlash(
+                'sonata_flash_error',
+                "Esta solicitud ya fue revisada. No es posible editarla"
+            );
+            return $this->redirect($this->generateUrl('admin_app_solicitudes_list'));
+        }
+
+        if (!$existingObject) {
+            throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
+        }
+
+        $this->checkParentChildAssociation($request, $existingObject);
+
+        $this->admin->checkAccess('edit', $existingObject);
+
+        $preResponse = $this->preEdit($request, $existingObject);
+        if (null !== $preResponse) {
+            return $preResponse;
+        }
+
+        $this->admin->setSubject($existingObject);
+        $objectId = $this->admin->getNormalizedIdentifier($existingObject);
+
+        /** @var $form Form */
+        $form = $this->admin->getForm();
+        $form->setData($existingObject);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $this->validaciones($form);
+            $isFormValid = $form->isValid();
+            // persist if the form was valid and if in preview mode the preview was approved
+            if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
+                $enviado = $request->request->all();
+                $puntaje = 0;
+                $concepto = '';
+                try {
+                    $entity = $submittedObject = $form->getData();
+                    $em = $this->getDoctrine()->getManager();
+                    $stmt = $em->getConnection()->prepare('SELECT * FROM programa_solicitud WHERE solicitud_id =' . $entity->getId());
+                    $stmt->execute();
+                    $programasSolcitud = $stmt->fetchAll();
+                    foreach ($programasSolcitud as $programaSolicitud) {
+                        $programaSolicitud = $em->getRepository('AppBundle:ProgramaSolicitud')->find($programaSolicitud['id']);
+                        if ($programaSolicitud) {
+                            $em->remove($programaSolicitud);
+                        }
+                    }
+                    $entity->setProgramas(null);
+                    $em->flush();
+                    foreach ($enviado[$form->getName()]['programas'] as $prog) {
+                        $programa = $em->getRepository('AppBundle:Programas')->findOneById($prog);
+                        $programaSolicitud = new ProgramaSolicitud($programa, $entity);
+                        $em->persist($programaSolicitud);
+                        $entity->addPrograma($programaSolicitud);
+                    }
+                    if ($entity->getIdingreso() != null) {
+                        $puntaje += $entity->getIdingreso()->getIngresopuntaje();
+                    }
+                    if ($entity->getIdpoblacionbeneficia() != null) {
+                        $puntaje += $entity->getIdpoblacionbeneficia()->getPoblacionBeneficiaPuntaje();
+                    }
+                    if ($entity->getIdzonaubicacion() != null) {
+                        $puntaje += $entity->getIdzonaubicacion()->getZonasUbicacionPuntaje();
+                    }
+                    if ($entity->getIdviabilidadplaneacion() != null) {
+                        $puntaje += $entity->getIdviabilidadplaneacion()->getViabilidadPlaneacionPuntaje();
+                    }
+                    if ($entity->getIdcantidadesbeneficioinst() != null) {
+                        $puntaje += $entity->getIdcantidadesbeneficioinst()->getCantidadesBeneficioInstPuntaje();
+                    }
+                    if ($entity->getIdafiliadodibie() != null) {
+                        $puntaje += $entity->getIdafiliadodibie()->getAfiliadoDibiePorcentaje();
+                    }
+                    if ($entity->getIdsituacionvivienda() != null) {
+                        $puntaje += $entity->getIdsituacionvivienda()->getSituacionesViviendaPuntaje();
+                    }
+                    if ($entity->getIdpersonacargo() != null) {
+                        $puntaje += $entity->getIdpersonacargo()->getPersonasCargoPuntaje();
+                    }
+                    if ($entity->getIdmotivodeuda() != null) {
+                        $puntaje += $entity->getIdmotivodeuda()->getMotivoDeudaPuntaje();
+                    }
+                    if ($entity->getIdconceptovisita() != null) {
+                        $puntaje += $entity->getIdconceptovisita()->getConceptosVisitaPuntaje();
+                    }
+                    $file = $entity->getCurriculum();
+                    if ($file) {
+                        $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                        $entity->setArchivo($fileName);
+                        $file->move(
+                            $this->getParameter('uploads_directory'), $fileName
+                        );
+                    }
+                    $foto = $entity->getFotoFile();
+                    if ($foto) {
+                        $fileName = md5(uniqid()) . '.' . $foto->guessExtension();
+                        $entity->setFoto($fileName);
+                        $foto->move(
+                            $this->getParameter('uploads_directory'), $fileName
+                        );
+                    }
+                    $entity->setTotalPuntaje($puntaje);
+                    if ($puntaje >= 60) {
+                        $concepto = $em->getRepository("AppBundle:Concepto")->findOneBy(["id" => 2]);
+                    } else if ($puntaje <= 40) {
+                        $concepto = $em->getRepository("AppBundle:Concepto")->findOneBy(["id" => 4]);
+                    } else if ($puntaje <= 59 and $puntaje >= 45) {
+                        $concepto = $em->getRepository("AppBundle:Concepto")->findOneBy(["id" => 3]);
+                    }
+                    $entity->setConcepto($concepto);
+                    $conceptosExistente = $em->getRepository('AppBundle:Conceptosjunta')->findBy(['solicitud' => $entity]);
+                    foreach ($conceptosExistente as $concepto) {
+                        $em->remove($concepto);
+                    }
+                    $em->flush();
+                    $conceptoJunta = new Conceptosjunta();
+                    $conceptoJunta->setSolicitud($entity);
+                    $em->persist($conceptoJunta);
+                    $em->persist($entity);
+                    $em->flush();
+                    $cantidadSolicitada = 0;
+                    foreach ($entity->getProgramas() as $programaSolicitud) {
+                        $programaConcepto = new ProgramaConcepto();
+                        $programaConcepto->setConceptoJunta($conceptoJunta);
+                        $programaConcepto->setPrograma($programaSolicitud->getPrograma());
+                        $programaConcepto->setAprobado(false);
+                        $em->persist($programaConcepto);
+                        $cantidadSolicitada += $programaSolicitud->getPrograma()->getValorMes();
+                    }
+                    $entity->setCantidadSolicitada($cantidadSolicitada);
+                    $em->persist($entity);
+                    $em->flush();
+                    if ($this->isXmlHttpRequest()) {
+                        return $this->renderJson([
+                            'result' => 'ok',
+                            'objectId' => $objectId,
+                            'objectName' => $this->escapeHtml($this->admin->toString($existingObject)),
+                        ], 200, []);
+                    }
+
+                    $this->addFlash(
+                        'sonata_flash_success',
+                        $this->trans(
+                            'flash_edit_success',
+                            ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))],
+                            'SonataAdminBundle'
+                        )
+                    );
+
+                    // redirect to edit mode
+                    return $this->redirectTo($existingObject);
+                } catch (ModelManagerException $e) {
+                    $this->handleModelManagerException($e);
+
+                    $isFormValid = false;
+                } catch (LockException $e) {
+                    $this->addFlash('sonata_flash_error', $this->trans('flash_lock_error', [
+                        '%name%' => $this->escapeHtml($this->admin->toString($existingObject)),
+                        '%link_start%' => '<a href="' . $this->admin->generateObjectUrl('edit', $existingObject) . '">',
+                        '%link_end%' => '</a>',
+                    ], 'SonataAdminBundle'));
+                }
+            }
+
+            // show an error message if the form failed validation
+            if (!$isFormValid) {
+                if (!$this->isXmlHttpRequest()) {
+                    $this->addFlash(
+                        'sonata_flash_error',
+                        $this->trans(
+                            'flash_edit_error',
+                            ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))],
+                            'SonataAdminBundle'
+                        )
+                    );
+                }
+            } elseif ($this->isPreviewRequested()) {
+                // enable the preview template if the form was valid and preview was requested
+                $templateKey = 'preview';
+                $this->admin->getShow();
+            }
+        }
+
+        $formView = $form->createView();
+        // set the theme for the current Admin Form
+        $this->setFormTheme($formView, $this->admin->getFormTheme());
+
+        // NEXT_MAJOR: Remove this line and use commented line below it instead
+        $template = $this->admin->getTemplate($templateKey);
+        // $template = $this->templateRegistry->getTemplate($templateKey);
+
+        return $this->renderWithExtraParams($template, [
+            'action' => 'edit',
+            'form' => $formView,
+            'object' => $existingObject,
+            'objectId' => $objectId,
+        ], null);
+    }
+
+    private function checkParentChildAssociation(Request $request, $object)
+    {
+        if (!($parentAdmin = $this->admin->getParent())) {
+            return;
+        }
+
+        // NEXT_MAJOR: remove this check
+        if (!$this->admin->getParentAssociationMapping()) {
+            return;
+        }
+
+        $parentId = $request->get($parentAdmin->getIdParameter());
+
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $propertyPath = new PropertyPath($this->admin->getParentAssociationMapping());
+
+        if ($parentAdmin->getObject($parentId) !== $propertyAccessor->getValue($object, $propertyPath)) {
+            // NEXT_MAJOR: make this exception
+            @trigger_error("Accessing a child that isn't connected to a given parent is deprecated since 3.34"
+                . " and won't be allowed in 4.0.",
+                E_USER_DEPRECATED
+            );
+        }
+    }
+
     public function validaciones($form)
     {
         $tipoDeSolicitud = $form->get("idtiposolicitud")->getData();
@@ -277,8 +526,10 @@ class SolicitudesAdminController extends CRUDController
                     $form->get("idcantidadesbeneficioinst")->addError(new FormError("Este valor no debería estar vacío"));
                 }
             }
-            if (!$form->get("curriculum")->getdata()) {
-                $form->get("curriculum")->addError(new FormError("Por favor adjunte la documentación"));
+            if (!$form->getData()->getId()) {
+                if (!$form->get("curriculum")->getdata()) {
+                    $form->get("curriculum")->addError(new FormError("Por favor adjunte la documentación"));
+                }
             }
             if (count($form->get("programas")->getdata()) == 0) {
                 $form->get("programas")->addError(new FormError("Seleccióne al menos un programa del listado"));
