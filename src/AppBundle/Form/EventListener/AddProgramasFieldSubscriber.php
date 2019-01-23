@@ -52,7 +52,6 @@ class AddProgramasFieldSubscriber implements EventSubscriberInterface
                 $programas[] = $valor->getPrograma();
             }
             $formOptions['data'] = $programas;
-            $formOptions['mapped'] = false;
         }
         if ($multiple) {
             $form->add('programas', EntityType::class, $formOptions);
