@@ -60,7 +60,7 @@ class PresupuestosAdmin extends AbstractAdmin {
                 ->add('seccional', null, ["label" => "Seccional"])
                 ->add('idarea', null, ["label" => "Área"])
                 ->add('programa.programa', null, ["label" => "Programa"])
-                ->add('programa', null, ["label" => "Subprograma"])
+                ->add('programa', null, ["label" => "Modalidad"])
                 ->add('saldo', null, ["label" => "Saldo"])
                 ->add('desde', null, ["label" => "Desde"])
                 ->add('hasta', null, ["label" => "Hasta"])
@@ -81,7 +81,7 @@ class PresupuestosAdmin extends AbstractAdmin {
                 ->add('programaPadre', EntityType::class, [
                     "class" => "AppBundle:Programas"
                     ])
-                ->add('programa', null, ["label" => "Subprograma"])
+                ->add('programa', null, ["label" => "Modalidad"])
                 ->add('seccional', null, ["label" => "Seccional"])
                 ->add('desde', DatePickerType::class, array(
                     'constraints' => $constraint,

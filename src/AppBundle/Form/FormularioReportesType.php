@@ -63,7 +63,7 @@ class FormularioReportesType extends AbstractType
             'attr' => array('class' => 'form-control'),
         ];
         $opcionesPrograma = [
-            'label' => "Programa",
+            'label' => "Modalidad",
             'required' => false,
             'mapped' => false,
             'class' => 'AppBundle:Programas',
@@ -72,6 +72,7 @@ class FormularioReportesType extends AbstractType
             ),
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('p')
+                    ->where('p.programa is not null')
                     ->orderBy("p.programanombre", "ASC");
             }
         ];
@@ -343,6 +344,7 @@ class FormularioReportesType extends AbstractType
             ])
             ->add("area", EntityType::class, $opcionesArea)
             ->add("area2", EntityType::class, $opcionesArea)
+            ->add("area4", EntityType::class, $opcionesArea)
             ->add("zonaUbicacion", EntityType::class, [
                 'mapped' => false,
                 "label" => "Zona de ubicación",
@@ -359,6 +361,8 @@ class FormularioReportesType extends AbstractType
             ->add("programa", EntityType::class, $opcionesPrograma)
             ->add("programa2", EntityType::class, $opcionesPrograma)
             ->add("programa3", EntityType::class, $opcionesPrograma)
+            ->add("programa4", EntityType::class, $opcionesPrograma)
+            ->add("programa5", EntityType::class, $opcionesPrograma)
             ->add("area3", EntityType::class, $opcionesArea)
             ->add("agrupaciones", ChoiceType::class, $opcionesAgrupaciones)//dificultad
         ;

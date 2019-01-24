@@ -7,7 +7,7 @@ label:
   reemplazar: Sustituir archivo cargado
   area: Área
   programa: Programa
-  programas: Subprogramas
+  programas: Modalidades
   seleccion: Seleccione una opción
 error:
   create:
@@ -31,7 +31,7 @@ error:
       titulo: Error, el archivo cargado no contiene la columna %columna%.
   area: Área
   programa: Programa
-  programas: Subprogramas
+  programas: modalidades
   seleccion: Selecciones una opción
 mensaje:
   datos:
