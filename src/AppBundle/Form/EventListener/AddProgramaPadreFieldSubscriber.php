@@ -14,7 +14,7 @@ class AddProgramaPadreFieldSubscriber implements EventSubscriberInterface
     public $presupuesto = false;
     public $em = null;
 
-    public function __construct($presupuesto = false,$em)
+    public function __construct($presupuesto = false, $em)
     {
         $this->presupuesto = $presupuesto;
         $this->em = $em;
@@ -72,7 +72,9 @@ class AddProgramaPadreFieldSubscriber implements EventSubscriberInterface
             $padres = null;
             if (count($data->getProgramas()) > 0) {
                 foreach ($data->getProgramas() as $padre) {
-                    $padres[] = $this->em->getRepository('AppBundle:Programas')->find($padre->getPrograma()->getPrograma()->getId());
+                    if ($padre->getPrograma()->getPrograma()) {
+                        $padres[] = $this->em->getRepository('AppBundle:Programas')->find($padre->getPrograma()->getPrograma()->getId());
+                    }
                 }
             }
         } else {
