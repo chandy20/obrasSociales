@@ -73,6 +73,7 @@ class PresupuestosAdmin extends AbstractAdmin {
      */
     protected function configureFormFields(FormMapper $formMapper) {
         $constraint = array(new NotBlank());
+        $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getManager();
         $formMapper
                 ->add('presupuestomonto', null, ["label" => "Monto"])
                 ->add('idarea', EntityType::class, [
@@ -96,7 +97,7 @@ class PresupuestosAdmin extends AbstractAdmin {
                 ))
                 ->getFormBuilder()
                 ->addEventSubscriber(new AddAreaFieldSubscriber(true))
-                ->addEventSubscriber(new AddProgramaPadreFieldSubscriber(true))
+                ->addEventSubscriber(new AddProgramaPadreFieldSubscriber(true,$em))
                 ->addEventSubscriber(new AddProgramasFieldSubscriber(true))
         ;
     }

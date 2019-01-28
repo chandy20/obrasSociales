@@ -79,7 +79,7 @@ class AddProgramaPadreFieldSubscriber implements EventSubscriberInterface
             }
         } else {
             $area = $data->getPrograma() ? $data->getPrograma()->getPrograma()->getIdarea() : null;
-            $padre = $data->getPrograma() ? $data->getPrograma()->getPrograma() : null;
+            $padres = $data->getPrograma() ? $data->getPrograma()->getPrograma() : null;
         }
         $this->addProgramaPadreForm($form, $area, $padres);
     }
