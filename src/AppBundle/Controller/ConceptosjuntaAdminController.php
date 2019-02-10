@@ -30,12 +30,14 @@ class ConceptosjuntaAdminController extends CRUDController
 
     protected $em;
     public $presupuesto;
+    protected $container;
 
     public function setContainer(ContainerInterface $container = null)
     {
         parent::setContainer($container);
         $this->presupuesto = [];
         $this->em = $container->get("doctrine")->getManager();
+        $this->container = $container;
     }
 
     public function editAction($id = null)
@@ -898,18 +900,24 @@ class ConceptosjuntaAdminController extends CRUDController
 
     public function downloadArchivoAction($id)
     {
-        $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findOneById($id);
-        $path = "/home/obrasso1/public_html/web/upload/";
-        $content = file_get_contents($path . $solicitud->getArchivo());
+        try {
+            $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findOneById($id);
+            $path = $this->get('kernel')->getRootDir() . '/../web' . $this->getRequest()->getBasePath() . "/upload/";
+            $content = file_get_contents($path . $solicitud->getArchivo());
+            $response = new Response();
+            //set headers
+            $response->headers->set('Content-Type', 'mime/type');
+            $response->headers->set('Content-Disposition', 'attachment;filename="' . $solicitud->getArchivo());
+            $response->setContent($content);
+            return $response;
+        } catch (\Exception $e) {
+            $this->addFlash(
+                'sonata_flash_error',
+                "Ocurrio un error al tratar de descargar el archivo, posiblemente no esté  alojado en el servidor."
+            );
+            return $this->redirect($this->generateUrl('admin_app_conceptosjunta_list'));
+        }
 
-        $response = new Response();
-
-        //set headers
-        $response->headers->set('Content-Type', 'mime/type');
-        $response->headers->set('Content-Disposition', 'attachment;filename="' . $solicitud->getArchivo());
-
-        $response->setContent($content);
-        return $response;
     }
 
     public function downloadPDFAction($id)

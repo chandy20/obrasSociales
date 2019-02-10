@@ -230,7 +230,7 @@ class SolicitudesAdminController extends CRUDController
         $em = $this->container->get('doctrine')->getManager();
 
         $concepto = $em->getRepository('AppBundle:Conceptosjunta')->findOneBySolicitud($existingObject);
-        if ($concepto && !is_null($concepto->getAprobado())){
+        if ($concepto && !is_null($concepto->getAprobado())) {
             $this->addFlash(
                 'sonata_flash_error',
                 "Esta solicitud ya fue revisada. No es posible editarla"
@@ -694,7 +694,13 @@ class SolicitudesAdminController extends CRUDController
     {
         $request = $this->getRequest();
         $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findOneBySolicitudcedulasolicita($request->get("documento"));
-        $solicitudes = $this->em->getRepository("AppBundle:Solicitudes")->findBySolicitudcedulasolicita($request->get("documento"));
+        $solicitudes = $this->em->getRepository("AppBundle:Conceptosjunta")->createQueryBuilder('c')
+            ->join('c.solicitud', 's')
+            ->where('c.aprobado = :aprobado')
+            ->andWhere('s.solicitudcedulasolicita = :documento')
+            ->setParameters(['aprobado' => true, 'documento' => $request->get("documento")])
+            ->getQuery()
+            ->getResult();
         $response = [];
         if ($solicitud) {
             $response["beneficios"] = count($solicitudes);

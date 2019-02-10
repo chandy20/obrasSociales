@@ -273,9 +273,7 @@
                     if (documento.length > 0) {
                         console.log(documento);
                         $.get(url, {"documento": documento}, function (response) {
-                            //your callback here
-                            console.log(response);
-                            if (response.beneficios) {
+                            if (response.seccional) {
                                 $("#{{ form.vars.id }}_idseccional").val(response.seccional).trigger('change.select2');
                                 $("#{{ form.vars.id }}_idtiposolicitud").val(response.tipoSoliciutd).trigger('change.select2');
                                 $("#{{ form.vars.id }}_solicitudnombresolicita").val(response.nombreSolicitante);
@@ -302,11 +300,12 @@
                                 $("#{{ form.vars.id }}_idviabilidadplaneacion").val(response.viabilidad).trigger('change.select2');
                                 $("#{{ form.vars.id }}_idzonaubicacion").val(response.zona).trigger('change.select2');
                                 $("#{{ form.vars.id }}_idcantidadesbeneficioinst").val(response.beneficioIns).trigger('change.select2');
-
+                            }
+                            if (response.beneficios) {
                                 if (response.beneficios === 1) {
-                                    swal("Atención", "Esta persona ha solicitado 1 beneficio", "info");
+                                    swal("Atención", "Esta persona ha recibido 1 beneficio", "info");
                                 } else {
-                                    swal("Atención","Esta persona ha solicitado " + response.beneficios + " beneficios", "info");
+                                    swal("Atención", "Esta persona ha recibido " + response.beneficios + " beneficios", "info");
 
                                 }
 

@@ -326,6 +326,7 @@ class SolicitudesAdmin extends AbstractAdmin
             "Cédula del Solicitante" => 'solicitudcedulasolicita',
             "Nombre del Solicitante" => 'solicitudnombresolicita',
             "Parentesco con el Solicitante" => 'idparentesco',
+            "Correo electrónico de solicitante" =>'emailSolicitante',
             "Cédula Funcionario Policial" => 'solicitudcedulafuncionario',
             "Grado Funcionario Policial" => 'idgrado',
             "Dirección Funcionario" => 'solicituddireccionfuncionario',
@@ -351,6 +352,8 @@ class SolicitudesAdmin extends AbstractAdmin
             "Concepto Junta" => 'conceptoFinal',
             "Cantidad solicitada" => 'cantidadSolicitada',
             "Cantidad Aprobada" => 'cantidadAprobada',
+            "Beneficiario final"=>'nombreBeneficiarioFinal',
+            "Documento beneficiario final"=>'documentoBeneficiarioFinal',
             "Programas" => 'programasArray',
         );
     }
