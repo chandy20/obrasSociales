@@ -3,25 +3,45 @@ $(function () {
     $(".familiar").fadeOut();
     $(".funcionario").fadeOut();
     mostrarFormulario();
+
+    $("select.gradoFuncionario").change(function () {
+        var grado = $(this).val();
+        esconderCamposFallecido(grado);
+    });
+    var grado = $("select.gradoFuncionario").val();
+    esconderCamposFallecido(grado);
 })
 
 function mostrarFormulario() {
     var tipo_solicitud = $("select.tipo_solicitud").val();
-    if (tipo_solicitud != "") {
-        if (tipo_solicitud == 1) {
-            $(".institucional").fadeOut();
-        } else {
-            $(".institucional").fadeIn();
-        }
-        if (tipo_solicitud == 2) {
-            $(".familiar").fadeOut();
-            $(".funcionario").fadeOut();
-        } else {
-            $(".familiar").fadeIn();
-            $(".funcionario").fadeIn();
-        }
+    if (tipo_solicitud == 1) {
+        $(".institucional").fadeOut();
+    } else {
+        $(".institucional").fadeIn();
+    }
+    if (tipo_solicitud == 2) {
+        $(".familiar").fadeOut();
+        $(".funcionario").fadeOut();
+    } else {
+        $(".familiar").fadeIn();
+        $(".funcionario").fadeIn();
+    }
+    var grado = $("select.gradoFuncionario").val();
+    esconderCamposFallecido(grado);
+}
+
+
+function esconderCamposFallecido(grado) {
+    if (grado != "" && (grado == 30 || grado == 31)) {
+        $('.fallecido').parent().parent().parent().addClass('hidden');
+        $('.fallecido').each(function () {
+            $(this).val("").change();
+        });
+    } else {
+        $('.fallecido').parent().parent().parent().removeClass('hidden');
     }
 }
+
 function soloNumeros(input) {
     $(input).val($(input).val().replace(/\D/g, ''));
 }
@@ -48,6 +68,7 @@ function actualizarProgramasPadres(datoSelect) {
         }
     });
 }
+
 function actualizarProgramas(datoSelect) {
     var data = {
         programa_id: $(datoSelect).val()

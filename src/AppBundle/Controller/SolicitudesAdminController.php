@@ -459,6 +459,13 @@ class SolicitudesAdminController extends CRUDController
     public function validaciones($form)
     {
         $tipoDeSolicitud = $form->get("idtiposolicitud")->getData();
+
+        if (!$form->get("direccionSolicitante")->getdata()) {
+            $form->get("direccionSolicitante")->addError(new FormError("Este valor no debería estar vacío"));
+        }
+        if (!$form->get("telefonoSolicitante")->getdata()) {
+            $form->get("telefonoSolicitante")->addError(new FormError("Este valor no debería estar vacío"));
+        }
         if ($tipoDeSolicitud) {
             if ($tipoDeSolicitud->getTiposolicitudnombre() == "Familiar y personal") {
                 if (!$form->get("idestadocivil")->getdata()) {
@@ -491,26 +498,21 @@ class SolicitudesAdminController extends CRUDController
                 if (!$form->get("nombreBeneficiarioFinal")->getdata()) {
                     $form->get("nombreBeneficiarioFinal")->addError(new FormError("Este valor no debería estar vacío"));
                 }
-                if (!$form->get("antiguedad")->getdata()) {
-                    $form->get("antiguedad")->addError(new FormError("Este valor no debería estar vacío"));
-                }
                 if (!$form->get("solicitudcedulafuncionario")->getdata()) {
                     $form->get("solicitudcedulafuncionario")->addError(new FormError("Este valor no debería estar vacío"));
                 }
                 if (!$form->get("idgrado")->getdata()) {
                     $form->get("idgrado")->addError(new FormError("Este valor no debería estar vacío"));
-                }
-                if (!$form->get("unidad")->getdata()) {
-                    $form->get("unidad")->addError(new FormError("Este valor no debería estar vacío"));
-                }
-                if (!$form->get("solicitudnombrefuncionario")->getdata()) {
-                    $form->get("solicitudnombrefuncionario")->addError(new FormError("Este valor no debería estar vacío"));
-                }
-                if (!$form->get("solicituddireccionfuncionario")->getdata()) {
-                    $form->get("solicituddireccionfuncionario")->addError(new FormError("Este valor no debería estar vacío"));
-                }
-                if (!$form->get("solicitudtelefonosfuncionario")->getdata()) {
-                    $form->get("solicitudtelefonosfuncionario")->addError(new FormError("Este valor no debería estar vacío"));
+                } else if($form->get("idgrado")->getdata()->getId() != 30 && $form->get("idgrado")->getdata()->getId() != 31) {
+                    if (!$form->get("antiguedad")->getdata()) {
+                        $form->get("antiguedad")->addError(new FormError("Este valor no debería estar vacío"));
+                    }
+                    if (!$form->get("unidad")->getdata()) {
+                        $form->get("unidad")->addError(new FormError("Este valor no debería estar vacío"));
+                    }
+                    if (!$form->get("solicitudnombrefuncionario")->getdata()) {
+                        $form->get("solicitudnombrefuncionario")->addError(new FormError("Este valor no debería estar vacío"));
+                    }
                 }
             } else if ($tipoDeSolicitud->getTiposolicitudnombre() == "Institucional") {
                 if (!$form->get("idpoblacionbeneficia")->getdata()) {

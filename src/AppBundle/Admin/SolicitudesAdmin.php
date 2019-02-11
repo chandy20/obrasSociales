@@ -51,34 +51,33 @@ class SolicitudesAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-                ->add('solicitudfecha', 'doctrine_orm_date_range', [
-                    "label" => "Fecha de la Solicitud",
-                    'field_type' => 'sonata_type_date_range_picker',
+            ->add('solicitudfecha', 'doctrine_orm_date_range', [
+                "label" => "Fecha de la Solicitud",
+                'field_type' => 'sonata_type_date_range_picker',
+                'field_options' => [
                     'field_options' => [
-                        'field_options' => [
-                            'format' => 'yyyy-MM-dd'
-                        ],
-                    ]
-                ])
-                ->add('solicitudcedulasolicita', null, ["label" => "Cedula del Solicitante"])
-                ->add('idparentesco', null, ["label" => "Parentesco con el Solicitante"])
-                ->add('solicitudcedulafuncionario', null, ["label" => "Cedula Funcionario Policial"])
-                ->add('idgrado', null, ["label" => "Grado Funcionario Policial"])
-                ->add('antiguedad', null, ["label" => "Antiguedad Funcionario"])
-                ->add('idtiposolicitud', null, ["label" => "Tipo de Solicitud"])
-                ->add('idestadocivil', null, ["label" => "Estado Civil"])
-                ->add('idingreso', null, ["label" => "Ingresos"])
-                ->add('idsituacionvivienda', null, ["label" => "Situacion de Vivienda"])
-                ->add('idmotivodeuda', null, ["label" => "Motivo Deuda"])
-                ->add('idafiliadodibie', null, ["label" => "Afiliado a DIBIE?"])
-                ->add('idviabilidadplaneacion', null, ["label" => "Viabilidad Planeacion"])
-                ->add('idseccional', null, ["label" => "Seccional"])
-                ->add('totalPuntaje', null, ["label" => "Puntaje total"])
-                ->add('concepto', null, ["label" => "Concepto Previo"])
-                ->add('conceptoFinal', null, ["label" => "Concepto Junta"])
-                ->add('otorga', null, ["label" => "Otorga Beneficio"])
-                ->add('programas.programa.idarea', null, ["label" => "Área"])
-        ;
+                        'format' => 'yyyy-MM-dd'
+                    ],
+                ]
+            ])
+            ->add('solicitudcedulasolicita', null, ["label" => "Cedula del Solicitante"])
+            ->add('idparentesco', null, ["label" => "Parentesco con el Solicitante"])
+            ->add('solicitudcedulafuncionario', null, ["label" => "Cedula Funcionario Policial"])
+            ->add('idgrado', null, ["label" => "Grado Funcionario Policial"])
+            ->add('antiguedad', null, ["label" => "Antiguedad Funcionario"])
+            ->add('idtiposolicitud', null, ["label" => "Tipo de Solicitud"])
+            ->add('idestadocivil', null, ["label" => "Estado Civil"])
+            ->add('idingreso', null, ["label" => "Ingresos"])
+            ->add('idsituacionvivienda', null, ["label" => "Situacion de Vivienda"])
+            ->add('idmotivodeuda', null, ["label" => "Motivo Deuda"])
+            ->add('idafiliadodibie', null, ["label" => "Afiliado a DIBIE?"])
+            ->add('idviabilidadplaneacion', null, ["label" => "Viabilidad Planeacion"])
+            ->add('idseccional', null, ["label" => "Seccional"])
+            ->add('totalPuntaje', null, ["label" => "Puntaje total"])
+            ->add('concepto', null, ["label" => "Concepto Previo"])
+            ->add('conceptoFinal', null, ["label" => "Concepto Junta"])
+            ->add('otorga', null, ["label" => "Otorga Beneficio"])
+            ->add('programas.programa.idarea', null, ["label" => "Área"]);
     }
 
     /**
@@ -177,7 +176,7 @@ class SolicitudesAdmin extends AbstractAdmin
             ->add('antiguedad', null, [
                     "placeholder" => "Seleccione",
                     "label" => "Antigüedad Funcionario",
-                    'attr' => array('class' => 'form-control')]
+                    'attr' => array('class' => 'form-control  fallecido')]
             )
             ->add('idparentesco', null, [
                     "placeholder" => "Seleccione",
@@ -192,30 +191,35 @@ class SolicitudesAdmin extends AbstractAdmin
             ->add('idgrado', null, [
                     "placeholder" => "Seleccione",
                     "label" => "Grado Funcionario Policial",
-                    'attr' => array('class' => 'form-control')]
+                    'attr' => array('class' => 'form-control gradoFuncionario')]
             )
             ->add('unidad', null, [
                     "placeholder" => "Seleccione",
-                    "label" => "unidad", 'attr' => array('class' => 'form-control')]
+                    "label" => "unidad", 'attr' => array('class' => 'form-control fallecido')]
             )
             ->add('solicitudnombrefuncionario', null, [
                     'required' => false,
                     "label" => "Nombre del Funcionario Policial",
-                    'attr' => array('class' => 'form-control',
+                    'attr' => array('class' => 'form-control  fallecido',
                         'placeholder' => "Digita Nombre Completo del Funcionario")]
             )
-            ->add('solicituddireccionfuncionario', null, [
+            ->add('direccionSolicitante', null, [
                     'required' => false,
-                    "label" => "Dirección Funcionario",
-                    'attr' => array('class' => 'form-control',
-                        'placeholder' => "Digita Direccion del Funcionario")]
+                    "label" => "Dirección",
+                    'attr' => array('class' => 'form-control')
+                ]
             )
-            ->add('solicitudtelefonosfuncionario', null, [
+            ->add('telefonoSolicitante', null, [
                     'required' => false,
-                    "label" => "Teléfono Funcionario",
+                    "label" => "Teléfono",
                     'attr' => array('onkeyup' => "soloNumeros(this)",
-                        'class' => 'form-control',
-                        'placeholder' => "Digita Telefono del Funcionario")]
+                        'class' => 'form-control')]
+            )
+            ->add('telefonoSolicitante2', null, [
+                    'required' => false,
+                    "label" => "Teléfono alterno",
+                    'attr' => array('onkeyup' => "soloNumeros(this)",
+                        'class' => 'form-control')]
             )
             ->add('programas', null, [
                     'class' => "AppBundle:Programas",
@@ -308,7 +312,7 @@ class SolicitudesAdmin extends AbstractAdmin
             )
             ->getFormBuilder()
             ->addEventSubscriber(new AddAreaFieldSubscriber())
-            ->addEventSubscriber(new AddProgramaPadreFieldSubscriber(false,$em))
+            ->addEventSubscriber(new AddProgramaPadreFieldSubscriber(false, $em))
             ->addEventSubscriber(new AddProgramasFieldSubscriber());
     }
 
@@ -326,11 +330,12 @@ class SolicitudesAdmin extends AbstractAdmin
             "Cédula del Solicitante" => 'solicitudcedulasolicita',
             "Nombre del Solicitante" => 'solicitudnombresolicita',
             "Parentesco con el Solicitante" => 'idparentesco',
-            "Correo electrónico de solicitante" =>'emailSolicitante',
+            "Correo electrónico de solicitante" => 'emailSolicitante',
             "Cédula Funcionario Policial" => 'solicitudcedulafuncionario',
             "Grado Funcionario Policial" => 'idgrado',
-            "Dirección Funcionario" => 'solicituddireccionfuncionario',
-            "Teléfono Funcionario" => 'solicitudtelefonosfuncionario',
+            "Dirección Solicitante" => 'direccionSolicitante',
+            "Teléfono Solicitante" => 'telefonoSolicitante',
+            "Teléfono alterno Solicitante" => 'telefonoSolicitante2',
             "Nombre del Funcionario" => 'solicitudnombrefuncionario',
             "Antiguedad Funcionario" => 'antiguedad',
             "Descripción de la Solicitud" => 'solicituddescripcion',
@@ -352,8 +357,8 @@ class SolicitudesAdmin extends AbstractAdmin
             "Concepto Junta" => 'conceptoFinal',
             "Cantidad solicitada" => 'cantidadSolicitada',
             "Cantidad Aprobada" => 'cantidadAprobada',
-            "Beneficiario final"=>'nombreBeneficiarioFinal',
-            "Documento beneficiario final"=>'documentoBeneficiarioFinal',
+            "Beneficiario final" => 'nombreBeneficiarioFinal',
+            "Documento beneficiario final" => 'documentoBeneficiarioFinal',
             "Programas" => 'programasArray',
         );
     }
@@ -370,8 +375,9 @@ class SolicitudesAdmin extends AbstractAdmin
             ->add('idparentesco', null, ["label" => "Parentesco con el Solicitante"])
             ->add('solicitudcedulafuncionario', null, ["label" => "Cedula Funcionario Policial"])
             ->add('idgrado', null, ["label" => "Grado Funcionario Policial"])
-            ->add('solicituddireccionfuncionario', null, ["label" => "Direccion Funcionario"])
-            ->add('solicitudtelefonosfuncionario', null, ["label" => "Telefono Funcionario"])
+            ->add('direccionSolicitante', null, ["label" => "Direccion Solicitante"])
+            ->add('telefonoSolicitante', null, ["label" => "Telefono Solicitante"])
+            ->add('telefonoSolicitante2', null, ["label" => "Telefono alterno Solicitante"])
             ->add('solicitudnombrefuncionario', null, ["label" => "Nombre del Funcionario"])
             ->add('antiguedad', null, ["label" => "Antiguedad Funcionario:"])
             ->add('solicituddescripcion', null, ["label" => "Descripcion de la Solicitud"])

@@ -88,6 +88,26 @@ class Solicitudes {
      * @ORM\Column(name="SolicitudTelefonosFuncionario", type="string", length=45, nullable=true)
      */
     private $solicitudtelefonosfuncionario;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="direccion_solicitante", type="string", length=350, nullable=true)
+     */
+    private $direccionSolicitante;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="telefono_solicitante", type="string", length=45, nullable=true)
+     */
+    private $telefonoSolicitante;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="telefono_solicitante_2", type="string", length=45, nullable=true)
+     */
+    private $telefonoSolicitante2;
 
     /**
      * @var string
@@ -1438,4 +1458,76 @@ class Solicitudes {
         return $this->programasArray;
     }
 
+
+    /**
+     * Set direccionSolicitante
+     *
+     * @param string $direccionSolicitante
+     *
+     * @return Solicitudes
+     */
+    public function setDireccionSolicitante($direccionSolicitante)
+    {
+        $this->direccionSolicitante = $direccionSolicitante;
+
+        return $this;
+    }
+
+    /**
+     * Get direccionSolicitante
+     *
+     * @return string
+     */
+    public function getDireccionSolicitante()
+    {
+        return $this->direccionSolicitante;
+    }
+
+    /**
+     * Set telefonoSolicitante
+     *
+     * @param string $telefonoSolicitante
+     *
+     * @return Solicitudes
+     */
+    public function setTelefonoSolicitante($telefonoSolicitante)
+    {
+        $this->telefonoSolicitante = $telefonoSolicitante;
+
+        return $this;
+    }
+
+    /**
+     * Get telefonoSolicitante
+     *
+     * @return string
+     */
+    public function getTelefonoSolicitante()
+    {
+        return $this->telefonoSolicitante;
+    }
+
+    /**
+     * Set telefonoSolicitante2
+     *
+     * @param string $telefonoSolicitante2
+     *
+     * @return Solicitudes
+     */
+    public function setTelefonoSolicitante2($telefonoSolicitante2)
+    {
+        $this->telefonoSolicitante2 = $telefonoSolicitante2;
+
+        return $this;
+    }
+
+    /**
+     * Get telefonoSolicitante2
+     *
+     * @return string
+     */
+    public function getTelefonoSolicitante2()
+    {
+        return $this->telefonoSolicitante2;
+    }
 }
