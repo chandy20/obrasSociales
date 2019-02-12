@@ -10,6 +10,9 @@ sonata_block:
          sonata.block.service.text: # used to if you plan to use Sonata user routes
 
 sonata_user:
+    admin:
+        user:
+            class: AppBundle\Admin\UserAdmin
     security_acl: false
     manager_type: orm # can be orm or mongodb
 
