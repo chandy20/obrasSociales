@@ -901,7 +901,8 @@ class ConceptosjuntaAdminController extends CRUDController
     public function downloadArchivoAction($id)
     {
         try {
-            $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findOneById($id);
+            $conceptoJunta = $this->em->getRepository("AppBundle:Conceptosjunta")->findOneById($id);
+            $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findOneById($conceptoJunta->getId());
             $path = $this->get('kernel')->getRootDir() . '/../web' . $this->getRequest()->getBasePath() . "/upload/";
             $content = file_get_contents($path . $solicitud->getArchivo());
             $response = new Response();
