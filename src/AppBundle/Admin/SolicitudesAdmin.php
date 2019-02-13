@@ -126,15 +126,9 @@ class SolicitudesAdmin extends AbstractAdmin
         $usuario = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
         $seccional = null;
         $readOnlySeccional = false;
-        $readOnlyArea = "";
-        $area = null;
         if ($usuario->getSeccional()) {
             $seccional = $usuario->getSeccional();
             $readOnlySeccional = true;
-        }
-        if ($usuario->getArea()) {
-            $area = $usuario->getArea();
-            $readOnlyArea = "readonly";;
         }
         $constraint = array(new NotBlank());
         $constraintEmail = array(new NotBlank(), new Email());

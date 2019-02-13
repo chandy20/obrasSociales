@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Conceptosjunta;
+use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -13,12 +14,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FormularioReportesType extends AbstractType
 {
+    protected $user;
+
+    function __construct(User $user) {
+        $this->user = $user;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $seccional = null;
+        if ($this->user->getSeccional()) {
+            $seccional = $this->user->getSeccional();
+        }
         $opcionesFechaInicial = [
             'widget' => 'single_text',
             "label" => "Fecha inicial",
@@ -42,12 +52,17 @@ class FormularioReportesType extends AbstractType
             'mapped' => false,
             'required' => false,
             'class' => 'AppBundle:Seccionales',
-            'attr' => array(
-                'class' => 'form-control',
-            ),
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('s')
+            "data" => $seccional,
+            'attr' => array('class' => 'form-control'),
+
+            'query_builder' => function (EntityRepository $er) use ($seccional) {
+                $query = $er->createQueryBuilder('s')
                     ->orderBy("s.seccionalnombre", "ASC");
+                if($seccional){
+                    $query->where('s.id = :seccional')
+                        ->setParameter('seccional', $seccional);
+                }
+                return $query;
             }
         ];
         $opcionesDocumentoTitular = [

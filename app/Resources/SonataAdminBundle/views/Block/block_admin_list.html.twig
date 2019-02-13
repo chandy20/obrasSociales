@@ -44,7 +44,7 @@ file that was distributed with this source code.
                                                             Reportes
                                                         </a>
                                                     {%endif%}
-                                                    {%if admin.baseControllerName == "AppBundle:SolicitudesAdmin"%}
+                                                    {%if admin.baseControllerName == "AppBundle:SolicitudesAdmin" and app.user.seccional == null %}
                                                         <a class="btn btn-link btn-flat" href="{{path('admin_app_solicitudes_importar')}}">
                                                             <i class="fa fa-upload" aria-hidden="true"></i>
                                                             Importar

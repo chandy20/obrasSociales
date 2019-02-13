@@ -286,7 +286,7 @@ class ConceptosjuntaAdminController extends CRUDController
     public function reporteAction()
     {
         $concepto = new Conceptosjunta();
-        $form = $this->createForm(FormularioReportesType::class, $concepto, []);
+        $form = $this->createForm(new FormularioReportesType($this->getuser()), $concepto, []);
         $form->handleRequest($this->getRequest());
         return $this->renderWithExtraParams("AppBundle:Reporte:base_reporte.html.twig", [
             'action' => 'edit',
