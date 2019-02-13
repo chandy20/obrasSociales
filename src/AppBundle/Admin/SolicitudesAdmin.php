@@ -29,7 +29,16 @@ class SolicitudesAdmin extends AbstractAdmin
         $em = $this->getConfigurationPool()->getContainer()->get("doctrine")->getEntityManager();
 
         $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
-        if ($user->hasRole('ROLE_CONSULTOR')) {
+        if ($user->hasRole('ROLE_CONSULTOR') && $user->getArea()) {
+            $query
+                ->join($query->getRootAliases()[0] . ".programas", "ps")
+                ->join("ps.programa", "p")
+                ->where("p.idarea = :area")
+                ->andWhere($query->getRootAliases()[0] . ".idseccional = :seccional")
+                ->setParameter("seccional", $user->getSeccional())
+                ->setParameter("area", $user->getArea());
+
+        } else if ($user->hasRole('ROLE_CONSULTOR')) {
             $query->where($query->getRootAliases()[0] . ".idseccional = :seccional")
                 ->setParameter("seccional", $user->getSeccional());
         }
@@ -114,6 +123,19 @@ class SolicitudesAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getManager();
+        $usuario = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+        $seccional = null;
+        $readOnlySeccional = false;
+        $readOnlyArea = "";
+        $area = null;
+        if ($usuario->getSeccional()) {
+            $seccional = $usuario->getSeccional();
+            $readOnlySeccional = true;
+        }
+        if ($usuario->getArea()) {
+            $area = $usuario->getArea();
+            $readOnlyArea = "readonly";;
+        }
         $constraint = array(new NotBlank());
         $constraintEmail = array(new NotBlank(), new Email());
         $hoy = new DateTime();
@@ -131,7 +153,11 @@ class SolicitudesAdmin extends AbstractAdmin
                     'constraints' => $constraint,
                     "placeholder" => "Seleccione",
                     "label" => "Seccional",
-                    'attr' => array('class' => 'form-control')]
+                    "data" => $seccional,
+                    'attr' => array('class' => 'form-control',
+                        'onmouseover' => "this.disabled=" . $readOnlySeccional,
+                        'onmouseout' => "this.disabled=" . $readOnlySeccional)
+                ]
             )
             ->add('idtiposolicitud', null, [
                 'constraints' => $constraint,

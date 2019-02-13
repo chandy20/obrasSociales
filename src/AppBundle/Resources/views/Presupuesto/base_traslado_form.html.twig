@@ -1,0 +1,507 @@
+{% block form %}
+    {% import "SonataAdminBundle:CRUD:base_edit_form_macro.html.twig" as form_helper %}
+    {{ sonata_block_render_event('sonata.admin.edit.form.top', { 'admin': admin, 'object': null }) }}
+
+    {# NEXT_MAJOR: remove default filter #}
+    {% set url = "reporte" %}
+    <link rel="stylesheet" href="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/css/sweetalert.css">
+    <script src="{{ app.request.getSchemeAndHttpHost() }}/bundles/frontend/js/sweetalert.js"></script>
+    <form id="formulario_traslado"
+          {% if sonata_admin.adminPool.getOption('form_type') == 'horizontal' %}class="form-horizontal"{% endif %}
+          role="form"
+            {# NEXT_MAJOR: remove default filter #}
+          action="{% block sonata_form_action_url %}{{ admin.generateUrl(url, {'id': "reporte", 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}{% endblock %}"
+          method="POST"
+            {% if not sonata_admin.adminPool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+            {% block sonata_form_attributes %}{% endblock %}>
+        <div id="exTab2" class="container col-md-12">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    {#                <a  href="#cantidades" onclick="marcarPestana(1)" data-toggle="tab">Cantidades</a>#}
+                    <a href="#agrupaciones" onclick="marcarPestana(1)" data-toggle="tab">Cantidades</a>
+                </li>
+                <li>
+                    <a href="#numero" onclick="marcarPestana(2)" data-toggle="tab">Número de inscritos</a>
+                </li>
+                <li>
+                    <a href="#presupuesto" onclick="marcarPestana(3)" data-toggle="tab">Presupuesto</a>
+                </li>
+                <li>
+                    <a href="#movimientos" onclick="marcarPestana(4)" data-toggle="tab">Movimientos financieros</a>
+                </li>
+                <li>
+                    <a href="#parentesco" onclick="marcarPestana(5)" data-toggle="tab">Parentesco</a>
+                </li>
+                <li>
+                    <a href="#grado" onclick="marcarPestana(6)" data-toggle="tab">Grado</a>
+                </li>
+                <li>
+                    <a href="#civil" onclick="marcarPestana(7)" data-toggle="tab">Estado civil</a>
+                </li>
+                <li>
+                    <a href="#ingresos" onclick="marcarPestana(8)" data-toggle="tab">Ingresos</a>
+                </li>
+                <li>
+                    <a href="#personas" onclick="marcarPestana(9)" data-toggle="tab">Personas a cargo</a>
+                </li>
+                <li>
+                    <a href="#situacion" onclick="marcarPestana(10)" data-toggle="tab">Situación de vivienda</a>
+                </li>
+                <li>
+                    <a href="#motivo" onclick="marcarPestana(11)" data-toggle="tab">Motivo de deuda</a>
+                </li>
+                <li>
+                    <a href="#tipo" onclick="marcarPestana(12)" data-toggle="tab">Tipo de solicitud</a>
+                </li>
+            </ul>
+            <div class="tab-content ">
+                {#<div class="tab-pane" id="cantidades">
+                    <div class="col-md-3">
+                        {{ form_label(form.fechaInicial) }}
+                        {{ form_errors(form.fechaInicial) }}
+                        {{ form_widget(form.fechaInicial) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.fechaFinal) }}
+                        {{ form_errors(form.fechaFinal) }}
+                        {{ form_widget(form.fechaFinal) }}
+                    </div>
+                    {% if is_granted("ROLE_ADMIN") %}
+                        <div class="col-md-3">
+                            {{ form_label(form.seccional) }}
+                            {{ form_errors(form.seccional) }}
+                            {{ form_widget(form.seccional) }}
+                        </div>
+                    {% endif %}
+                    <div class="col-md-3">
+                        {{ form_label(form.concepto) }}
+                        {{ form_errors(form.concepto) }}
+                        {{ form_widget(form.concepto) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.parentesco) }}
+                        {{ form_errors(form.parentesco) }}
+                        {{ form_widget(form.parentesco) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.grado) }}
+                        {{ form_errors(form.grado) }}
+                        {{ form_widget(form.grado) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.tipoSolicitud) }}
+                        {{ form_errors(form.tipoSolicitud) }}
+                        {{ form_widget(form.tipoSolicitud) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.estadoCivil) }}
+                        {{ form_errors(form.estadoCivil) }}
+                        {{ form_widget(form.estadoCivil) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.ingreso) }}
+                        {{ form_errors(form.ingreso) }}
+                        {{ form_widget(form.ingreso) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.personasCargo) }}
+                        {{ form_errors(form.personasCargo) }}
+                        {{ form_widget(form.personasCargo) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.situacionVivienda) }}
+                        {{ form_errors(form.situacionVivienda) }}
+                        {{ form_widget(form.situacionVivienda) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.motivoDeuda) }}
+                        {{ form_errors(form.motivoDeuda) }}
+                        {{ form_widget(form.motivoDeuda) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.cantidadBeneficio) }}
+                        {{ form_errors(form.cantidadBeneficio) }}
+                        {{ form_widget(form.cantidadBeneficio) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.conceptoVisita) }}
+                        {{ form_errors(form.conceptoVisita) }}
+                        {{ form_widget(form.conceptoVisita) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.afiliadoDibie) }}
+                        {{ form_errors(form.afiliadoDibie) }}
+                        {{ form_widget(form.afiliadoDibie) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.poblacionBeneficiada) }}
+                        {{ form_errors(form.poblacionBeneficiada) }}
+                        {{ form_widget(form.poblacionBeneficiada) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.viabilidadPlaneacion) }}
+                        {{ form_errors(form.viabilidadPlaneacion) }}
+                        {{ form_widget(form.viabilidadPlaneacion) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.zonaUbicacion) }}
+                        {{ form_errors(form.zonaUbicacion) }}
+                        {{ form_widget(form.zonaUbicacion) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.programa) }}
+                        {{ form_errors(form.programa) }}
+                        {{ form_widget(form.programa) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.area) }}
+                        {{ form_errors(form.area) }}
+                        {{ form_widget(form.area) }}
+                    </div>
+                </div>#}
+                <div class="tab-pane active" id="agrupaciones">
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaInicial) }}
+                        {{ form_errors(form.fechaInicial) }}
+                        {{ form_widget(form.fechaInicial) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaFinal) }}
+                        {{ form_errors(form.fechaFinal) }}
+                        {{ form_widget(form.fechaFinal) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.seccional) }}
+                        {{ form_errors(form.seccional) }}
+                        {{ form_widget(form.seccional) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.area4) }}
+                        {{ form_errors(form.area4) }}
+                        {{ form_widget(form.area4) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.programa5) }}
+                        {{ form_errors(form.programa5) }}
+                        {{ form_widget(form.programa5) }}
+                    </div>
+
+                    <div class="col-md-12">
+                        <br>
+                        {{ form_label(form.agrupaciones) }}
+                        {{ form_errors(form.agrupaciones) }}
+                        <div class="col-md-12">
+                            {% for key, entidad in form.agrupaciones.children %}
+                                <div class="col col-md-6">
+                                    <div class="col col-md-6">
+                                        {{ form_label(entidad) }}
+                                    </div>
+                                    <div class="col col-md-6">
+                                        {{ form_widget(entidad) }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="numero">
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaInicial2) }}
+                        {{ form_errors(form.fechaInicial2) }}
+                        {{ form_widget(form.fechaInicial2) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaFinal2) }}
+                        {{ form_errors(form.fechaFinal2) }}
+                        {{ form_widget(form.fechaFinal2) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.documentoSolicitante) }}
+                        {{ form_errors(form.documentoSolicitante) }}
+                        {{ form_widget(form.documentoSolicitante) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.documentoTitular) }}
+                        {{ form_errors(form.documentoTitular) }}
+                        {{ form_widget(form.documentoTitular) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.programa3) }}
+                        {{ form_errors(form.programa3) }}
+                        {{ form_widget(form.programa3) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.area2) }}
+                        {{ form_errors(form.area2) }}
+                        {{ form_widget(form.area2) }}
+                    </div>
+                </div>
+                <div class="tab-pane" id="presupuesto">
+                    <div class="col-md-3">
+                        {{ form_label(form.fechaInicial3) }}
+                        {{ form_errors(form.fechaInicial3) }}
+                        {{ form_widget(form.fechaInicial3) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.fechaFinal3) }}
+                        {{ form_errors(form.fechaFinal3) }}
+                        {{ form_widget(form.fechaFinal3) }}
+                    </div>
+                    {% if is_granted("ROLE_ADMIN") %}
+                        <div class="col-md-3">
+                            {{ form_label(form.seccional3) }}
+                            {{ form_errors(form.seccional3) }}
+                            {{ form_widget(form.seccional3) }}
+                        </div>
+                    {% endif %}
+                    <div class="col-md-3">
+                        {{ form_label(form.area3) }}
+                        {{ form_errors(form.area3) }}
+                        {{ form_widget(form.area3) }}
+                    </div>
+                </div>
+                <div class="tab-pane" id="movimientos">
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaInicial4) }}
+                        {{ form_errors(form.fechaInicial4) }}
+                        {{ form_widget(form.fechaInicial4) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaFinal4) }}
+                        {{ form_errors(form.fechaFinal4) }}
+                        {{ form_widget(form.fechaFinal4) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.documentoSolicitante2) }}
+                        {{ form_errors(form.documentoSolicitante2) }}
+                        {{ form_widget(form.documentoSolicitante2) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.documentoTitular2) }}
+                        {{ form_errors(form.documentoTitular2) }}
+                        {{ form_widget(form.documentoTitular2) }}
+                    </div>
+                    {% if is_granted("ROLE_ADMIN") %}
+                        <div class="col-md-4">
+                            {{ form_label(form.seccional4) }}
+                            {{ form_errors(form.seccional4) }}
+                            {{ form_widget(form.seccional4) }}
+                        </div>
+                    {% endif %}
+                    <div class="col-md-4">
+                        {{ form_label(form.programa2) }}
+                        {{ form_errors(form.programa2) }}
+                        {{ form_widget(form.programa2) }}
+                    </div>
+                </div>
+                <div class="tab-pane" id="parentesco">
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaInicial5) }}
+                        {{ form_errors(form.fechaInicial5) }}
+                        {{ form_widget(form.fechaInicial5) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaFinal5) }}
+                        {{ form_errors(form.fechaFinal5) }}
+                        {{ form_widget(form.fechaFinal5) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.parentesco2) }}
+                        {{ form_errors(form.parentesco2) }}
+                        {{ form_widget(form.parentesco2) }}
+                    </div>
+                </div>
+                <div class="tab-pane" id="grado">
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaInicial6) }}
+                        {{ form_errors(form.fechaInicial6) }}
+                        {{ form_widget(form.fechaInicial6) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaFinal6) }}
+                        {{ form_errors(form.fechaFinal6) }}
+                        {{ form_widget(form.fechaFinal6) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.grado2) }}
+                        {{ form_errors(form.grado2) }}
+                        {{ form_widget(form.grado2) }}
+                    </div>
+                </div>
+                <div class="tab-pane" id="civil">
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaInicial7) }}
+                        {{ form_errors(form.fechaInicial7) }}
+                        {{ form_widget(form.fechaInicial7) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaFinal7) }}
+                        {{ form_errors(form.fechaFinal7) }}
+                        {{ form_widget(form.fechaFinal7) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.estadoCivil2) }}
+                        {{ form_errors(form.estadoCivil2) }}
+                        {{ form_widget(form.estadoCivil2) }}
+                    </div>
+                </div>
+                <div class="tab-pane" id="ingresos">
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaInicial8) }}
+                        {{ form_errors(form.fechaInicial8) }}
+                        {{ form_widget(form.fechaInicial8) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaFinal8) }}
+                        {{ form_errors(form.fechaFinal8) }}
+                        {{ form_widget(form.fechaFinal8) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.ingreso2) }}
+                        {{ form_errors(form.ingreso2) }}
+                        {{ form_widget(form.ingreso2) }}
+                    </div>
+                </div>
+                <div class="tab-pane" id="personas">
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaInicial9) }}
+                        {{ form_errors(form.fechaInicial9) }}
+                        {{ form_widget(form.fechaInicial9) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaFinal9) }}
+                        {{ form_errors(form.fechaFinal9) }}
+                        {{ form_widget(form.fechaFinal9) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.personasCargo2) }}
+                        {{ form_errors(form.personasCargo2) }}
+                        {{ form_widget(form.personasCargo2) }}
+                    </div>
+                </div>
+                <div class="tab-pane" id="situacion">
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaInicial10) }}
+                        {{ form_errors(form.fechaInicial10) }}
+                        {{ form_widget(form.fechaInicial10) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaFinal10) }}
+                        {{ form_errors(form.fechaFinal10) }}
+                        {{ form_widget(form.fechaFinal10) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.situacionVivienda2) }}
+                        {{ form_errors(form.situacionVivienda2) }}
+                        {{ form_widget(form.situacionVivienda2) }}
+                    </div>
+                </div>
+                <div class="tab-pane" id="motivo">
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaInicial11) }}
+                        {{ form_errors(form.fechaInicial11) }}
+                        {{ form_widget(form.fechaInicial11) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaFinal11) }}
+                        {{ form_errors(form.fechaFinal11) }}
+                        {{ form_widget(form.fechaFinal11) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.motivoDeuda2) }}
+                        {{ form_errors(form.motivoDeuda2) }}
+                        {{ form_widget(form.motivoDeuda2) }}
+                    </div>
+                </div>
+                <div class="tab-pane" id="tipo">
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaInicial12) }}
+                        {{ form_errors(form.fechaInicial12) }}
+                        {{ form_widget(form.fechaInicial12) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.fechaFinal12) }}
+                        {{ form_errors(form.fechaFinal12) }}
+                        {{ form_widget(form.fechaFinal12) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.tipoSolicitud2) }}
+                        {{ form_errors(form.tipoSolicitud2) }}
+                        {{ form_widget(form.tipoSolicitud2) }}
+                    </div>
+                </div>
+
+            </div>
+            {{ include('SonataAdminBundle:Helper:render_form_dismissable_errors.html.twig') }}
+
+            {% block sonata_pre_fieldsets %}
+            <div class="row">
+                {% endblock %}
+
+                {% block sonata_tab_content %}
+                    {% set has_tab = ((admin.formtabs|length == 1 and admin.formtabs|keys[0] != 'default') or admin.formtabs|length > 1 ) %}
+
+                    <div class="col-md-12">
+                        {% if has_tab %}
+                            <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    {% for name, form_tab in admin.formtabs %}
+                                        <li{% if loop.index == 1 %} class="active"{% endif %}><a
+                                                    href="#tab_{{ admin.uniqid }}_{{ loop.index }}" data-toggle="tab"><i
+                                                        class="fa fa-exclamation-circle has-errors hide"
+                                                        aria-hidden="true"></i> {{ form_tab.label|trans({}, form_tab.translation_domain ?: admin.translationDomain) }}
+                                            </a></li>
+                                    {% endfor %}
+                                </ul>
+                                <div class="tab-content">
+                                    {% for code, form_tab in admin.formtabs %}
+                                        <div class="tab-pane fade{% if loop.first %} in active{% endif %}"
+                                             id="tab_{{ admin.uniqid }}_{{ loop.index }}">
+                                            <div class="box-body  container-fluid">
+                                                <div class="sonata-ba-collapsed-fields">
+                                                    {% if form_tab.description != false %}
+                                                        <p>{{ form_tab.description|raw }}</p>
+                                                    {% endif %}
+
+                                                    {{ form_helper.render_groups(admin, form, form_tab['groups'], has_tab) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% else %}
+
+                        {% endif %}
+                    </div>
+                {% endblock %}
+
+                {% block sonata_post_fieldsets %}
+            </div>
+            {% endblock %}
+            <div id="divProceso" class="cCargando" style="visibility: hidden;">
+                <div id="divProcesoMsg" class="cCargandoImg">
+                    <br/>
+                    Consultando datos por favor espere...
+                    <br/>
+                </div>
+            </div>
+            <div style="display:none">
+                {{ form_rest(form) }}
+            </div>
+            <input type="hidden" id="pestanaActiva" value="1">
+            <div class="col-md-12">
+                <div class="col-md-12" id="datosConsulta"></div>
+                <div class="col-md-5"></div>
+                <div class="col-md-2">
+                    <label class="btn btn-success" onclick="buscarDatos()" name="btn_create_and_edit"><i
+                                class="fa fa-search" aria-hidden="true"></i> Consultar datos</label>
+                </div>
+                <div class="col-md-5"></div>
+            </div>
+        </div>
+
+    </form>
+
+    {{ sonata_block_render_event('sonata.admin.edit.form.bottom', { 'admin': admin, 'object': object }) }}
+{% endblock %}

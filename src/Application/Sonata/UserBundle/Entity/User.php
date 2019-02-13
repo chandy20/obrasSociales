@@ -23,7 +23,8 @@ use Sonata\UserBundle\Entity\BaseUser as BaseUser;
  *
  * @author <yourname> <youremail>
  */
-class User extends BaseUser {
+class User extends BaseUser
+{
 
     /**
      * @var int $id
@@ -35,7 +36,8 @@ class User extends BaseUser {
      *
      * @return int $id
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -45,13 +47,20 @@ class User extends BaseUser {
     private $seccional;
 
     /**
+     * @var \AppBundle\Entity\Areas
+     */
+    private $area;
+
+
+    /**
      * Set seccional
      *
      * @param \AppBundle\Entity\Seccionales $seccional
      *
      * @return User
      */
-    public function setSeccional(\AppBundle\Entity\Seccionales $seccional = null) {
+    public function setSeccional(\AppBundle\Entity\Seccionales $seccional = null)
+    {
         $this->seccional = $seccional;
 
         return $this;
@@ -62,8 +71,32 @@ class User extends BaseUser {
      *
      * @return \AppBundle\Entity\Seccionales
      */
-    public function getSeccional() {
+    public function getSeccional()
+    {
         return $this->seccional;
     }
 
+    /**
+     * Set area
+     *
+     * @param \AppBundle\Entity\Areas $area
+     *
+     * @return User
+     */
+    public function setArea(\AppBundle\Entity\Areas $area = null)
+    {
+        $this->area = $area;
+
+        return $this;
+    }
+
+    /**
+     * Get area
+     *
+     * @return \AppBundle\Entity\Areas
+     */
+    public function getArea()
+    {
+        return $this->area;
+    }
 }
