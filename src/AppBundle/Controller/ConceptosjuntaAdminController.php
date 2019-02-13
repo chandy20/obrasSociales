@@ -902,7 +902,7 @@ class ConceptosjuntaAdminController extends CRUDController
     {
         try {
             $conceptoJunta = $this->em->getRepository("AppBundle:Conceptosjunta")->findOneById($id);
-            $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findOneById($conceptoJunta->getId());
+            $solicitud = $this->em->getRepository("AppBundle:Solicitudes")->findOneById($conceptoJunta->getSolicitud());
             $path = $this->get('kernel')->getRootDir() . '/../web' . $this->getRequest()->getBasePath() . "/upload/";
             $content = file_get_contents($path . $solicitud->getArchivo());
             $response = new Response();
