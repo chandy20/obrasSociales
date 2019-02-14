@@ -78,7 +78,6 @@ class UserAdmin extends \Sonata\UserBundle\Admin\Entity\UserAdmin
             ->addIdentifier('username')
             ->add('email')
             ->add('enabled', null, ['editable' => true])
-            ->add('locked', null, ['editable' => true])
             ->add('createdAt');
 
     }
@@ -144,10 +143,11 @@ class UserAdmin extends \Sonata\UserBundle\Admin\Entity\UserAdmin
         foreach ($this->getConfigurationPool()->getContainer()->getParameter('security.role_hierarchy.roles') as $rol) {
             if(is_array($rol) && array_key_exists('0', $rol)){
                 foreach ($rol as $r){
-                    if ($admin && $r != "ROLE_ADMIN" && $r != "ROLE_SONATA_ADMIN") {
+                    if ($admin &&  $r != "ROLE_SONATA_ADMIN" && $r != "ROLE_ADMIN") {
                         $choices[$r] = $r;
                     }
                 }
+                $choices['ROLE_SUPER_ADMIN'] = 'ROLE_SUPER_ADMIN';
 
             }
         }
@@ -163,7 +163,7 @@ class UserAdmin extends \Sonata\UserBundle\Admin\Entity\UserAdmin
                 'required' => (!$this->getSubject() || is_null($this->getSubject()->getId())),
             ])
             ->add('phone', null, ['required' => false])
-            ->add('locked', null, ['required' => false]);
+            ->add('enabled', null, ['required' => false]);
         $formMapper->add($formMapper->create('roles', 'choice', array(
             'label' => "label.roles",
             'mapped' => true,

@@ -12,7 +12,7 @@ security:
 
     role_hierarchy:
         ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_SONATA_ADMIN]
-        ROLE_ADMIN:       [ROLE_USER, ROLE_SONATA_ADMIN, ROLE_SUPER_ADMIN]
+        ROLE_LIDER:       [ROLE_LIDER, ROLE_SONATA_ADMIN]
         ROLE_CONSULTOR: [ROLE_CONSULTOR, ROLE_SONATA_ADMIN]
         SONATA:
             # if you are not using acl then this line must be uncommented
@@ -71,5 +71,5 @@ security:
         # Secured part of the site
         # This config requires being logged for the whole site and having the admin role for the admin part.
         # Change these rules to adapt them to your needs
-        - { path: ^/admin/, role: [ROLE_ADMIN, ROLE_SONATA_ADMIN, ROLE_CONSULTOR] }
+        - { path: ^/admin/, role: [ROLE_ADMIN, ROLE_SONATA_ADMIN, ROLE_CONSULTOR, ROLE_LIDER] }
         - { path: ^/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }

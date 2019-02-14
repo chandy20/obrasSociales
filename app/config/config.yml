@@ -104,7 +104,7 @@ sonata_admin:
         groups:
             
             Solicitudes:
-                roles: [ ROLE_CONSULTOR, ROLE_SUPER_ADMIN ]
+                roles: [ ROLE_CONSULTOR, ROLE_SUPER_ADMIN, ROLE_LIDER ]
                 label: 'Solicitudes'
                 
             Usuario:
@@ -124,7 +124,7 @@ sonata_admin:
                 roles: [ ROLE_SUPER_ADMIN ]
                 label: 'Institucional'
             auditoria:
-                roles: [ ROLE_SUPER_ADMIN, ROLE_CONSULTOR ]
+                roles: [ ROLE_SUPER_ADMIN, ROLE_CONSULTOR, ROLE_LIDER ]
                 label: 'Auditoría'
 
            
