@@ -424,6 +424,7 @@ class ConceptosjuntaAdminController extends CRUDController
 
     public function cargarDatosAgrupados($form)
     {
+        $user = $this->getUser();
         $query = $this->em->getRepository("AppBundle:Solicitudes")->createQueryBuilder('s')
             ->where("s.solicitudfecha BETWEEN :inicio AND :fin")
             ->setParameter("inicio", $form->fechaInicial)
@@ -443,6 +444,10 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->join('ps.programa', 'p')
                 ->andWhere('p.id = :programa')
                 ->setParameter('programa', $form->programa5);
+        }
+        if($user->hasRole('ROLE_LIDER')){
+            $query->andWhere('p.idarea = :area')
+            ->setParameter('area', $user->getArea());
         }
         $query->resetDQLPart('select');
         $arrayEntidadCampos = [
@@ -554,6 +559,10 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->andWhere('p.idarea = :area')
                 ->setParameter('area', $form->area4);
         }
+        if($user->hasRole('ROLE_LIDER')){
+            $solicitudes->andWhere('p.idarea = :area')
+                ->setParameter('area', $user->getArea());
+        }
         if ($form->programa5 != null && $form->programa5 != 0) {
             $solicitudes->join('s.programas', 'ps')
                 ->join('ps.programa', 'p')
@@ -584,6 +593,7 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->andWhere("se.id = :seccional")
                 ->setParameter("seccional", $user->getSeccional());
         }
+
         if ($form->seccional != "") {
             $query->join("s.idseccional", "se")
                 ->andWhere("se.id = :seccional")
@@ -677,6 +687,10 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->andWhere("a.idArea = :area")
                 ->setParameter("area", $form->area);
         }
+        if($user->hasRole('ROLE_LIDER')){
+            $query->andWhere('p.idarea = :area')
+                ->setParameter('area', $user->getArea());
+        }
         $solicitudes = $query->getQuery()->getResult();
         $datos = [];
         foreach ($solicitudes as $solicitud) {
@@ -769,6 +783,10 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->andWhere("a.idArea = :area")
                 ->setParameter("area", $form->area2);
         }
+        if($user->hasRole('ROLE_LIDER')){
+            $query->andWhere('p.idarea = :area')
+                ->setParameter('area', $user->getArea());
+        }
         $solicitudes = $query->getQuery()->getResult();
         $datos = [];
         foreach ($solicitudes as $solicitud) {
@@ -818,6 +836,10 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->join("p.idarea", "a")
                 ->andWhere("a.idArea = :area")
                 ->setParameter("area", $form->area3);
+        }
+        if($user->hasRole('ROLE_LIDER')){
+            $query->andWhere('p.idarea = :area')
+                ->setParameter('area', $user->getArea());
         }
         $movimientos = $query->getQuery()->getResult();
         $datos = [];
@@ -890,6 +912,10 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->join("sp.programa", "p")
                 ->andWhere("p.id = :programa")
                 ->setParameter("programa", $form->programa2);
+        }
+        if($user->hasRole('ROLE_LIDER')){
+            $query->andWhere('p.idarea = :area')
+                ->setParameter('area', $user->getArea());
         }
         $movimientos = $query->getQuery()->getResult();
         $html = $this->renderView('AppBundle:Reporte:reporte_movimientos.html.twig', [
