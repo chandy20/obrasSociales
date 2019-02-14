@@ -98,7 +98,7 @@ class ConceptosjuntaAdmin extends AbstractAdmin
                 'label' => '¿Aprobado?'
             ]);
         $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
-        if ($user->hasRole("ROLE_ADMIN") || $user->hasRole("ROLE_SUPER_ADMIN")) {
+        if ($user->hasRole("ROLE_ADMIN") || $user->hasRole("ROLE_SUPER_ADMIN") || $user->hasRole("ROLE_LIDER")) {
             $listMapper
                 ->add('_action', null, array(
                     'actions' => array(
