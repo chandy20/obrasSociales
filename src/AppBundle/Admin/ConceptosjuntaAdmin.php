@@ -36,6 +36,12 @@ class ConceptosjuntaAdmin extends AbstractAdmin
         } else if ($user->hasRole('ROLE_CONSULTOR')) {
             $query->where($query->getRootAliases()[0] . ".idseccional = :seccional")
                 ->setParameter("seccional", $user->getSeccional());
+        }else if ($user->hasROle('ROLE_LIDER')) {
+            $query->join($query->getRootAliases()[0] . ".solicitud", "s")
+                ->join('s.programas', 'ps')
+                ->join("ps.programa", "p")
+                ->where("p.idarea = :area")
+                ->setParameter("area", $user->getArea());
         }
 
         return $query;
