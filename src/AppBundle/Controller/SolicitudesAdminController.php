@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Concepto;
 use AppBundle\Entity\Conceptosjunta;
 use AppBundle\Entity\ProgramaConcepto;
 use AppBundle\Entity\ProgramaSolicitud;
@@ -79,7 +80,6 @@ class SolicitudesAdminController extends CRUDController
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
                 $enviado = $request->request->all();
                 $em = $this->container->get('doctrine')->getManager();
-                $puntaje = 0;
                 $concepto = '';
                 try {
                     $entity = $submittedObject = $form->getData();
@@ -90,36 +90,7 @@ class SolicitudesAdminController extends CRUDController
                         $em->persist($programaSolicitud);
                         $entity->addPrograma($programaSolicitud);
                     }
-                    if ($entity->getIdingreso() != null) {
-                        $puntaje += $entity->getIdingreso()->getIngresopuntaje();
-                    }
-                    if ($entity->getIdpoblacionbeneficia() != null) {
-                        $puntaje += $entity->getIdpoblacionbeneficia()->getPoblacionBeneficiaPuntaje();
-                    }
-                    if ($entity->getIdzonaubicacion() != null) {
-                        $puntaje += $entity->getIdzonaubicacion()->getZonasUbicacionPuntaje();
-                    }
-                    if ($entity->getIdviabilidadplaneacion() != null) {
-                        $puntaje += $entity->getIdviabilidadplaneacion()->getViabilidadPlaneacionPuntaje();
-                    }
-                    if ($entity->getIdcantidadesbeneficioinst() != null) {
-                        $puntaje += $entity->getIdcantidadesbeneficioinst()->getCantidadesBeneficioInstPuntaje();
-                    }
-                    if ($entity->getIdafiliadodibie() != null) {
-                        $puntaje += $entity->getIdafiliadodibie()->getAfiliadoDibiePorcentaje();
-                    }
-                    if ($entity->getIdsituacionvivienda() != null) {
-                        $puntaje += $entity->getIdsituacionvivienda()->getSituacionesViviendaPuntaje();
-                    }
-                    if ($entity->getIdpersonacargo() != null) {
-                        $puntaje += $entity->getIdpersonacargo()->getPersonasCargoPuntaje();
-                    }
-                    if ($entity->getIdmotivodeuda() != null) {
-                        $puntaje += $entity->getIdmotivodeuda()->getMotivoDeudaPuntaje();
-                    }
-                    if ($entity->getIdconceptovisita() != null) {
-                        $puntaje += $entity->getIdconceptovisita()->getConceptosVisitaPuntaje();
-                    }
+
                     $file = $entity->getCurriculum();
                     if ($file) {
                         $fileName = md5(uniqid()) . '.' . $file->guessExtension();
@@ -136,7 +107,8 @@ class SolicitudesAdminController extends CRUDController
                             $this->getParameter('uploads_directory'), $fileName
                         );
                     }
-                    $entity->setTotalPuntaje($puntaje);
+                    $this->getPuntaje($entity);
+                    $puntaje = $entity->getTotalPuntaje();
                     if ($puntaje >= 60) {
                         $concepto = $em->getRepository("AppBundle:Concepto")->findOneBy(["id" => 2]);
                     } else if ($puntaje <= 40) {
@@ -503,7 +475,7 @@ class SolicitudesAdminController extends CRUDController
                 }
                 if (!$form->get("idgrado")->getdata()) {
                     $form->get("idgrado")->addError(new FormError("Este valor no debería estar vacío"));
-                } else if($form->get("idgrado")->getdata()->getId() != 30 && $form->get("idgrado")->getdata()->getId() != 31) {
+                } else if ($form->get("idgrado")->getdata()->getId() != 30 && $form->get("idgrado")->getdata()->getId() != 31) {
                     if (!$form->get("antiguedad")->getdata()) {
                         $form->get("antiguedad")->addError(new FormError("Este valor no debería estar vacío"));
                     }
@@ -653,7 +625,7 @@ class SolicitudesAdminController extends CRUDController
     {
         foreach ($datos as $dato) {
             $solicitud = new Solicitudes();
-            $solicitud->setSolicitudfecha(DateTime::createFromFormat('Y-m-d', $dato['FECHA_DE_SOLICITUD']['valor']));
+            $solicitud->setSolicitudfecha(DateTime::createFromFormat('d/m/Y', $dato['FECHA_DE_SOLICITUD']['valor']));
             $solicitud->setIdseccional($this->em->getRepository("AppBundle:Seccionales")->findOneBySeccionalnombre($dato['SECCIONAL']['valor']));
             $solicitud->setIdtiposolicitud($this->em->getRepository("AppBundle:Tipossolicitud")->findOneByTiposolicitudnombre($dato['TIPO_SOLICITUD']['valor']));
             $solicitud->setSolicitudcedulasolicita($dato['CEDULA_SOLICITANTE']['valor']);
@@ -661,6 +633,7 @@ class SolicitudesAdminController extends CRUDController
             $solicitud->setEmailSolicitante($dato['EMAIL']['valor']);
             $solicitud->setSolicituddireccionfuncionario($dato['DIRECCION']['valor']);
             $solicitud->setSolicitudtelefonosfuncionario($dato['TELEFONO']['valor']);
+            $solicitud->setTelefonoSolicitante2($dato['TELEFONO_ALTERNO']['valor']);
             $solicitud->setSolicitudcedulafuncionario($dato['CEDULA_FUNCIONARIO_POLICIAL']['valor']);
             $solicitud->setIdgrado($this->em->getRepository("AppBundle:Grados")->findOneByGradonombre($dato['GRADO_FUNCIONARIO_POLICIAL']['valor']));
             $solicitud->setUnidad($this->em->getRepository("AppBundle:unidad")->findOneByNombre($dato['UNIDAD']['valor']));
@@ -682,11 +655,31 @@ class SolicitudesAdminController extends CRUDController
             $solicitud->setDocumentoBeneficiarioFinal($dato['DOCUMENTO_BENEFICIARIO_FINAL']['valor']);
             $solicitud->setNombreBeneficiarioFinal($dato['NOMBRE_BENEFICIARIO_FINAL']['valor']);
             $programas = explode(";", $dato['PROGRAMAS']['valor']);
+            $conceptoJunta = new Conceptosjunta();
+            $conceptoJunta->setSolicitud($solicitud);
             foreach ($programas as $prog) {
-                $programaSolicitud = new ProgramaSolicitud($this->em->getRepository("AppBundle:Programas")->findOneByProgramanombre($prog), $solicitud);
+                $programa = $this->em->getRepository("AppBundle:Programas")->findOneByProgramanombre($prog);
+                $programaConcepto = new ProgramaConcepto();
+                $programaConcepto->setConceptoJunta($conceptoJunta);
+                $programaConcepto->setPrograma($programa);
+                $programaConcepto->setAprobado(false);
+                $conceptoJunta->addProgramasConcepto($programaConcepto);
+                $programaSolicitud = new ProgramaSolicitud($programa, $solicitud);
                 $solicitud->addPrograma($programaSolicitud);
                 $this->em->persist($programaSolicitud);
+                $this->em->persist($programaConcepto);
             }
+            $this->em->persist($conceptoJunta);
+            $this->getPuntaje($solicitud);
+            $puntaje = $solicitud->getTotalPuntaje();
+            if ($puntaje >= 60) {
+                $concepto = $this->em->getRepository("AppBundle:Concepto")->findOneBy(["id" => 2]);
+            } else if ($puntaje <= 40) {
+                $concepto = $this->em->getRepository("AppBundle:Concepto")->findOneBy(["id" => 4]);
+            } else if ($puntaje <= 59 and $puntaje >= 45) {
+                $concepto = $this->em->getRepository("AppBundle:Concepto")->findOneBy(["id" => 3]);
+            }
+            $solicitud->setConcepto($concepto);
             $this->em->persist($solicitud);
         }
         $this->em->flush();
@@ -827,5 +820,40 @@ class SolicitudesAdminController extends CRUDController
             'form' => $form->createView(),
         ], null);
 
+    }
+
+    public function getPuntaje($entity){
+        $puntaje = 0;
+        if ($entity->getIdingreso() != null) {
+            $puntaje += $entity->getIdingreso()->getIngresopuntaje();
+        }
+        if ($entity->getIdpoblacionbeneficia() != null) {
+            $puntaje += $entity->getIdpoblacionbeneficia()->getPoblacionBeneficiaPuntaje();
+        }
+        if ($entity->getIdzonaubicacion() != null) {
+            $puntaje += $entity->getIdzonaubicacion()->getZonasUbicacionPuntaje();
+        }
+        if ($entity->getIdviabilidadplaneacion() != null) {
+            $puntaje += $entity->getIdviabilidadplaneacion()->getViabilidadPlaneacionPuntaje();
+        }
+        if ($entity->getIdcantidadesbeneficioinst() != null) {
+            $puntaje += $entity->getIdcantidadesbeneficioinst()->getCantidadesBeneficioInstPuntaje();
+        }
+        if ($entity->getIdafiliadodibie() != null) {
+            $puntaje += $entity->getIdafiliadodibie()->getAfiliadoDibiePorcentaje();
+        }
+        if ($entity->getIdsituacionvivienda() != null) {
+            $puntaje += $entity->getIdsituacionvivienda()->getSituacionesViviendaPuntaje();
+        }
+        if ($entity->getIdpersonacargo() != null) {
+            $puntaje += $entity->getIdpersonacargo()->getPersonasCargoPuntaje();
+        }
+        if ($entity->getIdmotivodeuda() != null) {
+            $puntaje += $entity->getIdmotivodeuda()->getMotivoDeudaPuntaje();
+        }
+        if ($entity->getIdconceptovisita() != null) {
+            $puntaje += $entity->getIdconceptovisita()->getConceptosVisitaPuntaje();
+        }
+        $entity->setTotalPuntaje($puntaje);
     }
 }

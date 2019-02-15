@@ -12,7 +12,7 @@ class Validaciones
                 'validaciones' => array(
                     array(
                         'tipo' => 'no-null',
-                        'mensaje_error' => 'error.import.null.data'
+                        'mensaje_error' => 'error.dato.vacio'
                     ),
                     array(
                         'tipo' => 'fecha',
@@ -116,6 +116,14 @@ class Validaciones
                     ),
                 )
             ),
+            'TELEFONO_ALTERNO' => array(
+                'validaciones' => array(
+                    array(
+                        'tipo' => 'numero',
+                        'mensaje_error' => 'error.dato.numero'
+                    ),
+                )
+            ),
             'CEDULA_FUNCIONARIO_POLICIAL' => array(
                 'validaciones' => array(
                     array(
@@ -185,24 +193,6 @@ class Validaciones
                         )
                     )
                 ),
-            ),
-            'AREA' => array(
-                'validaciones' => array(
-                    array(
-                        'tipo' => 'no-null',
-                        'mensaje_error' => 'error.dato.vacio'
-                    ),
-                    array(
-                        'tipo' => 'texto',
-                        'mensaje_error' => 'error.dato.letra'
-                    ),
-                    array(
-                        'tipo' => 'entidad',
-                        'clase' => 'Areas',
-                        'campo' => 'areanombre',
-                        'mensaje_error' => 'error.no.existe.entidad'
-                    )
-                )
             ),
             'PROGRAMAS' => array(
                 'validaciones' => array(

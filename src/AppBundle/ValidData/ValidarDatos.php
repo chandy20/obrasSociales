@@ -403,8 +403,8 @@ class ValidarDatos
 
     function validateDate($date)
     {
-        $d = DateTime::createFromFormat('Y-m-d', $date);
-        $isValidDate = $d && $d->format('Y-m-d') == $date;
+        $d = DateTime::createFromFormat('d/m/Y', $date);
+        $isValidDate = $d && $d->format('d/m/Y') == $date;
         if($isValidDate){
             return false;
         }

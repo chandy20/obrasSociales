@@ -17,7 +17,7 @@ error:
     numero: El campo de la celda "%cell%"  solo puede contener números.
     letra: El campo de la celda "%cell%"  solo puede contener letras.
     email: El campo de la celda "%cell%"  no es un correo electrónico válido.
-    fecha: El campo de la celda "%cell%"  no es una fecha válida, el fomato válido es "yyyy-mm-dd".
+    fecha: El campo de la celda "%cell%"  no es una fecha válida, el fomato válido es "dd/mm/yyyy".
   importando:
     datos: Error al guardar los datos, por favor intente nuevamente, si el error persiste por favor contacte con el proveedor.
   items:
