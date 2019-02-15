@@ -279,7 +279,7 @@
                         console.log(documento);
                         $.get(url, {"documento": documento}, function (response) {
                             if (response.seccional) {
-                                //$("#{{ form.vars.id }}_idseccional").val(response.seccional).trigger('change.select2');
+                                $("#{{ form.vars.id }}_idseccional").val(response.seccional).trigger('change.select2');
                                 $("#{{ form.vars.id }}_idtiposolicitud").val(response.tipoSoliciutd).trigger('change.select2');
                                 $("#{{ form.vars.id }}_solicitudnombresolicita").val(response.nombreSolicitante);
                                 $("#{{ form.vars.id }}_emailSolicitante").val(response.email);
