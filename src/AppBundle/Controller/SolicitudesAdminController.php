@@ -631,8 +631,8 @@ class SolicitudesAdminController extends CRUDController
             $solicitud->setSolicitudcedulasolicita($dato['CEDULA_SOLICITANTE']['valor']);
             $solicitud->setSolicitudnombresolicita($dato['NOMBRE_Y_APELLIDO_SOLICITANTE']['valor']);
             $solicitud->setEmailSolicitante($dato['EMAIL']['valor']);
-            $solicitud->setSolicituddireccionfuncionario($dato['DIRECCION']['valor']);
-            $solicitud->setSolicitudtelefonosfuncionario($dato['TELEFONO']['valor']);
+            $solicitud->setDireccionSolicitante($dato['DIRECCION']['valor']);
+            $solicitud->setTelefonoSolicitante($dato['TELEFONO']['valor']);
             $solicitud->setTelefonoSolicitante2($dato['TELEFONO_ALTERNO']['valor']);
             $solicitud->setSolicitudcedulafuncionario($dato['CEDULA_FUNCIONARIO_POLICIAL']['valor']);
             $solicitud->setIdgrado($this->em->getRepository("AppBundle:Grados")->findOneByGradonombre($dato['GRADO_FUNCIONARIO_POLICIAL']['valor']));
