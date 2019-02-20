@@ -654,7 +654,7 @@ class SolicitudesAdminController extends CRUDController
             $solicitud->setIdafiliadodibie($this->em->getRepository("AppBundle:Afiliadodibie")->findOneByAfiliadodibiedesc($dato['AFILIADO_DIBIE']['valor']));
             $solicitud->setDocumentoBeneficiarioFinal($dato['DOCUMENTO_BENEFICIARIO_FINAL']['valor']);
             $solicitud->setNombreBeneficiarioFinal($dato['NOMBRE_BENEFICIARIO_FINAL']['valor']);
-            $programas = explode(";", $dato['PROGRAMAS']['valor']);
+            $programas = explode(";", $dato['MODALIDADES']['valor']);
             $conceptoJunta = new Conceptosjunta();
             $conceptoJunta->setSolicitud($solicitud);
             foreach ($programas as $prog) {
@@ -669,7 +669,7 @@ class SolicitudesAdminController extends CRUDController
                 $this->em->persist($programaSolicitud);
                 $this->em->persist($programaConcepto);
             }
-            $this->em->persist($conceptoJunta);
+
             $this->getPuntaje($solicitud);
             $puntaje = $solicitud->getTotalPuntaje();
             if ($puntaje >= 60) {
@@ -681,6 +681,12 @@ class SolicitudesAdminController extends CRUDController
             }
             $solicitud->setConcepto($concepto);
             $this->em->persist($solicitud);
+            $fechaActual = new DateTime();
+            if($solicitud->getSolicitudfecha()->format("Y") < $fechaActual->format('Y')){
+                $conceptoJunta->setAprobado(true);
+                $conceptoJunta->setConceptosjuntadesc("Aprobado por cargue de archivo plano");
+            }
+            $this->em->persist($conceptoJunta);
         }
         $this->em->flush();
     }

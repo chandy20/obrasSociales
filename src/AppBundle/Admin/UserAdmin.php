@@ -158,7 +158,7 @@ class UserAdmin extends \Sonata\UserBundle\Admin\Entity\UserAdmin
             ->add('username')
             ->add('email')
             ->add('seccional', null, ['label' => 'Seccional'])
-            ->add('area', null, ['label'=> 'Area'])
+            ->add('area', null, ['label'=> 'Área'])
             ->add('plainPassword', 'text', [
                 'required' => (!$this->getSubject() || is_null($this->getSubject()->getId())),
             ])

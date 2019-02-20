@@ -194,7 +194,7 @@ class Validaciones
                     )
                 ),
             ),
-            'PROGRAMAS' => array(
+            'MODALIDADES' => array(
                 'validaciones' => array(
                     array(
                         'tipo' => 'no-null',

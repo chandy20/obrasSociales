@@ -1,11 +1,15 @@
+ROLE_LIDER: Lider de área
+ROLE_SUPER_ADMIN: Administrador
+ROLE_CONSULTOR: Consultor
 label:
+  area: Área
+  roles: Rol
   send: Enviar
   file: Archivo
   importar: Importar solicitudes
   download:
     template: Descargar plantilla
   reemplazar: Sustituir archivo cargado
-  area: Área
   programa: Programa
   programas: Modalidades
   seleccion: Seleccione una opción
