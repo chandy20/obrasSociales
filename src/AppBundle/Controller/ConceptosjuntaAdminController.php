@@ -79,7 +79,7 @@ class ConceptosjuntaAdminController extends CRUDController
             $isFormValid = $form->isValid();
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
-//                $this->validar($existingObject, $form);
+                $this->validar($existingObject, $form);
                 $isFormValid = $form->isValid();
                 if ($isFormValid) {
                     $submittedObject = $form->getData();
@@ -102,7 +102,7 @@ class ConceptosjuntaAdminController extends CRUDController
                                 $this->em->persist($programa);
                             }
                         }
-//                    $this->em->flush();
+                        $this->em->flush();
 
                         if ($this->isXmlHttpRequest()) {
                             return $this->renderJson([
@@ -261,7 +261,6 @@ class ConceptosjuntaAdminController extends CRUDController
                             }
                         }
                         if (!$errorForm) {
-
                             $presupuesto->setSaldo($nuevoSaldo);
                             $movimiento->setValor($totalMovimiento);
                             $movimiento->setTipo("Débito");
@@ -277,7 +276,6 @@ class ConceptosjuntaAdminController extends CRUDController
                     }
                 }
                 $concepto->setConceptojuntavalortotalb($totalBeneficio);
-
                 $this->em->persist($concepto);
             }
         }
