@@ -260,6 +260,10 @@ class ConceptosjuntaAdminController extends CRUDController
                                 $nuevoSaldo = $presupuesto->getSaldo() - $totalMovimiento;
                             }
                         }
+                        if ($nuevoSaldo < 0){
+                            $errorForm = true;
+                            $form->addError(new FormError("El saldo del presupuesto sobre paso el limite. Por favor revise las cantidades aprobadas."));
+                        }
                         if (!$errorForm) {
                             $presupuesto->setSaldo($nuevoSaldo);
                             $movimiento->setValor($totalMovimiento);

@@ -41,7 +41,7 @@ class SolicitudesAdmin extends AbstractAdmin
         } else if ($user->hasRole('ROLE_CONSULTOR')) {
             $query->where($query->getRootAliases()[0] . ".idseccional = :seccional")
                 ->setParameter("seccional", $user->getSeccional());
-        }else if ($user->hasROle('ROLE_LIDER')) {
+        } else if ($user->hasROle('ROLE_LIDER')) {
             $query->join($query->getRootAliases()[0] . ".programas", "ps")
                 ->join("ps.programa", "p")
                 ->where("p.idarea = :area")
@@ -131,9 +131,12 @@ class SolicitudesAdmin extends AbstractAdmin
         $usuario = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
         $seccional = null;
         $readOnlySeccional = false;
-        if ($usuario->getSeccional()) {
+        $object = $this->getSubject();
+        if ($usuario->getSeccional() && is_null($object->getId())) {
             $seccional = $usuario->getSeccional();
             $readOnlySeccional = true;
+        } else {
+            $seccional = $object->getIdseccional();
         }
         $constraint = array(new NotBlank());
         $constraintEmail = array(new NotBlank(), new Email());
