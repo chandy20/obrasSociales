@@ -448,7 +448,9 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->setParameter('programa', $form->programa5);
         }
         if ($user->hasRole('ROLE_LIDER')) {
-            $query->andWhere('p.idarea = :area')
+            $query->join('s.programas', 'ps')
+                ->join('ps.programa', 'p')
+                ->andWhere('p.idarea = :area')
                 ->setParameter('area', $user->getArea());
         }
         $query->resetDQLPart('select');
@@ -562,7 +564,9 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->setParameter('area', $form->area4);
         }
         if ($user->hasRole('ROLE_LIDER')) {
-            $solicitudes->andWhere('p.idarea = :area')
+            $solicitudes->join('s.programas', 'ps')
+                ->join('ps.programa', 'p')
+                ->andWhere('p.idarea = :area')
                 ->setParameter('area', $user->getArea());
         }
         if ($form->programa5 != null && $form->programa5 != 0) {
@@ -690,7 +694,9 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->setParameter("area", $form->area);
         }
         if ($user->hasRole('ROLE_LIDER')) {
-            $query->andWhere('p.idarea = :area')
+            $query->join('s.programas', 'ps')
+                ->join('ps.programa', 'p')
+                ->andWhere('p.idarea = :area')
                 ->setParameter('area', $user->getArea());
         }
         $solicitudes = $query->getQuery()->getResult();
@@ -786,7 +792,9 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->setParameter("area", $form->area2);
         }
         if ($user->hasRole('ROLE_LIDER')) {
-            $query->andWhere('p.idarea = :area')
+            $query->join('s.programas', 'ps')
+                ->join('ps.programa', 'p')
+                ->andWhere('p.idarea = :area')
                 ->setParameter('area', $user->getArea());
         }
         $solicitudes = $query->getQuery()->getResult();
@@ -840,7 +848,9 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->setParameter("area", $form->area3);
         }
         if ($user->hasRole('ROLE_LIDER')) {
-            $query->andWhere('p.idarea = :area')
+            $query->join('s.programas', 'ps')
+                ->join('ps.programa', 'p')
+                ->andWhere('p.idarea = :area')
                 ->setParameter('area', $user->getArea());
         }
         $movimientos = $query->getQuery()->getResult();
@@ -916,7 +926,9 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->setParameter("programa", $form->programa2);
         }
         if ($user->hasRole('ROLE_LIDER')) {
-            $query->andWhere('p.idarea = :area')
+            $query->join('s.programas', 'ps')
+                ->join('ps.programa', 'p')
+                ->andWhere('p.idarea = :area')
                 ->setParameter('area', $user->getArea());
         }
         $movimientos = $query->getQuery()->getResult();
