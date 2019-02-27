@@ -116,7 +116,7 @@ class ConceptosjuntaAdminController extends CRUDController
                             foreach ($this->presupuesto as $presupuesto) {
                                 if (intval($presupuesto->getSaldo()) < 1000001) {
                                     $this->addFlash(
-                                        'sonata_flash_error', "El saldo del presupuesto de la seccional " . $presupuesto->getSeccional()->getSeccionalnombre() . " del área " . $presupuesto->getIdarea()->getAreanombre() . " es de " . $presupuesto->getSaldo()
+                                        'sonata_flash_warning', "El saldo del presupuesto de la seccional " . $presupuesto->getSeccional()->getSeccionalnombre() . " del área " . $presupuesto->getIdarea()->getAreanombre() . " del programa ". $presupuesto->getPrograma()->getPrograma() . " modalidad " . $presupuesto->getPrograma() . " es de " . $presupuesto->getSaldo()
                                     );
                                 }
                             }
@@ -210,7 +210,9 @@ class ConceptosjuntaAdminController extends CRUDController
                         ->setParameter("seccional", $concepto->getSolicitud()->getIdseccional())
                         ->setParameter("area", $programaConcepto->getPrograma()->getPrograma()->getIdarea())
                         ->setParameter("programa", $programaConcepto->getPrograma())
-                        ->setParameter("hoy", $hoy)->getQuery()->getResult();
+                        ->setParameter("hoy", $hoy)
+                        ->orderBy('p.desde','asc')
+                        ->getQuery()->getResult();
                     if (!$presupuesto) {
                         $form->addError(new FormError("No existe presupuesto vigente disponible para la seccional selecional " . $concepto->getSolicitud()->getIdseccional()->getSeccionalnombre() . " para el área de " . $programaConcepto->getPrograma()->getPrograma()->getIdarea() . " - " . $programaConcepto->getPrograma()->getPrograma() . " - " . $programaConcepto->getPrograma()));
                     } else {
