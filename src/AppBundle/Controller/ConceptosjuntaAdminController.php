@@ -1083,8 +1083,10 @@ class ConceptosjuntaAdminController extends CRUDController
 
     function sendMail($conceptoJunta)
     {
+        $container = $this->container;
         $message = Swift_Message::newInstance()
             ->setSubject('Saldo insuficiente en caja menor')
+            ->setFrom($container->getParameter('mailer_user'))
             ->setTo($conceptoJunta->getSolicitud()->getEmailSolicitante())
             ->setBody($this->container->get('templating')->render(
                 'AppBundle:Solicitudes:plantilla_mail.html.twig'
@@ -1093,7 +1095,6 @@ class ConceptosjuntaAdminController extends CRUDController
         try {
             $this->container->get('mailer')->send($message);
         } catch (\Exception $ex) {
-
         }
     }
 
