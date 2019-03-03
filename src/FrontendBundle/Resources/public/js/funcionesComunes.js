@@ -91,3 +91,23 @@ function actualizarProgramas(datoSelect) {
         }
     });
 }
+
+
+function cambiarValorPrograma(datoSelect) {
+    var programa_id = $(datoSelect).val()
+    var url = "/app_dev.php/admin/app/conceptosjunta/" + programa_id + "/cambiarValorPrograma";
+    var campoValorMes = $(datoSelect).parent().parent().find('input.valorMes:eq(0)');
+    $.ajax({
+        type: 'post',
+        url: url,
+        success: function (data) {
+            campoValorMes.val('');
+            if (data.valorMes) {
+                campoValorMes.val(data.valorMes);
+                campoValorMes.attr('readOnly', true);
+            } else {
+                campoValorMes.removeAttr('readOnly');
+            }
+        }
+    });
+}

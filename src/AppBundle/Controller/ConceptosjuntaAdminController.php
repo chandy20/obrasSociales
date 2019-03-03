@@ -201,7 +201,7 @@ class ConceptosjuntaAdminController extends CRUDController
 
                 $hoy = new DateTime();
                 $totalBeneficio = 0;
-                foreach ($concepto->getProgramasConcepto() as $key => $programaConcepto) {
+                foreach ($form->getData()->getProgramasConcepto() as $key => $programaConcepto) {
                     $presupuesto = $this->em->getRepository("AppBundle:Presupuestos")->createQueryBuilder('p')
                         ->where("p.seccional = :seccional")
                         ->andWhere(":hoy BETWEEN p.desde AND p.hasta")
@@ -215,7 +215,7 @@ class ConceptosjuntaAdminController extends CRUDController
                         $form->addError(new FormError("No existe presupuesto vigente disponible para la seccional selecional " . $concepto->getSolicitud()->getIdseccional()->getSeccionalnombre() . " para el área de " . $programaConcepto->getPrograma()->getPrograma()->getIdarea() . " - " . $programaConcepto->getPrograma()->getPrograma() . " - " . $programaConcepto->getPrograma()));
                     } else {
                         $presupuesto = $presupuesto[0];
-                        $totalMovimiento = $programaConcepto->getPrograma()->getValorMes() * $programaConcepto->getUnidadesAprobadas();
+                        $totalMovimiento = $programaConcepto->getValorPrograma() * $programaConcepto->getUnidadesAprobadas();
                         $totalBeneficio += $totalMovimiento;
                         $movimiento = $this->em->getRepository("AppBundle:Movimiento")->createQueryBuilder('m')
                             ->where("m.seccional = :seccional")
@@ -260,7 +260,7 @@ class ConceptosjuntaAdminController extends CRUDController
                                 $nuevoSaldo = $presupuesto->getSaldo() - $totalMovimiento;
                             }
                         }
-                        if ($nuevoSaldo < 0){
+                        if ($nuevoSaldo < 0) {
                             $errorForm = true;
                             $form->addError(new FormError("El saldo del presupuesto sobre paso el limite. Por favor revise las cantidades aprobadas."));
                         }
@@ -1095,6 +1095,13 @@ class ConceptosjuntaAdminController extends CRUDController
         } catch (\Exception $ex) {
 
         }
+    }
+
+
+    public function cambiarValorProgramaAction($id)
+    {
+        $programa = $this->em->getRepository("AppBundle:Programas")->find($id);
+        return new JsonResponse(['valorMes' => $programa ? $programa->getValorMes() : null], 200);
     }
 
 }
