@@ -64,6 +64,7 @@ class ConceptosjuntaAdmin extends AbstractAdmin
         $collection->add('exportarReporteAgrupaciones', 'exportarReporteAgrupaciones');
         $collection->add('downloadArchivo', $this->getRouterIdParameter() . '/downloadArchivo');
         $collection->add('downloadPDF', $this->getRouterIdParameter() . '/downloadPDF');
+        $collection->add('cambiarValorPrograma', $this->getRouterIdParameter() . '/cambiarValorPrograma');
     }
 
     /**
