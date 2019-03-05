@@ -115,9 +115,7 @@ class ConceptosjuntaAdminController extends CRUDController
                         if ($submittedObject->getAprobado()) {
                             foreach ($this->presupuesto as $presupuesto) {
                                 if (intval($presupuesto->getSaldo()) < 1000001) {
-                                    $this->addFlash(
-                                        'sonata_flash_warning', "El saldo del presupuesto de la seccional " . $presupuesto->getSeccional()->getSeccionalnombre() . " del área " . $presupuesto->getIdarea()->getAreanombre() . " del programa ". $presupuesto->getPrograma()->getPrograma() . " modalidad " . $presupuesto->getPrograma() . " es de " . $presupuesto->getSaldo()
-                                    );
+                                    $this->getRequest()->getSession()->getFlashBag()->add("warning", "El saldo del presupuesto de la seccional " . $presupuesto->getSeccional()->getSeccionalnombre() . " , del área " . $presupuesto->getIdarea()->getAreanombre() . " , programa ". $presupuesto->getPrograma()->getPrograma() . " , modalidad " . $presupuesto->getPrograma() . " es de: " . $presupuesto->getSaldo());
                                 }
                             }
                         }
@@ -214,7 +212,7 @@ class ConceptosjuntaAdminController extends CRUDController
                         ->orderBy('p.desde','asc')
                         ->getQuery()->getResult();
                     if (!$presupuesto) {
-                        $form->addError(new FormError("No existe presupuesto vigente disponible para la seccional selecional " . $concepto->getSolicitud()->getIdseccional()->getSeccionalnombre() . " para el área de " . $programaConcepto->getPrograma()->getPrograma()->getIdarea() . " - " . $programaConcepto->getPrograma()->getPrograma() . " - " . $programaConcepto->getPrograma()));
+                        $form->addError(new FormError("No existe presupuesto vigente disponible para la seccional " . $concepto->getSolicitud()->getIdseccional()->getSeccionalnombre() . " para el área de " . $programaConcepto->getPrograma()->getPrograma()->getIdarea() . " , Programa " . $programaConcepto->getPrograma()->getPrograma() . " , modalidad " . $programaConcepto->getPrograma()));
                     } else {
                         $presupuesto = $presupuesto[0];
                         $totalMovimiento = $programaConcepto->getValorPrograma() * $programaConcepto->getUnidadesAprobadas();
@@ -247,7 +245,7 @@ class ConceptosjuntaAdminController extends CRUDController
                                 $nuevoSaldo = $presupuesto->getSaldo() - $totalMovimiento;
                                 if ($presupuesto->getSaldo() < $nuevoSaldo) {
                                     $errorForm = true;
-                                    $form->addError(new FormError("El saldo del presupuesto de la seccional " . $concepto->getSolicitud()->getIdseccional()->getSeccionalnombre() . " para el area de " . $programaConcepto->getPrograma()->getPrograma()->getIdarea() . " - " . $programaConcepto->getPrograma()->getPrograma() . " - " . $programaConcepto->getPrograma() . ", es inferior al monto de la transacción."));
+                                    $form->addError(new FormError("El saldo del presupuesto de la seccional " . $concepto->getSolicitud()->getIdseccional()->getSeccionalnombre() . " para el area de " . $programaConcepto->getPrograma()->getPrograma()->getIdarea() . " , programa " . $programaConcepto->getPrograma()->getPrograma() . " , modalidad " . $programaConcepto->getPrograma() . ", es inferior al monto de la transacción."));
                                 }
                             } else {
                                 $nuevoSaldo = $presupuesto->getSaldo() + $totalMovimiento;
@@ -1087,11 +1085,11 @@ class ConceptosjuntaAdminController extends CRUDController
     {
         $container = $this->container;
         $message = Swift_Message::newInstance()
-            ->setSubject('Saldo insuficiente en caja menor')
+            ->setSubject('Respuesta a su solicitud')
             ->setFrom($container->getParameter('mailer_user'))
             ->setTo($conceptoJunta->getSolicitud()->getEmailSolicitante())
             ->setBody($this->container->get('templating')->render(
-                'AppBundle:Solicitudes:plantilla_mail.html.twig'
+                'AppBundle:Solicitudes:plantilla_mail.html.twig', ['concepto'=>$conceptoJunta]
             ), 'text/html');
 
         try {

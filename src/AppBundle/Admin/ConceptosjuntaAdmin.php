@@ -170,13 +170,12 @@ class ConceptosjuntaAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('id')
-            ->add('conceptojuntavalorb', null, ["label" => "Valor del Beneficio"])
-            ->add('conceptojuntatiempo', null, ["label" => "Tiempo del Beneficio"])
+            ->add('programasConcepto', null, ["label" => "Modalidad(es)"])
             ->add('conceptojuntavalortotalb', null, ["label" => "Valor Total del Beneficio"])
             ->add('conceptosjuntadesc', null, ["label" => "Descripcion Junta"])
-            ->add('conceptosjuntaotorgada', null, ["label" => "Otorga Beneficio?"])
-            ->add('conceptosjuntanumacta', null, ["label" => "Número Acta Aprobacion"]);
+            ->add('conceptosjuntanumacta', null, ["label" => "Número Acta Aprobación"])
+            ->add('numeroActaModificacion', null, ["label" => "Número Acta Modificación"])
+            ->add('aprobado', null, ["label" => "¿Aprobado?"]);
     }
 
 }

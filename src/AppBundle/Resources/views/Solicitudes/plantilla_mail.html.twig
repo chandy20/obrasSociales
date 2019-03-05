@@ -9,17 +9,16 @@
                     <div class="col-xs-12">
                         <p>{{ 'email.saludo' | trans }}</p>
                         <br>
-                        <p>{{'email.contenido'|trans}}</p>
+                        <p>{{'email.contenido'|trans}} {% if concepto.aprobado %} <b>Aprobada</b> {% else %} <b>Rechazada</b> {% endif %}</p>
                         <br>
-                        <p>{{ 'email.saludo' | trans }}</p>
                         <br>
                         <p>{{'email.segundo_contenido'|trans}}</p>
                         <br>
-                        <p>{{'email.portal'|trans}}</p>
-                        <p>{{'email.twitter'|trans}}</p>
-                        <p>{{'email.facebook'|trans}}</p>
-                        <p>{{'email.instagram'|trans}}</p>
+                        <p>{{'email.area'|trans}}</p>
+                        <p>{{'email.asociacion'|trans}}</p>
+                        <p>{{'email.email'|trans}}</p>
                         <p>{{'email.pbx'|trans}}</p>
+                        <p>{{'email.atencion'|trans}}</p>
                     </div>
                 </div>
             </div>

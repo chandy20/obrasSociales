@@ -43,10 +43,10 @@ mensaje:
     reemplazados: Archivo sustituido con éxito
 email:
   saludo: Cordial saludo
-  contenido: En respuesta a la solicitud, se envía adjunto el correo que servirá como respuesta a las solicitudes gestionadas a través del Sistema Gestor de Beneficios AOS.
-  segundo_contenido: "En atención a su solicitud nos permitimos informar que debe tomar contacto a través de los siguientes canales de comunicación:"
-  Portal: "Portal web: http://obrassocialespolicia.org/obras/"
-  twitter: "Twitter: @AosPolicia"
-  facebook: "Facebook:/obrassocialespolicia"
-  instagram: "Instagram:/obrassocialespolicia"
-  pbx: "PBX: 7468999 Cel: 3174273162"
+  contenido: De manera atenta y respetuosa nos permitimos iformarle que su solicitud fue
+  segundo_contenido: Para mayor información favor comunicarse con la oficina principal de la asociación al número (1) 7468999
+  area: Área de atención al usuario
+  asociacion: Asociación Obras Sociales en Beneficio de la Policía
+  email: principal@obrassocialespolicia.org
+  pbx: "PBX: 7468999"
+  atencion: "Horario de atención de Lunes a Viernes de 7:30 AM a 12:00 PM y de 2:00 PM a 6:00 PM"
