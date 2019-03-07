@@ -109,7 +109,13 @@ class SolicitudesAdmin extends AbstractAdmin
             ->add('idtiposolicitud', null, ["label" => "Tipo de Solicitud"])
             ->add('idseccional', null, ["label" => "Seccional"])
             ->add('concepto', null, ["label" => "Concepto Previo"])
-            ->add('conceptoFinal', null, ["label" => "Concepto Junta"])
+            ->add('conceptoFinal', null, ["label" => "Concepto Junta"]);
+        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+        if ($user->hasRole('ROLE_SUPER_ADMIN')) {
+            $listMapper
+                ->add('usuario', null, ["label" => "Usuario que cargó"]);
+        }
+        $listMapper
             ->add('_action', null, array(
                 'actions' => array(
                     'show' => array(),

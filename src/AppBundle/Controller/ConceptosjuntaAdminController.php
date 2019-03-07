@@ -114,9 +114,7 @@ class ConceptosjuntaAdminController extends CRUDController
                         $this->sendMail($submittedObject);
                         if ($submittedObject->getAprobado()) {
                             foreach ($this->presupuesto as $presupuesto) {
-                                if (intval($presupuesto->getSaldo()) < 1000001) {
-                                    $this->getRequest()->getSession()->getFlashBag()->add("warning", "El saldo del presupuesto de la seccional " . $presupuesto->getSeccional()->getSeccionalnombre() . " , del área " . $presupuesto->getIdarea()->getAreanombre() . " , programa ". $presupuesto->getPrograma()->getPrograma() . " , modalidad " . $presupuesto->getPrograma() . " es de: " . $presupuesto->getSaldo());
-                                }
+                                $this->getRequest()->getSession()->getFlashBag()->add("warning", "El saldo del presupuesto de la seccional " . $presupuesto->getSeccional()->getSeccionalnombre() . " , del área " . $presupuesto->getIdarea()->getAreanombre() . " , programa " . $presupuesto->getPrograma()->getPrograma() . " , modalidad " . $presupuesto->getPrograma() . " es de: " . $presupuesto->getSaldo());
                             }
                         }
                         $this->addFlash(
@@ -209,7 +207,7 @@ class ConceptosjuntaAdminController extends CRUDController
                         ->setParameter("area", $programaConcepto->getPrograma()->getPrograma()->getIdarea())
                         ->setParameter("programa", $programaConcepto->getPrograma())
                         ->setParameter("hoy", $hoy)
-                        ->orderBy('p.desde','asc')
+                        ->orderBy('p.desde', 'asc')
                         ->getQuery()->getResult();
                     if (!$presupuesto) {
                         $form->addError(new FormError("No existe presupuesto vigente disponible para la seccional " . $concepto->getSolicitud()->getIdseccional()->getSeccionalnombre() . " para el área de " . $programaConcepto->getPrograma()->getPrograma()->getIdarea() . " , Programa " . $programaConcepto->getPrograma()->getPrograma() . " , modalidad " . $programaConcepto->getPrograma()));
@@ -435,23 +433,26 @@ class ConceptosjuntaAdminController extends CRUDController
             $query->andWhere('s.idseccional = :seccional')
                 ->setParameter('seccional', $form->seccional);
         }
-        if ($form->area4 != null && $form->area4 != 0) {
-            $query->join('s.programas', 'ps')
-                ->join('ps.programa', 'p')
-                ->andWhere('p.idarea = :area')
-                ->setParameter('area', $form->area4);
-        }
-        if ($form->programa5 != null && $form->programa5 != 0) {
-            $query->join('s.programas', 'ps')
-                ->join('ps.programa', 'p')
-                ->andWhere('p.id = :programa')
-                ->setParameter('programa', $form->programa5);
-        }
+
+
         if ($user->hasRole('ROLE_LIDER')) {
             $query->join('s.programas', 'ps')
                 ->join('ps.programa', 'p')
                 ->andWhere('p.idarea = :area')
                 ->setParameter('area', $user->getArea());
+        } else if ($form->area4 != null && $form->area4 != 0) {
+            $query->join('s.programas', 'ps')
+                ->join('ps.programa', 'p')
+                ->andWhere('p.idarea = :area')
+                ->setParameter('area', $form->area4);
+        } else if ($form->programa5 != null && $form->programa5 != 0 && $form->area4 == null && $form->area4 == 0) {
+            $query->join('s.programas', 'ps')
+                ->join('ps.programa', 'p')
+                ->andWhere('p.id = :programa')
+                ->setParameter('programa', $form->programa5);
+        } else {
+            $query->andWhere('p.id = :programa')
+                ->setParameter('programa', $form->programa5);
         }
         $query->resetDQLPart('select');
         $arrayEntidadCampos = [
@@ -557,22 +558,25 @@ class ConceptosjuntaAdminController extends CRUDController
             $solicitudes->andWhere('s.idseccional = :seccional')
                 ->setParameter('seccional', $form->seccional);
         }
-        if ($form->area4 != null && $form->area4 != 0) {
-            $solicitudes->join('s.programas', 'ps')
-                ->join('ps.programa', 'p')
-                ->andWhere('p.idarea = :area')
-                ->setParameter('area', $form->area4);
-        }
+
         if ($user->hasRole('ROLE_LIDER')) {
             $solicitudes->join('s.programas', 'ps')
                 ->join('ps.programa', 'p')
                 ->andWhere('p.idarea = :area')
                 ->setParameter('area', $user->getArea());
+        } else if ($form->area4 != null && $form->area4 != 0) {
+            $solicitudes->join('s.programas', 'ps')
+                ->join('ps.programa', 'p')
+                ->andWhere('p.idarea = :area')
+                ->setParameter('area', $form->area4);
         }
-        if ($form->programa5 != null && $form->programa5 != 0) {
+        if ($form->programa5 != null && $form->programa5 != 0 && $form->area4 == null && $form->area4 == 0) {
             $solicitudes->join('s.programas', 'ps')
                 ->join('ps.programa', 'p')
                 ->andWhere('p.id = :programa')
+                ->setParameter('programa', $form->programa5);
+        } else {
+            $solicitudes->andWhere('p.id = :programa')
                 ->setParameter('programa', $form->programa5);
         }
         $solicitudes = $solicitudes->getQuery()->getResult();
@@ -686,18 +690,18 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->andWhere("p.id = :programa")
                 ->setParameter("programa", $form->programa);
         }
-        if ($form->area != "") {
-            $query->join("s.programas", "sp")
-                ->join("sp.programa", "p")
-                ->join("p.idarea", "a")
-                ->andWhere("a.idArea = :area")
-                ->setParameter("area", $form->area);
-        }
+
         if ($user->hasRole('ROLE_LIDER')) {
             $query->join('s.programas', 'ps')
                 ->join('ps.programa', 'p')
                 ->andWhere('p.idarea = :area')
                 ->setParameter('area', $user->getArea());
+        } else if ($form->area != "") {
+            $query->join("s.programas", "sp")
+                ->join("sp.programa", "p")
+                ->join("p.idarea", "a")
+                ->andWhere("a.idArea = :area")
+                ->setParameter("area", $form->area);
         }
         $solicitudes = $query->getQuery()->getResult();
         $datos = [];
@@ -784,19 +788,20 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->andWhere("p.id = :programa")
                 ->setParameter("programa", $form->programa3);
         }
-        if ($form->area2 != "") {
+
+        if ($user->hasRole('ROLE_LIDER')) {
+            $query->join('s.programas', 'ps')
+                ->join('ps.programa', 'p')
+                ->andWhere('p.idarea = :area')
+                ->setParameter('area', $user->getArea());
+        } else if ($form->area2 != "") {
             $query->join("s.programas", "sp")
                 ->join("sp.programa", "p")
                 ->join("p.idarea", "a")
                 ->andWhere("a.idArea = :area")
                 ->setParameter("area", $form->area2);
         }
-        if ($user->hasRole('ROLE_LIDER')) {
-            $query->join('s.programas', 'ps')
-                ->join('ps.programa', 'p')
-                ->andWhere('p.idarea = :area')
-                ->setParameter('area', $user->getArea());
-        }
+
         $solicitudes = $query->getQuery()->getResult();
         $datos = [];
         foreach ($solicitudes as $solicitud) {
@@ -840,18 +845,18 @@ class ConceptosjuntaAdminController extends CRUDController
             $query->andWhere("s.id = :seccional")
                 ->setParameter("seccional", $form->seccional3);
         }
-        if ($form->area3 != "") {
-            $query->join("so.programas", "sp")
-                ->join("sp.programa", "p")
-                ->join("p.idarea", "a")
-                ->andWhere("a.idArea = :area")
-                ->setParameter("area", $form->area3);
-        }
+
         if ($user->hasRole('ROLE_LIDER')) {
             $query->join('s.programas', 'ps')
                 ->join('ps.programa', 'p')
                 ->andWhere('p.idarea = :area')
                 ->setParameter('area', $user->getArea());
+        } else if ($form->area3 != "") {
+            $query->join("so.programas", "sp")
+                ->join("sp.programa", "p")
+                ->join("p.idarea", "a")
+                ->andWhere("a.idArea = :area")
+                ->setParameter("area", $form->area3);
         }
         $movimientos = $query->getQuery()->getResult();
         $datos = [];
@@ -930,6 +935,15 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->join('ps.programa', 'p')
                 ->andWhere('p.idarea = :area')
                 ->setParameter('area', $user->getArea());
+        }
+        if ($form->programa2 && !$user->hasRole('ROLE_LIDER')) {
+            $query->join("so.programas", "sp")
+                ->join("sp.programa", "p")
+                ->andWhere("p.id = :programa")
+                ->setParameter("programa", $form->programa2);
+        } else {
+            $query->andWhere("p.id = :programa")
+                ->setParameter("programa", $form->programa2);
         }
         $movimientos = $query->getQuery()->getResult();
         $html = $this->renderView('AppBundle:Reporte:reporte_movimientos.html.twig', [
@@ -1089,7 +1103,7 @@ class ConceptosjuntaAdminController extends CRUDController
             ->setFrom($container->getParameter('mailer_user'))
             ->setTo($conceptoJunta->getSolicitud()->getEmailSolicitante())
             ->setBody($this->container->get('templating')->render(
-                'AppBundle:Solicitudes:plantilla_mail.html.twig', ['concepto'=>$conceptoJunta]
+                'AppBundle:Solicitudes:plantilla_mail.html.twig', ['concepto' => $conceptoJunta]
             ), 'text/html');
 
         try {

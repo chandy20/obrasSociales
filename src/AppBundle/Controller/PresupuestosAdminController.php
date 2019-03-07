@@ -19,7 +19,7 @@ class PresupuestosAdminController extends CRUDController
     public function listAction()
     {
         $user = $this->getUser();
-        if($user->getSeccional()){
+        if($user->hasRole('ROLE_CONSULTOR')){
             return $this->redirectToRoute('sonata_admin_dashboard');
         }
         $request = $this->getRequest();

@@ -425,6 +425,16 @@ class Solicitudes {
     private $conceptoFinal;
 
     /**
+     * @var \concepto
+     *
+     * @ORM\ManyToOne(targetEntity="Application\Sonata\UserBundle\Entity\User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
+     * })
+     */
+    private $usuario;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="Acta", type="string", length=45, nullable=true)
@@ -1529,5 +1539,29 @@ class Solicitudes {
     public function getTelefonoSolicitante2()
     {
         return $this->telefonoSolicitante2;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param \Application\Sonata\UserBundle\Entity\User $usuario
+     *
+     * @return Solicitudes
+     */
+    public function setUsuario(\Application\Sonata\UserBundle\Entity\User $usuario = null)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return \Application\Sonata\UserBundle\Entity\User
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
     }
 }

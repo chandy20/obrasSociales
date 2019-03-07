@@ -19,19 +19,20 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class PresupuestosAdmin extends AbstractAdmin
 {
+    private $user = null;
 
     public function createQuery($context = 'list')
     {
         $query = parent::createQuery($context);
         $em = $this->getConfigurationPool()->getContainer()->get("doctrine")->getEntityManager();
 
-        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
-        if ($user->hasRole('ROLE_CONSULTOR')) {
+        $this->user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+        if ($this->user->hasRole('ROLE_CONSULTOR')) {
             $query->where($query->getRootAliases()[0] . ".seccional = :seccional")
-                ->setParameter("seccional", $user->getSeccional());
-        } else if ($user->hasRole('ROLE_LIDER')) {
+                ->setParameter("seccional", $this->user->getSeccional());
+        } else if ($this->user->hasRole('ROLE_LIDER')) {
             $query->where($query->getRootAliases()[0] . ".idarea = :area")
-                ->setParameter("area", $user->getArea());
+                ->setParameter("area", $this->user->getArea());
         }
         return $query;
     }

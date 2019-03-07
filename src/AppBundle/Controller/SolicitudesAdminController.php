@@ -131,6 +131,7 @@ class SolicitudesAdminController extends CRUDController
                         $cantidadSolicitada += $programaSolicitud->getPrograma()->getValorMes();
                     }
                     $entity->setCantidadSolicitada($cantidadSolicitada);
+                    $entity->setUsuario($this->getUser());
                     $em->persist($entity);
                     $em->flush();
                     if ($this->isXmlHttpRequest()) {
@@ -680,6 +681,7 @@ class SolicitudesAdminController extends CRUDController
                 $concepto = $this->em->getRepository("AppBundle:Concepto")->findOneBy(["id" => 3]);
             }
             $solicitud->setConcepto($concepto);
+            $solicitud->setUsuario($this->getUser());
             $this->em->persist($solicitud);
             $fechaActual = new DateTime();
             if($solicitud->getSolicitudfecha()->format("Y") < $fechaActual->format('Y')){
