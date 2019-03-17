@@ -205,11 +205,9 @@ class Validaciones
                         'mensaje_error' => 'error.dato.letra'
                     ),
                     array(
-                        'tipo' => 'iterativo',
-                        'iterator' => 'entidad',
-                        'delimiter'=> ';',
-                        'clase' => 'Areas',
-                        'campo' => 'areanombre',
+                        'tipo' => 'entidad',
+                        'clase' => 'antiguedad',
+                        'campo' => 'tiempo',
                         'mensaje_error' => 'error.no.existe.entidad'
                     )
                 )
