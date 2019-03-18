@@ -206,8 +206,8 @@ class Validaciones
                     ),
                     array(
                         'tipo' => 'entidad',
-                        'clase' => 'antiguedad',
-                        'campo' => 'tiempo',
+                        'clase' => 'Programas',
+                        'campo' => 'programanombre',
                         'mensaje_error' => 'error.no.existe.entidad'
                     )
                 )

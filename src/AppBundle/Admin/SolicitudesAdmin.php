@@ -65,15 +65,7 @@ class SolicitudesAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('solicitudfecha', 'doctrine_orm_date_range', [
-                "label" => "Fecha de la Solicitud",
-                'field_type' => 'sonata_type_date_range_picker',
-                'field_options' => [
-                    'field_options' => [
-                        'format' => 'yyyy-MM-dd'
-                    ],
-                ]
-            ])
+
             ->add('solicitudcedulasolicita', null, ["label" => "Cedula del Solicitante"])
             ->add('idparentesco', null, ["label" => "Parentesco con el Solicitante"])
             ->add('solicitudcedulafuncionario', null, ["label" => "Cedula Funcionario Policial"])
