@@ -451,9 +451,7 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->andWhere('p.id = :programa')
                 ->setParameter('programa', $form->programa5);
         } else {
-            $query->join('s.programas', 'ps')
-                ->join('ps.programa', 'p')
-                ->andWhere('p.id = :programa')
+            $query->andWhere('p.id = :programa')
                 ->setParameter('programa', $form->programa5);
         }
         $query->resetDQLPart('select');
@@ -525,12 +523,13 @@ class ConceptosjuntaAdminController extends CRUDController
             $entidadNombreCantidad[$entidad] = [];
             foreach ($solicitudes as $solicitud) {
                 if (array_key_exists($solicitud[$arrayEntidadCampos[$entidad]['campo']], $entidadNombreCantidad[$entidad])) {
-                    $entidadNombreCantidad[$entidad][$solicitud[$arrayEntidadCampos[$entidad]['campo']]] = $entidadNombreCantidad[$entidad][$solicitud[$arrayEntidadCampos[$entidad]['campo']]] + $solicitud['cantidad_' . $arrayEntidadCampos[$entidad]['campo']];
+                    $entidadNombreCantidad[$entidad][$solicitud[$arrayEntidadCampos[$entidad]['campo']]] ++;
                 } else {
-                    $entidadNombreCantidad[$entidad][$solicitud[$arrayEntidadCampos[$entidad]['campo']]] = $solicitud['cantidad_' . $arrayEntidadCampos[$entidad]['campo']];
+                    $entidadNombreCantidad[$entidad][$solicitud[$arrayEntidadCampos[$entidad]['campo']]] = 1;
                 }
             }
         }
+
         $datosParaTabla = $entidadNombreCantidad;
         // Agregar categorias en null para poder pintar graficas de barras apiladas
         foreach ($entidadNombreCantidad as $entidad1 => $campos1) {
@@ -578,8 +577,7 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->andWhere('p.id = :programa')
                 ->setParameter('programa', $form->programa5);
         } else {
-            $solicitudes->join('s.programas', 'ps')
-                ->join('ps.programa', 'p')
+            $solicitudes
                 ->andWhere('p.id = :programa')
                 ->setParameter('programa', $form->programa5);
         }
@@ -851,7 +849,8 @@ class ConceptosjuntaAdminController extends CRUDController
         }
 
         if ($user->hasRole('ROLE_LIDER')) {
-            $query->join('s.programas', 'ps')
+            $query->join("so.idseccional", "se")
+                ->join('so.programas', 'ps')
                 ->join('ps.programa', 'p')
                 ->andWhere('p.idarea = :area')
                 ->setParameter('area', $user->getArea());
@@ -863,6 +862,7 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->setParameter("area", $form->area3);
         }
         $movimientos = $query->getQuery()->getResult();
+        dump($movimientos);die;
         $datos = [];
         $totales = [];
         foreach ($movimientos as $movimiento) {
@@ -879,6 +879,7 @@ class ConceptosjuntaAdminController extends CRUDController
                         ->setParameter("area", $form->area3);
                 }
                 $presupuestos = $presupuestos->getQuery()->getResult();
+                dump($presupuestos);die;
                 $totalValor = 0;
                 if ($presupuestos) {
                     foreach ($presupuestos as $presupuesto) {
