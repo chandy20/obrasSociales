@@ -451,7 +451,9 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->andWhere('p.id = :programa')
                 ->setParameter('programa', $form->programa5);
         } else {
-            $query->andWhere('p.id = :programa')
+            $query->join('s.programas', 'ps')
+                ->join('ps.programa', 'p')
+                ->andWhere('p.id = :programa')
                 ->setParameter('programa', $form->programa5);
         }
         $query->resetDQLPart('select');
@@ -576,7 +578,9 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->andWhere('p.id = :programa')
                 ->setParameter('programa', $form->programa5);
         } else {
-            $solicitudes->andWhere('p.id = :programa')
+            $solicitudes->join('s.programas', 'ps')
+                ->join('ps.programa', 'p')
+                ->andWhere('p.id = :programa')
                 ->setParameter('programa', $form->programa5);
         }
         $solicitudes = $solicitudes->getQuery()->getResult();
