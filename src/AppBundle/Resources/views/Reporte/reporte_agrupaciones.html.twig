@@ -30,19 +30,9 @@
                     <td><b>{{ totalParcial }}</b></td>
                 </tr>
             {% endfor %}
-            <tr>
-                <td><b>Total solicitudes:</b></td>
-                <td><b>{{ solicitudes }}</b></td>
-            </tr>
             </tbody>
         </table>
         <br>
-        {#<form id="exportar_reporte_agrupaciones" method="POST"#}
-              {#action="{{ path('admin_app_conceptosjunta_exportarReporteAgrupaciones') }}">#}
-            {#<input type="hidden" name="datos" value="{{ datosParaTabla|json_encode() }}">#}
-            {#<button class="btn btn-danger pull-right" type="submit"><i class="fa fa-download"></i> Exportar datos#}
-            {#</button>#}
-        {#</form>#}
     </div>
     <script type="text/javascript">
 

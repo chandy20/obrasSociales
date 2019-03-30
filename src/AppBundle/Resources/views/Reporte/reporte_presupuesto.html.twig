@@ -17,14 +17,16 @@
         <br>
         <br>
         <div class="col-md-12 text-center">
-            <div class="col-md-4 titulo">seccional</div>
-            <div class="col-md-4 titulo">Valor</div>
-            <div class="col-md-4 titulo">Beneficios entregados</div>
+            <div class="col-md-6 titulo">Programa</div>
+            <div class="col-md-2 titulo">Monto</div>
+            <div class="col-md-2 titulo">Saldo</div>
+            <div class="col-md-2 titulo">Ejecutado</div>
             {%set cuenta = 1%}
             {%for key, dato in datos%}
-                <div class="col-md-4 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{key}}</div>
-                <div class="col-md-4 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{dato.valor}}</div>
-                <div class="col-md-4 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{dato.movimientos}}</div>
+                <div class="col-md-6 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{key}}</div>
+                <div class="col-md-2 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{dato.monto}}</div>
+                <div class="col-md-2 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{dato.saldo}}</div>
+                <div class="col-md-2 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{dato.monto - dato.saldo}}</div>
                 {%set cuenta = cuenta + 1%}
             {%endfor%}
         </div>

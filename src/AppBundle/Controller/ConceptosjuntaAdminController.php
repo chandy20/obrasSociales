@@ -379,36 +379,51 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->andWhere("se.id = :seccional")
                 ->setParameter("seccional", $user->getSeccional());
         }
-        $solicitudes = $query->getQuery()->getResult();
+        if ($user->hasRole('ROLE_LIDER')) {
+            $query->join('s.programas', 'ps')
+                ->join('ps.programa', 'p')
+                ->andWhere('p.idarea = :area')
+                ->setParameter('area', $user->getArea());
+        }
+        $solicitudes = $query
+            ->groupBy('s.id')
+            ->getQuery()->getResult();
         $datos = [];
-
+        $todas = [];
         foreach ($solicitudes as $solicitud) {
             $padre = $solicitud->{$parametros['ordenamiento']};
             if ($padre != null) {
-                foreach ($solicitud->getProgramas() as $programa) {
                     if (!array_key_exists('"' . $padre->getNombre() . '"', $datos)) {
                         $datos['"' . $padre->getNombre() . '"']["total"] = 1;
                         $datos['"' . $padre->getNombre() . '"']["aprobadas"] = 0;
                         $datos['"' . $padre->getNombre() . '"']["rechazadas"] = 0;
                     } else {
-                        $datos['"' . $padre->getNombre() . '"']["total"]++;
+                        $datos['"' . $padre->getNombre() . '"']["total"] ++;
                     }
-                }
             }
         }
+
         $queryAprobadas = $query;
         $queryAprobadas->join("s.conceptoJunta", "cj")
             ->andWhere("cj.editado = :editado");
-        $queryAprobadas->setParameter("editado", true);
+        $queryAprobadas->setParameter("editado", true)
+            ->groupBy('s.id')
+            ->getQuery()->getResult();
         $solicitudesAprobadas = $queryAprobadas->getQuery()->getResult();
+        $gestionadas = [];
         foreach ($solicitudesAprobadas as $solicitud) {
             $padre = $solicitud->{$parametros['ordenamiento']};
-            foreach ($solicitud->getConceptoJunta() as $concepto) {
-                foreach ($concepto->getProgramasConcepto() as $programaConcepto) {
-                    if ($programaConcepto->getAprobado()) {
-                        $datos['"' . $padre->getNombre() . '"']["aprobadas"]++;
-                    } else if (!$programaConcepto->getAprobado()) {
-                        $datos['"' . $padre->getNombre() . '"']["rechazadas"]++;
+            if ($padre) {
+                foreach ($solicitud->getConceptoJunta() as $concepto) {
+                    foreach ($concepto->getProgramasConcepto() as $programaConcepto) {
+                        if (!in_array($solicitud->getId(), $gestionadas)) {
+                            if ($programaConcepto->getAprobado()) {
+                                $datos['"' . $padre->getNombre() . '"']["aprobadas"]++;
+                            } else if ($programaConcepto->getAprobado() != null) {
+                                $datos['"' . $padre->getNombre() . '"']["rechazadas"]++;
+                            }
+                            $gestionadas[]= $solicitud->getId();
+                        }
                     }
                 }
             }
@@ -523,7 +538,7 @@ class ConceptosjuntaAdminController extends CRUDController
             $entidadNombreCantidad[$entidad] = [];
             foreach ($solicitudes as $solicitud) {
                 if (array_key_exists($solicitud[$arrayEntidadCampos[$entidad]['campo']], $entidadNombreCantidad[$entidad])) {
-                    $entidadNombreCantidad[$entidad][$solicitud[$arrayEntidadCampos[$entidad]['campo']]] ++;
+                    $entidadNombreCantidad[$entidad][$solicitud[$arrayEntidadCampos[$entidad]['campo']]]++;
                 } else {
                     $entidadNombreCantidad[$entidad][$solicitud[$arrayEntidadCampos[$entidad]['campo']]] = 1;
                 }
@@ -828,74 +843,18 @@ class ConceptosjuntaAdminController extends CRUDController
 
     public function cargarDatosPresupuesto($form)
     {
-        $query = $this->em->getRepository("AppBundle:Movimiento")->createQueryBuilder('m')
-            ->join("m.seccional", "s")
-            ->join("m.concepto", "c")
-            ->join("c.solicitud", "so")
-            ->where("so.solicitudfecha BETWEEN :inicio AND :fin")
-            ->setParameter("inicio", $form->fechaInicial3)
-            ->setParameter("fin", $form->fechaFinal3);
-
-        $user = $this->getUser();
-        if ($user->hasRole('ROLE_CONSULTOR')) {
-            $query->join("s.idseccional", "se")
-                ->andWhere("se.id = :seccional")
-                ->setParameter("seccional", $user->getSeccional());
-        }
-
-        if ($form->seccional3) {
-            $query->andWhere("s.id = :seccional")
-                ->setParameter("seccional", $form->seccional3);
-        }
-
-        if ($user->hasRole('ROLE_LIDER')) {
-            $query->join("so.idseccional", "se")
-                ->join('so.programas', 'ps')
-                ->join('ps.programa', 'p')
-                ->andWhere('p.idarea = :area')
-                ->setParameter('area', $user->getArea());
-        } else if ($form->area3 != "") {
-            $query->join("so.programas", "sp")
-                ->join("sp.programa", "p")
-                ->join("p.idarea", "a")
-                ->andWhere("a.idArea = :area")
-                ->setParameter("area", $form->area3);
-        }
-        $movimientos = $query->getQuery()->getResult();
-        dump($movimientos);die;
+        $movimientos = $this->obtenerMovimientos($form->fechaInicial3, $form->fechaFinal3, $form->seccional3, $form->area3);
         $datos = [];
-        $totales = [];
         foreach ($movimientos as $movimiento) {
-            if (!array_key_exists($movimiento->getSeccional()->getSeccionalnombre(), $datos)) {
-                $presupuestos = $this->em->getRepository("AppBundle:Presupuestos")->createQueryBuilder('p')
-                    ->where("p.desde <= :inicio OR p.hasta >= :fin")
-                    ->andWhere("p.seccional = :seccional")
-                    ->setParameter("inicio", $form->fechaInicial3)
-                    ->setParameter("fin", $form->fechaFinal3)
-                    ->setParameter("seccional", $movimiento->getSeccional());
-                if ($form->area3) {
-                    $presupuestos->join("p.idarea", "a")
-                        ->andWhere("a.idArea = :area")
-                        ->setParameter("area", $form->area3);
-                }
-                $presupuestos = $presupuestos->getQuery()->getResult();
-                dump($presupuestos);die;
-                $totalValor = 0;
-                if ($presupuestos) {
-                    foreach ($presupuestos as $presupuesto) {
-                        if (!in_array($presupuesto->getIdarea()->getAreanombre(), $totales)) {
-                            $totales[$presupuesto->getIdarea()->getAreanombre()] = $presupuesto->getPresupuestomonto();
-                        } else {
-                            $totales[$presupuesto->getIdarea()->getAreanombre()] += $presupuesto->getPresupuestomonto();
-                        }
-                    }
-                }
-                $datos[$movimiento->getSeccional()->getSeccionalnombre() . " " . $movimiento->getPresupuesto()->getIdarea()]["valor"] = $totales[$movimiento->getPresupuesto()->getIdarea()->getAreanombre()];
-                $datos[$movimiento->getSeccional()->getSeccionalnombre() . " " . $movimiento->getPresupuesto()->getIdarea()]["movimientos"] = $movimiento->getValor();
+            if (!in_array($movimiento->getPresupuesto()->getPrograma()->getProgramanombre() . " - " . $movimiento->getPresupuesto()->getSeccional()->getSeccionalnombre(), $datos)) {
+                $datos[$movimiento->getPresupuesto()->getPrograma()->getProgramanombre() . " - " . $movimiento->getPresupuesto()->getSeccional()->getSeccionalnombre()]['monto'] = $movimiento->getPresupuesto()->getPresupuestomonto();
+                $datos[$movimiento->getPresupuesto()->getPrograma()->getProgramanombre() . " - " . $movimiento->getPresupuesto()->getSeccional()->getSeccionalnombre()]['saldo'] = $movimiento->getPresupuesto()->getSaldo();
             } else {
-                $datos[$movimiento->getSeccional()->getSeccionalnombre() . " " . $movimiento->getPresupuesto()->getIdarea()]["movimientos"] += $movimiento->getValor();
+                $datos[$movimiento->getPresupuesto()->getPrograma()->getProgramanombre() . " - " . $movimiento->getPresupuesto()->getSeccional()->getSeccionalnombre()]['monto'] += $movimiento->getPresupuesto()->getPresupuestomonto();
+                $datos[$movimiento->getPresupuesto()->getPrograma()->getProgramanombre() . " - " . $movimiento->getPresupuesto()->getSeccional()->getSeccionalnombre()]['saldo'] += $movimiento->getPresupuesto()->getSaldo();
             }
         }
+
         $html = $this->renderView('AppBundle:Reporte:reporte_presupuesto.html.twig', [
             'datos' => $datos
         ]);
@@ -904,53 +863,8 @@ class ConceptosjuntaAdminController extends CRUDController
 
     public function cargarDatosMovimientos($form)
     {
-        $query = $this->em->getRepository("AppBundle:Movimiento")->createQueryBuilder('m')
-            ->join("m.seccional", "s")
-            ->join("m.concepto", "c")
-            ->join("c.solicitud", "so")
-            ->where("so.solicitudfecha BETWEEN :inicio AND :fin")
-            ->setParameter("inicio", $form->fechaInicial4)
-            ->setParameter("fin", $form->fechaFinal4);
-        if ($form->documentoSolicitante2) {
-            $query->andWhere("so.solicitudcedulasolicita = :cedula")
-                ->setParameter("cedula", $form->documentoSolicitante2);
-        }
-        if ($form->documentoTitular2) {
-            $query->andWhere("so.solicitudcedulafuncionario = :cedulaTitular")
-                ->setParameter("cedulaTitular", $form->documentoTitular2);
-        }
-        $user = $this->getUser();
-        if ($user->hasRole('ROLE_CONSULTOR')) {
-            $query->join("s.idseccional", "se")
-                ->andWhere("se.id = :seccional")
-                ->setParameter("seccional", $user->getSeccional());
-        }
-        if ($form->seccional4) {
-            $query->andWhere("s.id = :seccional")
-                ->setParameter("seccional", $form->seccional4);
-        }
-        if ($form->programa2) {
-            $query->join("so.programas", "sp")
-                ->join("sp.programa", "p")
-                ->andWhere("p.id = :programa")
-                ->setParameter("programa", $form->programa2);
-        }
-        if ($user->hasRole('ROLE_LIDER')) {
-            $query->join('s.programas', 'ps')
-                ->join('ps.programa', 'p')
-                ->andWhere('p.idarea = :area')
-                ->setParameter('area', $user->getArea());
-        }
-        if ($form->programa2 && !$user->hasRole('ROLE_LIDER')) {
-            $query->join("so.programas", "sp")
-                ->join("sp.programa", "p")
-                ->andWhere("p.id = :programa")
-                ->setParameter("programa", $form->programa2);
-        } else {
-            $query->andWhere("p.id = :programa")
-                ->setParameter("programa", $form->programa2);
-        }
-        $movimientos = $query->getQuery()->getResult();
+        $movimientos = $this->obtenerMovimientos($form->fechaInicial4, $form->fechaFinal4, $form->seccional4, null, $form->documentoSolicitante2, $form->documentoTitular2, $form->programa2);
+
         $html = $this->renderView('AppBundle:Reporte:reporte_movimientos.html.twig', [
             'movimientos' => $movimientos
         ]);
@@ -1122,6 +1036,61 @@ class ConceptosjuntaAdminController extends CRUDController
     {
         $programa = $this->em->getRepository("AppBundle:Programas")->find($id);
         return new JsonResponse(['valorMes' => $programa ? $programa->getValorMes() : null], 200);
+    }
+
+    public function obtenerMovimientos($fechaInicial, $fechaFinal, $seccional = null, $area = null, $documentoSolicitante = null, $documentoTitular = null, $programa = null)
+    {
+        $user = $this->getUser();
+        $query = $this->em->getRepository("AppBundle:Movimiento")->createQueryBuilder('m')
+            ->join("m.seccional", "s")
+            ->join("m.concepto", "c")
+            ->join("c.solicitud", "so")
+            ->where("so.solicitudfecha BETWEEN :inicio AND :fin")
+            ->setParameter("inicio", $fechaInicial)
+            ->setParameter("fin", $fechaFinal);
+
+        if ($user->hasRole('ROLE_CONSULTOR')) {
+            $query->join("s.idseccional", "se")
+                ->andWhere("se.id = :seccional")
+                ->setParameter("seccional", $user->getSeccional());
+        }
+
+        if ($seccional) {
+            $query->andWhere("s.id = :seccional")
+                ->setParameter("seccional", $seccional);
+        }
+
+        if ($user->hasRole('ROLE_LIDER')) {
+            $query->join("so.idseccional", "se")
+                ->join('so.programas', 'ps')
+                ->join('ps.programa', 'p')
+                ->andWhere('p.idarea = :area')
+                ->setParameter('area', $user->getArea());
+        } else if ($area != "") {
+            $query->join("so.programas", "sp")
+                ->join("sp.programa", "p")
+                ->join("p.idarea", "a")
+                ->andWhere("a.idArea = :area")
+                ->setParameter("area", $area);
+        }
+        if ($programa && !$user->hasRole('ROLE_LIDER')) {
+            $query->join("so.programas", "sp")
+                ->join("sp.programa", "p")
+                ->andWhere("p.id = :programa")
+                ->setParameter("programa", $programa);
+        } else if ($programa) {
+            $query->andWhere("p.id = :programa")
+                ->setParameter("programa", $programa);
+        }
+        if ($documentoSolicitante) {
+            $query->andWhere("so.solicitudcedulasolicita = :cedula")
+                ->setParameter("cedula", $documentoSolicitante);
+        }
+        if ($documentoTitular) {
+            $query->andWhere("so.solicitudcedulafuncionario = :cedulaTitular")
+                ->setParameter("cedulaTitular", $documentoTitular);
+        }
+        return $query->getQuery()->getResult();
     }
 
 }

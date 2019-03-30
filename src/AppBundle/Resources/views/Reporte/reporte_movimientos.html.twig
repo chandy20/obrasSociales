@@ -1,46 +1,49 @@
-{%if movimientos %}
+{% if movimientos %}
     <style>
-        .titulo{
-            height: 40px; 
+        .titulo {
+            height: 40px;
             background-color: #5AC7FF;
         }
-        .elemento1{
+
+        .elemento1 {
             background-color: gray;
-            height: 20px; 
+            height: 20px;
         }
-        .elemento2{
-            height: 20px; 
+
+        .elemento2 {
+            height: 20px;
             background-color: white;
         }
     </style>
-    <div class="col-md-12">
         <br>
         <br>
-        <div class="col-md-12 text-center">
-            <div class="col-md-2 titulo">Solicitante</div>
-            <div class="col-md-3 titulo">Titular</div>
-            <div class="col-md-2 titulo">Seccional</div>
-            <div class="col-md-2 titulo">Área</div>
-            <div class="col-md-1 titulo">Meses</div>
-            <div class="col-md-2 titulo">Beneficio entregado</div>
-            {%set cuenta = 1%}
-            {%for movimiento in movimientos%}
-                <div class="col-md-2 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{movimiento.concepto.solicitud.solicitudnombresolicita}}</div>
-                <div class="col-md-3 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{movimiento.concepto.solicitud.solicitudnombrefuncionario}}</div>
-                <div class="col-md-2 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{movimiento.seccional}}</div>
-                <div class="col-md-2 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{movimiento.presupuesto.idarea}}</div>
-                <div class="col-md-1 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{movimiento.concepto.conceptojuntatiempo}}</div>
-                <div class="col-md-2 {% if cuenta is even %}elemento1{%else%}elemento2{%endif%}">{{movimiento.valor}}</div>
-                {%set cuenta = cuenta + 1%}
-            {%endfor%}
-        </div>
-    </div>
+        <table class="text-center">
+            <tr>
+                <th class="titulo">Solicitante</th>
+                <th class="titulo">Titular</th>
+                <th class="titulo">Seccional</th>
+                <th class="titulo">Área</th>
+                <th class="titulo">Beneficio entregado</th>
+            </tr>
+            {% set cuenta = 1 %}
+            {% for movimiento in movimientos %}
+                <tr>
+
+                    <td class="{% if cuenta is even %}elemento1{% else %}elemento2{% endif %}">{{ movimiento.concepto.solicitud.solicitudnombresolicita }}</td>
+                    <td class="{% if cuenta is even %}elemento1{% else %}elemento2{% endif %}">{{ movimiento.concepto.solicitud.solicitudnombrefuncionario }}</td>
+                    <td class="{% if cuenta is even %}elemento1{% else %}elemento2{% endif %}">{{ movimiento.seccional }}</td>
+                    <td class="{% if cuenta is even %}elemento1{% else %}elemento2{% endif %}">{{ movimiento.presupuesto.idarea }}</td>
+                    <td class="{% if cuenta is even %}elemento1{% else %}elemento2{% endif %}">{{ movimiento.valor }}</td>
+                </tr>
+                {% set cuenta = cuenta + 1 %}
+            {% endfor %}
+        </table>
     <br>
     <br>
     <br>
     <br>
     <br>
     <br>
-{%else%}
+{% else %}
     <div>No se encontró información con los parametros de busqueda.</div>
-{%endif%}
+{% endif %}
