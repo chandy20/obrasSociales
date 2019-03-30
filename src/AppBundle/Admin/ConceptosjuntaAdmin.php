@@ -86,7 +86,23 @@ class ConceptosjuntaAdmin extends AbstractAdmin
             ->add('solicitud.solicitudnombresolicita', null, ["label" => "Solicitante"])
             ->add('solicitud.solicitudcedulasolicita', null, ["label" => "Documento"])
             ->add('solicitud.programas.programa.idarea', null, ["label" => "Área"])
-            ->add('solicitud.programas.programa', null, ["label" => "Programa"])
+            ->add('solicitud.programas.programa', 'doctrine_orm_callback', [
+                'callback' => function($queryBuilder, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    $queryBuilder
+                        ->join(sprintf('%s.programa', $alias), 'pr')
+                        ->join('pr.programa', 'pa')
+                        ->andWhere('pr.programanombre like :programa')
+                        ->orWhere('pa.programanombre like :programa')
+                        ->setParameter('programa', '%'.$value['value'].'%');
+
+                    return true;
+                },
+                'label'=>'Programa ó Modalidad'
+            ])
             ->add('solicitud.idseccional', null, ["label" => "Seccional"]);
     }
 
