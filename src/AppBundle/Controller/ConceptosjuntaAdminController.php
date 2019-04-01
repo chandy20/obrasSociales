@@ -528,7 +528,7 @@ class ConceptosjuntaAdminController extends CRUDController
                 ->addSelect("COUNT(" . $arrayEntidadCampos[$entidad]['relacion'] . '.' . $arrayEntidadCampos[$entidad]['campo'] . ") "
                     . "as cantidad_" . $arrayEntidadCampos[$entidad]['campo'])
                 ->addSelect($arrayEntidadCampos[$entidad]['relacion'] . '.' . $arrayEntidadCampos[$entidad]['campo'])
-                ->leftJoin("s." . $arrayEntidadCampos[$entidad]['relacion'], $arrayEntidadCampos[$entidad]['relacion'])
+                ->join("s." . $arrayEntidadCampos[$entidad]['relacion'], $arrayEntidadCampos[$entidad]['relacion'])
                 ->addGroupBy($arrayEntidadCampos[$entidad]['relacion'] . '.' . $arrayEntidadCampos[$entidad]['campo']);
         }
         $solicitudes = $query->getQuery()->getResult();
@@ -538,9 +538,9 @@ class ConceptosjuntaAdminController extends CRUDController
             $entidadNombreCantidad[$entidad] = [];
             foreach ($solicitudes as $solicitud) {
                 if (array_key_exists($solicitud[$arrayEntidadCampos[$entidad]['campo']], $entidadNombreCantidad[$entidad])) {
-                    $entidadNombreCantidad[$entidad][$solicitud[$arrayEntidadCampos[$entidad]['campo']]]++;
+                    $entidadNombreCantidad[$entidad][$solicitud[$arrayEntidadCampos[$entidad]['campo']]] = $entidadNombreCantidad[$entidad][$solicitud[$arrayEntidadCampos[$entidad]['campo']]] + $solicitud['cantidad_' . $arrayEntidadCampos[$entidad]['campo']];
                 } else {
-                    $entidadNombreCantidad[$entidad][$solicitud[$arrayEntidadCampos[$entidad]['campo']]] = 1;
+                    $entidadNombreCantidad[$entidad][$solicitud[$arrayEntidadCampos[$entidad]['campo']]] = $solicitud['cantidad_' . $arrayEntidadCampos[$entidad]['campo']];
                 }
             }
         }
