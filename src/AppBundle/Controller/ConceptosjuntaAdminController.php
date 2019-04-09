@@ -203,11 +203,13 @@ class ConceptosjuntaAdminController extends CRUDController
                         ->andWhere(":hoy BETWEEN p.desde AND p.hasta")
                         ->andWhere("p.idarea = :area")
                         ->andWhere("p.programa = :programa")
+                        ->andWhere("p.saldo > :saldo")
                         ->setParameter("seccional", $concepto->getSolicitud()->getIdseccional())
                         ->setParameter("area", $programaConcepto->getPrograma()->getPrograma()->getIdarea())
                         ->setParameter("programa", $programaConcepto->getPrograma())
+                        ->setParameter("saldo", 0)
                         ->setParameter("hoy", $hoy)
-                        ->orderBy('p.desde', 'asc')
+                        ->orderBy('p.saldo', 'DESC')
                         ->getQuery()->getResult();
                     if (!$presupuesto) {
                         $form->addError(new FormError("No existe presupuesto vigente disponible para la seccional " . $concepto->getSolicitud()->getIdseccional()->getSeccionalnombre() . " para el área de " . $programaConcepto->getPrograma()->getPrograma()->getIdarea() . " , Programa " . $programaConcepto->getPrograma()->getPrograma() . " , modalidad " . $programaConcepto->getPrograma()));
