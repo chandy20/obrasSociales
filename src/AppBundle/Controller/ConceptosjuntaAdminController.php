@@ -395,13 +395,13 @@ class ConceptosjuntaAdminController extends CRUDController
         foreach ($solicitudes as $solicitud) {
             $padre = $solicitud->{$parametros['ordenamiento']};
             if ($padre != null) {
-                    if (!array_key_exists('"' . $padre->getNombre() . '"', $datos)) {
-                        $datos['"' . $padre->getNombre() . '"']["total"] = 1;
-                        $datos['"' . $padre->getNombre() . '"']["aprobadas"] = 0;
-                        $datos['"' . $padre->getNombre() . '"']["rechazadas"] = 0;
-                    } else {
-                        $datos['"' . $padre->getNombre() . '"']["total"] ++;
-                    }
+                if (!array_key_exists('"' . $padre->getNombre() . '"', $datos)) {
+                    $datos['"' . $padre->getNombre() . '"']["total"] = 1;
+                    $datos['"' . $padre->getNombre() . '"']["aprobadas"] = 0;
+                    $datos['"' . $padre->getNombre() . '"']["rechazadas"] = 0;
+                } else {
+                    $datos['"' . $padre->getNombre() . '"']["total"]++;
+                }
             }
         }
 
@@ -424,7 +424,7 @@ class ConceptosjuntaAdminController extends CRUDController
                             } else if ($programaConcepto->getAprobado() != null) {
                                 $datos['"' . $padre->getNombre() . '"']["rechazadas"]++;
                             }
-                            $gestionadas[]= $solicitud->getId();
+                            $gestionadas[] = $solicitud->getId();
                         }
                     }
                 }
@@ -471,7 +471,7 @@ class ConceptosjuntaAdminController extends CRUDController
             $query->andWhere('p.id = :programa')
                 ->setParameter('programa', $form->programa5);
         }
-        $query->resetDQLPart('select');
+//        $query->resetDQLPart('select');
         $arrayEntidadCampos = [
             'Parentescos' => [
                 'relacion' => 'idparentesco',
@@ -525,24 +525,20 @@ class ConceptosjuntaAdminController extends CRUDController
             'Tipossolicitud' => 'Tipos de solicitud',
             'Seccionales' => 'Seccional'
         ];
-        foreach ($form->agrupaciones as $entidad) {
-            $query
-                ->addSelect("COUNT(" . $arrayEntidadCampos[$entidad]['relacion'] . '.' . $arrayEntidadCampos[$entidad]['campo'] . ") "
-                    . "as cantidad_" . $arrayEntidadCampos[$entidad]['campo'])
-                ->addSelect($arrayEntidadCampos[$entidad]['relacion'] . '.' . $arrayEntidadCampos[$entidad]['campo'])
-                ->join("s." . $arrayEntidadCampos[$entidad]['relacion'], $arrayEntidadCampos[$entidad]['relacion'])
-                ->addGroupBy($arrayEntidadCampos[$entidad]['relacion'] . '.' . $arrayEntidadCampos[$entidad]['campo']);
-        }
-        $solicitudes = $query->getQuery()->getResult();
 
+        $solicitudes = $query->getQuery()->getResult();
         $entidadNombreCantidad = [];
         foreach ($form->agrupaciones as $entidad) {
             $entidadNombreCantidad[$entidad] = [];
             foreach ($solicitudes as $solicitud) {
-                if (array_key_exists($solicitud[$arrayEntidadCampos[$entidad]['campo']], $entidadNombreCantidad[$entidad])) {
-                    $entidadNombreCantidad[$entidad][$solicitud[$arrayEntidadCampos[$entidad]['campo']]] = $entidadNombreCantidad[$entidad][$solicitud[$arrayEntidadCampos[$entidad]['campo']]] + $solicitud['cantidad_' . $arrayEntidadCampos[$entidad]['campo']];
-                } else {
-                    $entidadNombreCantidad[$entidad][$solicitud[$arrayEntidadCampos[$entidad]['campo']]] = $solicitud['cantidad_' . $arrayEntidadCampos[$entidad]['campo']];
+                if ($solicitud->{'get' . $arrayEntidadCampos[$entidad]['relacion']}()) {
+                    $key =$solicitud->{'get' . $arrayEntidadCampos[$entidad]['relacion']}()->{'get' . $arrayEntidadCampos[$entidad]['campo']}();
+                    if (!array_key_exists($key, $entidadNombreCantidad[$entidad])) {
+                        $entidadNombreCantidad[$entidad][$key] = 1;
+
+                    } else {
+                        $entidadNombreCantidad[$entidad][$key] ++;
+                    }
                 }
             }
         }
@@ -563,8 +559,8 @@ class ConceptosjuntaAdminController extends CRUDController
         $datos = [];
         foreach ($entidadNombreCantidad as $key => $arreglo) {
             $columnas[$labels[$key]] = $labels[$key];
-            foreach ($arreglo as $llave => $valor) {
-                $datos[$llave][] = ($valor != null && $valor != 0) ? $valor + 0 : null;
+            foreach ($arreglo as $key => $valor) {
+                $datos[$key][] = ($valor != null && $valor != 0) ? $valor + 0 : null;
             }
         }
 
