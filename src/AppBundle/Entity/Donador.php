@@ -59,14 +59,14 @@ class Donador
     /**
      * @var integer
      *
-     * @ORM\Column(name="telefonoContacto1", type="integer")
+     * @ORM\Column(name="telefonoContacto1", type="string", length=10)
      */
     private $telefonoContacto1;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="telefonoContacto2", type="integer")
+     * @ORM\Column(name="telefonoContacto2", type="string", length=10)
      */
     private $telefonoContacto2;
 
@@ -98,6 +98,13 @@ class Donador
     private $ciudad;
 
 
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getNombre() ? $this->getNombre() : "";
+    }
 
     /**
      * Get id

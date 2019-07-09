@@ -123,6 +123,9 @@ sonata_admin:
             institucional:
                 roles: [ ROLE_SUPER_ADMIN ]
                 label: 'Institucional'
+            donacion:
+                roles: [ ROLE_SUPER_ADMIN, ROLE_CONSULTOR, ROLE_LIDER ]
+                label: 'Donación'
             auditoria:
                 roles: [ ROLE_SUPER_ADMIN, ROLE_CONSULTOR, ROLE_LIDER ]
                 label: 'Auditoría'
@@ -137,6 +140,7 @@ sonata_admin:
             - { position: right,  type: sonata.admin.block.admin_list, settings: { groups: [familiar] } }
             - { position: right,  type: sonata.admin.block.admin_list, settings: { groups: [institucional] } }
             - { position: right,  type: sonata.admin.block.admin_list, settings: { groups: [auditoria] } }
+            - { position: right,  type: sonata.admin.block.admin_list, settings: { groups: [donacion] } }
 
 
 

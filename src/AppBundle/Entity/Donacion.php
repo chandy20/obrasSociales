@@ -48,6 +48,11 @@ class Donacion
      */
     private $evento;
 
+    public function __toString()
+    {
+        return "";
+    }
+
 
     /**
      * Get id

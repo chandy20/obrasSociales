@@ -13,6 +13,10 @@ label:
   programa: Programa
   programas: Modalidades
   seleccion: Seleccione una opción
+  direccion: Dirección
+  tel1: Teléfono principal
+  tel2: Teléfono secundario
+  documento: Nit/Número de documento
 error:
   create:
     excel: Error al leer el archivo Excel adjunto, por favor intente de nuevo.

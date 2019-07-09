@@ -28,6 +28,11 @@ class Ciudad
      */
     private $nombre;
 
+    public function __toString()
+    {
+       return $this->getNombre() ? $this->getNombre() : "";
+    }
+
 
     /**
      * Get id

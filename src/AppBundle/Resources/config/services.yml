@@ -186,3 +186,32 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: admin, label: ProgramaConcepto }
         public: true
+
+    app.admin.ciudad:
+        class: AppBundle\Admin\CiudadAdmin
+        arguments: [~, AppBundle\Entity\Ciudad, AppBundle:CiudadAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: donacion, label: Ciudad }
+        public: true
+
+    app.admin.evento:
+        class: AppBundle\Admin\EventoAdmin
+        arguments: [~, AppBundle\Entity\Evento, AppBundle:EventoAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: donacion, label: Evento }
+        public: true
+
+
+    app.admin.donador:
+        class: AppBundle\Admin\DonadorAdmin
+        arguments: [~, AppBundle\Entity\Donador, AppBundle:DonadorAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: donacion, label: Donador }
+        public: true
+
+    app.admin.donacion:
+        class: AppBundle\Admin\DonacionAdmin
+        arguments: [~, AppBundle\Entity\Donacion, AppBundle:DonacionAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: donacion, label: Donación }
+        public: true

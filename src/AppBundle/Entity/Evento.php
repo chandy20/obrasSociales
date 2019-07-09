@@ -42,7 +42,20 @@ class Evento
      */
     private $fecha;
 
+    /**
+     * @var \Ciudad
+     *
+     * @ORM\ManyToOne(targetEntity="Ciudad")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="ciudad_id", referencedColumnName="id")
+     * })
+     */
+    private $ciudad;
 
+    public function __toString()
+    {
+        return $this->getNombre() ? $this->getNombre() : "";
+    }
 
 
     /**
@@ -125,5 +138,29 @@ class Evento
     public function getFecha()
     {
         return $this->fecha;
+    }
+
+    /**
+     * Set ciudad
+     *
+     * @param \AppBundle\Entity\Ciudad $ciudad
+     *
+     * @return Evento
+     */
+    public function setCiudad(\AppBundle\Entity\Ciudad $ciudad = null)
+    {
+        $this->ciudad = $ciudad;
+
+        return $this;
+    }
+
+    /**
+     * Get ciudad
+     *
+     * @return \AppBundle\Entity\Ciudad
+     */
+    public function getCiudad()
+    {
+        return $this->ciudad;
     }
 }
