@@ -29,6 +29,13 @@ class Donacion
     private $monto;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="aprovada", type="boolean", nullable=false, options={"default" : 0})
+     */
+    private $aprobada;
+
+    /**
      * @var \Donador
      *
      * @ORM\ManyToOne(targetEntity="Donador")
@@ -134,5 +141,29 @@ class Donacion
     public function getEvento()
     {
         return $this->evento;
+    }
+
+    /**
+     * Set aprobada
+     *
+     * @param boolean $aprobada
+     *
+     * @return Donacion
+     */
+    public function setAprobada($aprobada)
+    {
+        $this->aprobada = $aprobada;
+
+        return $this;
+    }
+
+    /**
+     * Get aprobada
+     *
+     * @return boolean
+     */
+    public function getAprobada()
+    {
+        return $this->aprobada;
     }
 }

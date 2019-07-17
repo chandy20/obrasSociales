@@ -78,16 +78,6 @@ class Donador
     private $email;
 
     /**
-     * @var \Seccional
-     *
-     * @ORM\ManyToOne(targetEntity="Seccionales")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="seccional_id", referencedColumnName="id")
-     * })
-     */
-    private $seccional;
-
-    /**
      * @var \Ciudad
      *
      * @ORM\ManyToOne(targetEntity="Ciudad")
@@ -308,29 +298,6 @@ class Donador
         return $this->email;
     }
 
-    /**
-     * Set seccional
-     *
-     * @param \AppBundle\Entity\Seccionales $seccional
-     *
-     * @return Donador
-     */
-    public function setSeccional(\AppBundle\Entity\Seccionales $seccional = null)
-    {
-        $this->seccional = $seccional;
-
-        return $this;
-    }
-
-    /**
-     * Get seccional
-     *
-     * @return \AppBundle\Entity\Seccionales
-     */
-    public function getSeccional()
-    {
-        return $this->seccional;
-    }
 
     /**
      * Set ciudad

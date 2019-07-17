@@ -1,0 +1,6 @@
+{% if admin.hasAccess('list') and admin.hasRoute('list') and object.aprobada == 0 %}
+        <a href="{{ admin.generateURL('validate', {id: object.id}) }}" class="btn btn-sm btn-default edit_link" title="Validar donación">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            {{ 'label.validate' | trans }}
+        </a>
+{% endif %}

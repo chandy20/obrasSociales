@@ -1,14 +1,26 @@
 ROLE_LIDER: Lider de área
 ROLE_SUPER_ADMIN: Administrador
 ROLE_CONSULTOR: Consultor
+Donacion List: Listado de donaciones
+Action: Acción
 label:
+  telefono: Teléfono
+  email: Email
+  name: Nombre
   area: Área
+  evento: Evento
+  ciudad: Ciudad
+  seccional: Seccional
   roles: Rol
+  fecha: Fecha
+  apobar:
+    donacion: ¿Aprueba la donación?
   send: Enviar
   file: Archivo
   importar: Importar solicitudes
   download:
     template: Descargar plantilla
+    certificate: Descargar certificado
   reemplazar: Sustituir archivo cargado
   programa: Programa
   programas: Modalidades
@@ -17,6 +29,7 @@ label:
   tel1: Teléfono principal
   tel2: Teléfono secundario
   documento: Nit/Número de documento
+  validate: Validar
 error:
   create:
     excel: Error al leer el archivo Excel adjunto, por favor intente de nuevo.
@@ -54,3 +67,9 @@ email:
   email: principal@obrassocialespolicia.org
   pbx: "PBX: 7468999"
   atencion: "Horario de atención de Lunes a Viernes de 7:30 AM a 12:00 PM y de 2:00 PM a 6:00 PM"
+
+title:
+  detail:
+    donation: Detalles de la donación
+    donator: Detalles del donante
+    event: Detalles del evento

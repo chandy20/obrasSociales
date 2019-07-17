@@ -122,7 +122,7 @@ class SolicitudesAdmin extends AbstractAdmin
                     'edit' => array(),
                     'delete' => array(),
                     'archivo' => array(
-                        'template' => 'AppBundle:Solicitudes/btn:reemplazar.archivo.html.twig'
+                        'template' => 'AppBundle:Solicitudes/btn:reemplazar.validate.html.twig'
                     ),
                 ),
             ));
@@ -449,7 +449,7 @@ class SolicitudesAdmin extends AbstractAdmin
                 return 'AppBundle:Solicitudes:base_edit.html.twig';
                 break;
             case 'replaceFile':
-                return 'AppBundle:Solicitudes:cargar.archivo.html.twig';
+                return 'AppBundle:Solicitudes:cargar.validate.html.twig';
                 break;
             default:
                 return parent::getTemplate($name);

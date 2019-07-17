@@ -131,7 +131,7 @@ class ConceptosjuntaAdmin extends AbstractAdmin
                         'edit' => array(),
                         'delete' => array(),
                         'archivo' => array(
-                            'template' => 'AppBundle:Solicitudes/btn:archivo.html.twig'
+                            'template' => 'AppBundle:Solicitudes/btn:validate.html.twig'
                         ),
 //                            'pdf' => array(
 //                                'template' => 'AppBundle:Solicitudes/btn:pdf.html.twig'

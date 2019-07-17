@@ -16,6 +16,8 @@ class DonacionAdmin extends AbstractAdmin
     {
         $collection->remove('delete');
         $collection->remove('show');
+        $collection->add('downloadPDF', $this->getRouterIdParameter() . '/pdf/download');
+        $collection->add('validate', $this->getRouterIdParameter() . '/validate');
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -35,6 +37,12 @@ class DonacionAdmin extends AbstractAdmin
                     'show' => [],
                     'edit' => [],
                     'delete' => [],
+                    'validar' => [
+                        'template' => 'AppBundle:Donate/btn:validate.html.twig'
+                    ],
+                    'pdf' => [
+                        'template' => 'AppBundle:Donate/btn:pdf.html.twig'
+                    ],
                 ],
             ]);
     }

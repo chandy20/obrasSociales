@@ -61,7 +61,6 @@ class DonadorAdmin extends AbstractAdmin
             ->add('documento', null, ['label' => 'label.documento'])
             ->add('representanteLegal')
             ->add('cargo')
-            ->add('seccional', null, ['empty_value' => 'label.seleccion'])
             ->add('ciudad', null, ['empty_value' => 'label.seleccion'])
             ->add('direccion', null, ['label' => 'label.direccion'])
             ->add('telefonoContacto1', null, ['label' => 'label.tel1'])

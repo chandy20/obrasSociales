@@ -21,13 +21,15 @@ class CiudadAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('nombre');
+            ->add('nombre')
+            ->add('seccional');
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
             ->add('nombre')
+            ->add('seccional')
             ->add('_action', null, [
                 'actions' => [
                     'show' => [],
@@ -40,7 +42,12 @@ class CiudadAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('nombre');
+            ->add('nombre')
+            ->add('seccional', null, [
+                'empty_value' => 'label.seleccion',
+                'required' => true,
+                ]
+            );
     }
 
     protected function configureShowFields(ShowMapper $showMapper)
