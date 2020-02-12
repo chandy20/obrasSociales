@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "803342a1107a4ec2a68ec73c1d6fddc3",
+    "content-hash": "9b1d10f8996612685f9381cc03da4952",
     "packages": [
         {
             "name": "cocur/slugify",
@@ -1618,7 +1618,7 @@
             "time": "2017-12-06T16:31:47+00:00"
         },
         {
-            "name": "liuggio/ExcelBundle",
+            "name": "liuggio/excelbundle",
             "version": "v2.1.0",
             "source": {
                 "type": "git",
@@ -2151,6 +2151,7 @@
                 }
             ],
             "description": "This bundle generates code for you",
+            "abandoned": true,
             "time": "2015-03-17T06:36:52+00:00"
         },
         {
@@ -4153,6 +4154,7 @@
                 "code",
                 "zf2"
             ],
+            "abandoned": "laminas/laminas-code",
             "time": "2016-04-20T17:26:42+00:00"
         },
         {
@@ -4207,22 +4209,23 @@
                 "events",
                 "zf2"
             ],
+            "abandoned": "laminas/laminas-eventmanager",
             "time": "2018-04-25T15:33:34+00:00"
         }
     ],
     "packages-dev": [
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v2.8.49",
+            "version": "v2.8.50",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "2a71753e11f4094a4ccd0acf5e9f6a962a1a2787"
+                "reference": "4aa44ecbfb5e2c50797d17756da11c93a8a6974f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/2a71753e11f4094a4ccd0acf5e9f6a962a1a2787",
-                "reference": "2a71753e11f4094a4ccd0acf5e9f6a962a1a2787",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/4aa44ecbfb5e2c50797d17756da11c93a8a6974f",
+                "reference": "4aa44ecbfb5e2c50797d17756da11c93a8a6974f",
                 "shasum": ""
             },
             "require": {
@@ -4267,7 +4270,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2018-11-12T18:05:42+00:00"
+            "time": "2019-04-16T10:01:26+00:00"
         }
     ],
     "aliases": [],
@@ -4276,7 +4279,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.3.9"
+        "php": ">=5.6"
     },
     "platform-dev": [],
     "platform-overrides": {
